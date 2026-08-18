@@ -1,0 +1,1667 @@
+%\documentclass[11pt, xcolor=dvipsnames,svgnames,x11names]{article}
+\documentclass[nohyper,nobib,xcolor=dvipsnames,svgnames,x11names]{tufte-book}
+
+\title{Signals and Systems for Computer Engineers}
+\date{Worksheet}
+\author[Rahul Bhadani]{Rahul Bhadani}
+\publisher{Department of Electrical \& Computer Engineering, The University of Alabama in Huntsville}
+\usepackage{amsmath, amssymb, amsthm}
+\usepackage{graphicx}
+\usepackage{booktabs}
+\usepackage{multirow}
+\usepackage{siunitx}
+\usepackage{circuitikz}
+
+\pagestyle{fancy}
+\fancyhf{} % Clear all header and footer fields
+
+% Set footer - right aligned, bold, light gray
+\fancyfoot[R]{\textbf{\footnotesize \textcolor{lightgray}{Rahul Bhadani | Signals \& Systems | \thepage}}}
+
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\usepackage{hyperref}
+\hypersetup{
+    colorlinks=true,
+    linkcolor=SeaGreen,
+    urlcolor=SeaGreen,
+    citecolor=SeaGreen,
+    filecolor=SeaGreen
+}
+\usepackage{amsmath}
+\usepackage{amssymb}
+\usepackage{xcolor}
+\usepackage{tikz}
+\usetikzlibrary{backgrounds}
+\usetikzlibrary{shadings}
+\usepackage{eso-pic}
+\usepackage{tkz-euclide}
+\usepackage{graphicx}
+\usepackage[T1]{fontenc}
+\usepackage{wesa}
+
+
+\newenvironment{multiequation}{%
+  \setlength{\abovedisplayskip}{3pt}      % Reduce space above the equation
+  \setlength{\belowdisplayskip}{6pt}      % Reduce space below the equation
+  \setlength{\abovedisplayshortskip}{3pt} % Reduce space above short equations
+  \setlength{\belowdisplayshortskip}{6pt} % Reduce space below short equations
+  \begin{equation}%                       % Start an unnumbered equation
+    \begin{aligned}%                      % Align multiple lines
+}{%
+    \end{aligned}%                        % End alignment
+  \end{equation}%                         % End equation
+}
+
+
+\definecolor{darkrose}{HTML}{9F3450}
+\definecolor{forestgreen}{HTML}{35a17f}
+\definecolor{lightindigo}{RGB}{150, 150, 255}
+\definecolor{faintred}{RGB}{255, 200, 200}
+
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\makeatletter
+\renewcommand{\maketitlepage}{%
+\begingroup%
+\setlength{\parindent}{0pt}
+
+{\fontsize{24}{24}\selectfont\textit{\@author}\par}
+
+\vspace{1.5in}{\fontsize{30}{24}\selectfont\@title\par}
+
+
+\vspace{0.5in}{\fontsize{20}{14}\selectfont\textsf{\smallcaps{\@date}}\par}
+
+
+
+
+\vfill{\fontsize{14}{14}\selectfont\textit{\@publisher}\par}
+
+\thispagestyle{empty}
+\endgroup
+}
+
+
+
+% Generates the index
+\usepackage{makeidx}
+\makeindex
+
+
+\titlecontents{part}%
+    [0pt]% distance from left margin
+    {\addvspace{0.25\baselineskip}}% above (global formatting of entry)
+    {\allcaps{Part~\thecontentslabel}\allcaps}% before w/ label (label = ``Part I'')
+    {\allcaps{Part~\thecontentslabel}\allcaps}% before w/o label
+    {}% filler and page (leaders and page num)
+    [\vspace*{0.5\baselineskip}]% after
+
+\titlecontents{chapter}%
+    [4em]% distance from left margin
+    {}% above (global formatting of entry)
+    {\contentslabel{2em}\textit}% before w/ label (label = ``Chapter 1'')
+    {\hspace{0em}\textit}% before w/o label
+    {\qquad\thecontentspage}% filler and page (leaders and page num)
+    [\vspace*{0.5\baselineskip}]% after
+%%%% End additional code by Kevin Godby
+
+\makeatother
+
+
+
+\titlecontents{part}%
+    [0pt]% distance from left margin
+    {\addvspace{0.25\baselineskip}}% above (global formatting of entry)
+    {\allcaps{Part~\thecontentslabel}\allcaps}% before w/ label (label = ``Part I'')
+    {\allcaps{Part~\thecontentslabel}\allcaps}% before w/o label
+    {}% filler and page (leaders and page num)
+    [\vspace*{0.5\baselineskip}]% after
+
+\titlecontents{chapter}%
+    [4em]% distance from left margin
+    {}% above (global formatting of entry)
+    {\contentslabel{2em}\textit}% before w/ label (label = ``Chapter 1'')
+    {\hspace{0em}\textit}% before w/o label
+    {\qquad\thecontentspage}% filler and page (leaders and page num)
+    [\vspace*{0.5\baselineskip}]% after
+%%%% End additional code by Kevin Godby
+
+\makeatletter
+% Redefine chapter to prevent empty pages
+\renewcommand{\chapter}{%
+  \clearpage% Use clearpage instead of cleardoublepage
+  \thispagestyle{plain}%
+  \global\@topnum\z@
+  \@afterindentfalse
+  \secdef\@chapter\@schapter
+}
+
+% Alternative approach - modify the openright behavior
+\@openrightfalse
+
+% Or if the above doesn't work, try this more direct approach:
+\let\cleardoublepage\clearpage
+\makeatother
+
+
+
+\makeatletter
+% Force chapter numbering
+\setcounter{secnumdepth}{2}
+
+% Override tufte-book's chapter command to include numbering
+\let\oldchapter\chapter
+\renewcommand{\chapter}[1]{%
+  \refstepcounter{chapter}%
+  \oldchapter*{\color{darkrose}{\thechapter. #1}}% Use chapter* with our numbering
+  \addcontentsline{toc}{chapter}{\protect\numberline{\thechapter}#1}%
+}
+
+% Handle unnumbered chapters (like those created with \chapter*)
+\let\oldschapter\@schapter
+\renewcommand{\@schapter}[1]{%
+  \oldschapter{#1}%
+}
+\makeatother
+
+
+% Set table of contents depth to 3 (includes subsubsections)
+\setcounter{tocdepth}{3}
+\makeatletter
+% Chapter entries (level 0) - no indentation
+\titlecontents{chapter}%
+    [0em]% distance from left margin
+    {\addvspace{1em}\bfseries}% above (global formatting of entry)
+    {\contentslabel{1.5em}}% before w/ label
+    {\hspace{0em}}% before w/o label
+    {\titlerule*[.5pc]{.}\contentspage}% filler and page
+    [\addvspace{0.5em}]% after
+
+% Section entries (level 1) - slight indentation
+\titlecontents{section}%
+    [1.5em]% distance from left margin
+    {}% above (global formatting of entry)
+    {\contentslabel{2.0em}}% before w/ label
+    {\hspace{0em}}% before w/o label
+    {\titlerule*[.5pc]{.}\contentspage}% filler and page
+    []% after
+
+% Subsection entries (level 2) - more indentation
+\titlecontents{subsection}%
+    [3.5em]% distance from left margin
+    {}% above (global formatting of entry)
+    {\contentslabel{2.5em}}% before w/ label
+    {\hspace{0em}}% before w/o label
+    {\titlerule*[.5pc]{.}\contentspage}% filler and page
+    []% after
+
+% Subsubsection entries (level 3) - most indentation
+\titlecontents{subsubsection}%
+    [6em]% distance from left margin
+    {}% above (global formatting of entry)
+    {\contentslabel{3.0em}}% before w/ label
+    {\hspace{0em}}% before w/o label
+    {\titlerule*[.5pc]{.}\contentspage}% filler and page
+    []% after
+\makeatother
+
+% Custom table of contents with 'Content' title that doesn't appear in TOC
+\makeatletter
+\renewcommand{\tableofcontents}{%
+  \clearpage
+  \thispagestyle{plain}%
+  {\Huge\em Content}\par
+  \vspace{1em}
+  \@starttoc{toc}%
+}
+\makeatother
+
+\definecolor{lightorange}{RGB}{255, 245, 230}
+
+% Create a new command for fancy margin notes
+\newcommand{\fancymarginnote}[2][0pt]{%
+  \marginnote[#1]{%
+    \tikz[baseline=(text.base)]{%
+      \node[
+        fill=lightorange,
+        draw=SeaGreen,
+        line width=1pt,
+        text=darkrose,
+        rounded corners=3pt,
+        inner sep=4pt,
+        text width=\dimexpr\marginparwidth-8pt\relax,
+        font=\footnotesize
+      ] (text) {#2};
+    }%
+  }%
+}
+
+\definecolor{darkorange}{RGB}{255, 100, 0}
+
+% Redefine section command with dark orange color
+\makeatletter
+\renewcommand\section{\@startsection{section}{1}{\z@}%
+                     {-3.5ex \@plus -1ex \@minus -.2ex}%
+                     {2.3ex \@plus.2ex}%
+                     {\normalfont\Large\bfseries\color{darkorange}}}
+\makeatother
+
+
+\begin{document}
+\maketitle
+
+
+\tableofcontents
+
+
+\chapter{Mathematical Preliminaries}
+
+
+
+\section{Complex Numbers}
+
+\begin{enumerate}
+    \item \textbf{4pts} Plot the following complex numbers on the complex plane:
+    \begin{itemize}
+        \item $2+i3$
+        \item $3-i2$
+        \item $-2-i2$
+        \item $-4+j2$
+    \end{itemize}
+
+
+\textbf{Solution:}
+
+\includegraphics[width=1.0\linewidth]{../Code/figures/Ch01_complex_number_plotting.pdf}
+
+
+    \item \textbf{4pts} Express $\frac{-1+3i}{2+5i}$ in the form $a+ib$.
+
+\textbf{Solution:}    
+    
+    \begin{multiequation}
+        \frac{-1+3i}{2+5i} &= \frac{-1+3i}{2+5i} \times \frac{2-5i}{2-5i} \\
+        &= \frac{-2+5i+6i-15i^2}{2^2+5^2} \\
+        &= \frac{-2+11i+15}{4+25} \\
+        &= \frac{13+11i}{29} \\
+        &= \frac{13}{29} + \frac{11}{29}i
+    \end{multiequation}
+    
+
+    \item \textbf{2pts} If $Z=3+i5$ is a complex number, what is the value of the modulus $|Z|$?
+    
+    \textbf{Solution:}
+    
+    $$|Z| = \sqrt{3^2+5^2} = \sqrt{9+25} = \sqrt{34}$$
+
+    \item \textbf{4pts} Find the roots of the equation $x^2+x+1=0$.
+
+\textbf{Solution:}    
+    
+    For a quadratic equation $ax^2+bx+c=0$, the roots are given by $x=\frac{-b\pm\sqrt{b^2-4ac}}{2a}$.
+    In this case, $a=1$, $b=1$, $c=1$.
+    $$x = \frac{-1\pm\sqrt{1^2-4(1)(1)}}{2(1)} = \frac{-1\pm\sqrt{1-4}}{2} = \frac{-1\pm\sqrt{-3}}{2} = \frac{-1\pm i\sqrt{3}}{2}$$
+
+    \item \textbf{2pts} Write the following complex numbers in the polar form:
+    \begin{enumerate}
+        \item $z=1+i$
+        \item $w=\sqrt{3}-i$
+    \end{enumerate}
+    \textbf{Solution for (a):}
+    $|z|=\sqrt{1^2+1^2}=\sqrt{2}$
+    $\tan\theta = \frac{1}{1}=1$, so $\theta = \frac{\pi}{4}$.
+    In polar form: $z=\sqrt{2}(\cos\frac{\pi}{4}+i\sin\frac{\pi}{4})$.
+
+    \textbf{Solution for (b):}
+    $|w|=\sqrt{(\sqrt{3})^2+(-1)^2}=\sqrt{3+1}=\sqrt{4}=2$
+    $\tan\theta = \frac{-1}{\sqrt{3}}$, so $\theta = -\frac{\pi}{6}$ (since the number is in the 4th quadrant).
+    In polar form: $w=2(\cos(-\frac{\pi}{6})+i\sin(-\frac{\pi}{6}))$.
+
+    \item \textbf{4pts} Find the product of the complex numbers $1+i$ and $\sqrt{3}-i$ in the polar form.
+    
+    \textbf{Solution:}
+    
+    From the previous problem, we have:
+    $z_1 = 1+i = \sqrt{2}e^{i\pi/4}$
+    
+    $z_2 = \sqrt{3}-i = 2e^{-i\pi/6}$
+    
+    $z_1z_2 = (\sqrt{2}e^{i\pi/4})(2e^{-i\pi/6}) = 2\sqrt{2}e^{i(\pi/4-\pi/6)} = 2\sqrt{2}e^{i(\pi/12)}$
+    
+    In standard polar form: $2\sqrt{2}(\cos\frac{\pi}{12}+i\sin\frac{\pi}{12})$.
+
+    \item \textbf{2pts} Find $(\frac{1}{2}+\frac{1}{2}i)^{10}$.
+
+\textbf{Solution:}    
+    
+    First, convert to polar form:
+    
+    $\frac{1}{2}+\frac{1}{2}i = \frac{\sqrt{2}}{2}(\cos\frac{\pi}{4}+i\sin\frac{\pi}{4})$
+    
+    Using De Moivre's Theorem:
+    
+    $(\frac{1}{2}+\frac{1}{2}i)^{10} = (\frac{\sqrt{2}}{2})^{10}(\cos(10\cdot\frac{\pi}{4})+i\sin(10\cdot\frac{\pi}{4}))$
+    
+    $= (\frac{2^{1/2}}{2})^{10}(\cos(\frac{5\pi}{2})+i\sin(\frac{5\pi}{2}))$
+    
+    $= (\frac{1}{2^{1/2}})^{10}(\cos(\frac{\pi}{2}+2\pi)+i\sin(\frac{\pi}{2}+2\pi))$
+    
+    $= (\frac{1}{2^5})(0+i\cdot 1) = \frac{i}{32}$
+
+    \item \textbf{2pts} Evaluate or Simplify:
+    \begin{enumerate}
+        \item $e^{i\pi}$
+        \item $e^{-1+i\pi/2}$
+    \end{enumerate}
+    
+    \textbf{Solution for (a):}
+    $e^{i\pi} = \cos\pi+i\sin\pi = -1+i(0) = -1$.
+    
+    \textbf{Solution for (b):}
+    $e^{-1+i\pi/2} = e^{-1}e^{i\pi/2} = e^{-1}\bigg( \cos{\tfrac{\pi}{2}} + i \sin{\tfrac{\pi}{2}} \bigg) = \cfrac{1}{e}\bigg(0 + i(1) \bigg)= \cfrac{i}{e}$
+
+    \item \textbf{2pts} Evaluate the expression below and write your answer in the form $a+ib$.
+    \begin{enumerate}
+        \item $(5-i6)+(3+i2)$
+        \item $\frac{3}{4-i3}$
+    \end{enumerate}
+    \textbf{Solution for (a):}
+    $(5-i6)+(3+i2) = (5+3)+(-6+2)i = 8-4i$.
+    
+    \textbf{Solution for (b):}
+    $\frac{3}{4-i3} = \frac{3}{4-i3} \times \frac{4+i3}{4+i3} = \frac{12+i9}{4^2+3^2} = \frac{12+i9}{16+9} = \frac{12+i9}{25} = \frac{12}{25}+\frac{9}{25}i$.
+
+    \item \textbf{2pts} Find the complex conjugate and modulus of the number:
+    \begin{enumerate}
+        \item $12+i5$
+        \item $-1+2\sqrt{2}i$
+    \end{enumerate}
+    \textbf{Solution for (a):}
+    
+    Complex conjugate: $12-i5$.
+    
+    Modulus: $|12+i5| = \sqrt{12^2+5^2} = \sqrt{144+25} = \sqrt{169} = 13$.
+    
+    \textbf{Solution for (b):}
+    
+    Complex conjugate: $-1-2\sqrt{2}i$.
+    
+    Modulus: $|-1+2\sqrt{2}i| = \sqrt{(-1)^2+(2\sqrt{2})^2} = \sqrt{1+8} = \sqrt{9}=3$.
+
+    \item \textbf{2pts} Apply De Moivre's Theorem to simplify:
+    \begin{enumerate}
+        \item $(1+i)^{20}$
+        \item $(1-\sqrt{3}i)^{5}$
+        \item $(1-i)^{8}$
+    \end{enumerate}
+
+    \textbf{Solution for (a):}
+    
+    Convert $1+i$ to polar form: $r=\sqrt{1^2+1^2}=\sqrt{2}$, 
+    
+    $\theta=\tan^{-1}(\frac{1}{1})=\frac{\pi}{4}$.
+    
+    $1+i = \sqrt{2}(\cos\frac{\pi}{4}+i\sin\frac{\pi}{4})$.
+    
+    $(1+i)^{20} = (\sqrt{2})^{20}(\cos(20\cdot\frac{\pi}{4})+i\sin(20\cdot\frac{\pi}{4}))$
+   
+    $= 2^{10}(\cos(5\pi)+i\sin(5\pi)) = 1024(-1+0i) = -1024$.
+
+    \textbf{Solution for (b):}
+
+    Convert $1-\sqrt{3}i$ to polar form: $r=\sqrt{1^2+(-\sqrt{3})^2}=2$, $\theta=\tan^{-1}(\frac{-\sqrt{3}}{1})=-\frac{\pi}{3}$.
+    
+    $1-\sqrt{3}i = 2(\cos(-\frac{\pi}{3})+i\sin(-\frac{\pi}{3}))$.
+
+    $(1-\sqrt{3}i)^5 = 2^5(\cos(5\cdot(-\frac{\pi}{3}))+i\sin(5\cdot(-\frac{\pi}{3})))$
+
+    $= 32(\cos(-\frac{5\pi}{3})+i\sin(-\frac{5\pi}{3})) = 32(\cos(\frac{\pi}{3})+i\sin(\frac{\pi}{3}))$
+
+    $= 32(\frac{1}{2}+i\frac{\sqrt{3}}{2}) = 16(1+i\sqrt{3})$.
+
+    \textbf{Solution for (c):}
+    
+    Convert $1-i$ to polar form: $r=\sqrt{1^2+(-1)^2}=\sqrt{2}$, $\theta=\tan^{-1}(\frac{-1}{1})=-\frac{\pi}{4}$.
+
+    $1-i = \sqrt{2}(\cos(-\frac{\pi}{4})+i\sin(-\frac{\pi}{4}))$.
+
+    $(1-i)^8 = (\sqrt{2})^8(\cos(8\cdot(-\frac{\pi}{4}))+i\sin(8\cdot(-\frac{\pi}{4})))$
+
+    $= 2^4(\cos(-2\pi)+i\sin(-2\pi)) = 16(1+0i)=16$.
+
+    \item \textbf{3pts} Use Euler's formula to prove the following formulas for $\cos x$ and $\sin x$:
+    \begin{enumerate}
+        \item $\cos x = \frac{e^{ix}+e^{-ix}}{2}$
+        \item $\sin x = \frac{e^{ix}-e^{-ix}}{2i}$
+    \end{enumerate}
+    \textbf{Solution:}
+    Euler's formula states:
+    $e^{ix} = \cos x + i\sin x$
+    $e^{-ix} = \cos x - i\sin x$
+
+    To prove (a), add the two equations:
+    $e^{ix}+e^{-ix} = (\cos x + i\sin x) + (\cos x - i\sin x) = 2\cos x$.
+    Therefore, $\cos x = \frac{e^{ix}+e^{-ix}}{2}$.
+
+    To prove (b), subtract the second equation from the first:
+    $e^{ix}-e^{-ix} = (\cos x + i\sin x) - (\cos x - i\sin x) = 2i\sin x$.
+    Therefore, $\sin x = \frac{e^{ix}-e^{-ix}}{2i}$.
+
+\end{enumerate}
+
+%---------------------------------------
+%---------------------------------------
+%---------------------------------------
+
+
+\section{Trigonometry}
+\begin{enumerate}
+    \item \textbf{4 pts} Draw a circle and mark $\frac{\pi}{6}$, $\frac{\pi}{3}$, $\frac{\pi}{4}$, and $\frac{3\pi}{4}$.
+    
+    \textbf{Solution:}
+    
+    \includegraphics[width=0.6\linewidth]{../Code/figures/Ch01_radian_marking.pdf}
+
+    \item \textbf{1 pts} Convert $\frac{3\pi}{2}$ radians into degrees.
+    
+     \textbf{Solution:}
+     
+    \begin{multiequation}
+        \frac{3\pi}{2} \times \frac{180^\circ}{\pi} = 270^\circ
+    \end{multiequation}
+
+    \item \textbf{3 pts} Find the value of $\theta: 4\sin^2\theta=3$.
+    
+     \textbf{Solution:}
+     
+    \begin{multiequation}
+        4\sin^2\theta &= 3 \\
+        \sin^2\theta &= \frac{3}{4} \\
+        \sin\theta &= \pm\frac{\sqrt{3}}{2}
+    \end{multiequation}
+    
+    If $\sin\theta = \frac{\sqrt{3}}{2}$, then $\theta = 60^\circ$ or $\theta = 120^\circ$ (Quadrant I and II).
+    
+    If $\sin\theta = -\frac{\sqrt{3}}{2}$, then $\theta = 240^\circ$ or $\theta = 300^\circ$ (Quadrant III and IV).
+
+
+    \item \textbf{3 pts} Find the value of $x: 2\sin^2x-3\sin x+1=0$.
+    
+     \textbf{Solution:}
+     
+    \begin{multiequation}
+        2\sin^2x-3\sin x+1 &= 0 \\
+        2\sin^2x-2\sin x-\sin x+1 &= 0 \\
+        2\sin x(\sin x-1)-1(\sin x-1) &= 0 \\
+        (2\sin x-1)(\sin x-1) &= 0
+    \end{multiequation}
+    
+    This gives two possible solutions:
+    
+    $2\sin x - 1 = 0 \implies \sin x = \frac{1}{2}$.
+    
+    $\sin x - 1 = 0 \implies \sin x = 1$.
+
+    For $\sin x = \frac{1}{2}$, $x = \frac{\pi}{6}$ or $x = \frac{5\pi}{6}$.
+    
+    For $\sin x = 1$, $x = \frac{\pi}{2}$.
+    
+    The general solutions are $x = \frac{\pi}{6}+2\pi K$, $x = \frac{5\pi}{6}+2\pi K$, and $x = \frac{\pi}{2}+2\pi K$.
+
+    \item \textbf{5 pts} Prove: $(1-\sin^2(t))(1+\tan^2(t))=1$.
+    
+    \textbf{Solution:}
+    
+    \begin{multiequation}
+        (1-\sin^2(t))(1+\tan^2(t)) &= (\cos^2(t))(1+\tan^2(t)) \\
+        &= \cos^2(t) + \cos^2(t)\tan^2(t) \\
+        &= \cos^2(t) + \cos^2(t)\frac{\sin^2(t)}{\cos^2(t)} \\
+        &= \cos^2(t) + \sin^2(t) \\
+        &= 1
+    \end{multiequation}
+
+    \item \textbf{5 pts} Prove: $\frac{\sin^3(t)+\cos^3(t)}{\sin(t)+\cos(t)}=1-\sin(t)\cos(t)$.
+    
+    \textbf{Solution:}
+    
+    Using the identity $a^3+b^3=(a+b)(a^2-ab+b^2)$.
+    
+    Let $a=\sin(t)$ and $b=\cos(t)$.
+
+    \begin{multiequation}
+        \frac{\sin^3(t)+\cos^3(t)}{\sin(t)+\cos(t)} &= \frac{(\sin(t)+\cos(t))(\sin^2(t)-\sin(t)\cos(t)+\cos^2(t))}{\sin(t)+\cos(t)} \\
+        &= \sin^2(t)+\cos^2(t)-\sin(t)\cos(t) \\
+        &= 1-\sin(t)\cos(t)
+    \end{multiequation}
+
+    \item \textbf{2 pts} What is the value of $\sin\theta$ and $\cos\theta$ given $\tan\theta=\frac{4}{3}$?
+    
+    \textbf{Solution:}
+    
+    $\tan\theta = \frac{4}{3} = \frac{\text{Perpendicular}}{\text{Base}}$.
+    
+    The hypotenuse is $h = \sqrt{3^2+4^2} = \sqrt{9+16} = \sqrt{25} = 5$.
+    
+    $\sin\theta = \frac{\text{Perpendicular}}{\text{Hypotenuse}} = \frac{4}{5}$.
+    
+    $\cos\theta = \frac{\text{Base}}{\text{Hypotenuse}} = \frac{3}{5}$.
+
+    \item \textbf{2 pts} Find the value of $\sin\theta$ and $\cos\theta$ from the triangle.
+
+    \includegraphics[width=0.4\linewidth]{../Code/figures/Ch01_triangle_drawing.pdf}
+    
+\textbf{Solution:}
+
+    From the right-angled triangle with sides 1, 1 and hypotenuse $\sqrt{2}$:
+    $\sin\theta = \frac{\text{Opposite}}{\text{Hypotenuse}} = \frac{1}{\sqrt{2}}$.
+    
+    $\cos\theta = \frac{\text{Adjacent}}{\text{Hypotenuse}} = \frac{1}{\sqrt{2}}$.
+
+    \item \textbf{3 pts} Prove $\sin^{-1}(\frac{\sqrt{2}}{2})-\sin^{-1}(\frac{1}{2})=\frac{\pi}{12}$.
+
+\textbf{Solution:}    
+    
+    $\sin^{-1}(\frac{\sqrt{2}}{2}) = \frac{\pi}{4}$.
+    
+    $\sin^{-1}(\frac{1}{2}) = \frac{\pi}{6}$.
+    
+    $\sin^{-1}(\frac{\sqrt{2}}{2})-\sin^{-1}(\frac{1}{2}) = \frac{\pi}{4}-\frac{\pi}{6} = \frac{3\pi-2\pi}{12} = \frac{\pi}{12}$.
+
+    \item \textbf{2 pts} Find the value of $x$ given $2\sin x=1$.
+    
+    \textbf{Solution:}
+    
+    $2\sin x=1 \implies \sin x = \frac{1}{2}$.
+    
+    For $\sin x = \frac{1}{2}$, $x = \frac{\pi}{6}$ or $x = \frac{5\pi}{6}$.
+
+\end{enumerate}
+
+\section{Calculus}
+
+\begin{enumerate}
+    \item Using the first principle, differentiate the function $f(x)=e^{2x}$ with respect to $x$.
+    
+    \textbf{Solution:}
+    We are given $f(x)=e^{2x}$. Thus, $f(x+h)=e^{2(x+h)}$.
+    The definition of the derivative is $\frac{d}{dx}(f(x))=\lim_{h\to0}\frac{f(x+h)-f(x)}{h}$.
+    Substituting the function:
+    \begin{multiequation}
+        \frac{d}{dx}(e^{2x}) &= \lim_{h\to0}\frac{e^{2(x+h)}-e^{2x}}{h} \\
+        &= \lim_{h\to0}\frac{e^{2x}e^{2h}-e^{2x}}{h} \\
+        &= \lim_{h\to0}\frac{e^{2x}(e^{2h}-1)}{h} \\
+        &= e^{2x} \lim_{h\to0}\frac{e^{2h}-1}{h}
+    \end{multiequation}
+    We use the known limit $\lim_{x\to0}\frac{e^x-1}{x}=1$.\fancymarginnote{$\lim_{x\to0}\frac{e^x-1}{x}=1$}
+    To apply this, we multiply the limit by $\frac{2}{2}$:
+    \begin{multiequation}
+        &= e^{2x} \left(\lim_{h\to0}\frac{e^{2h}-1}{2h}\right) \times 2 \\
+        &= e^{2x} \cdot 1 \cdot 2 \\
+        &= 2e^{2x}
+    \end{multiequation}
+    So, $\frac{d}{dx}(e^{2x})=2e^{2x}$.
+
+    \item If $y=\sin x+e^{x}$, find $\frac{dy}{dx}$.
+    
+    \textbf{Solution:}
+    \begin{multiequation}
+        \frac{dy}{dx} &= \frac{d}{dx}(\sin x+e^{x}) \\
+        &= \frac{d}{dx}(\sin x)+\frac{d}{dx}(e^{x}) \\
+        &= \cos x+e^{x}
+    \end{multiequation}
+
+    \item If $y=x^{2}+\sin^{-1}x+\log_{e}x$, find $\frac{dy}{dx}$.
+    
+    \textbf{Solution:}
+    \begin{multiequation}
+        \frac{dy}{dx} &= \frac{d}{dx}(x^{2})+\frac{d}{dx}(\sin^{-1}x)+\frac{d}{dx}(\log_{e}x) \\
+        &= 2x^{2-1}+\frac{1}{\sqrt{1-x^{2}}}+\frac{1}{x} \\
+        &= 2x+\frac{1}{\sqrt{1-x^{2}}}+\frac{1}{x}
+    \end{multiequation}
+
+    \item If $y=e^{x}\sin x$, find $\frac{dy}{dx}$. \fancymarginnote{Hint: Use the product rule if $y=u(x)v(x)$, then $\frac{dy}{dx}=\{\frac{d}{dx}u(x)\}v(x)+u(x)\{\frac{d}{dx}v(x)\}$}
+    
+    \textbf{Solution:}
+    Let $u(x)=e^x$ and $v(x)=\sin x$.
+    \begin{multiequation}
+        \frac{dy}{dx} &= \left(\frac{d}{dx}(e^x)\right)\sin x+e^x\left(\frac{d}{dx}(\sin x)\right) \\
+        &= e^x\sin x+e^x\cos x \\
+        &= e^x(\sin x+\cos x)
+    \end{multiequation}
+
+    \item If $y=\frac{x}{x^{2}+1}$, find $\frac{dy}{dx}$. \fancymarginnote{Hint: Use the quotient rule: $\frac{dy}{dx}=\frac{\{\frac{d}{dx}u(x)\}v(x)-\{\frac{d}{dx}v(x)\}u(x)}{\{v(x)\}^2}$}
+    
+    \textbf{Solution:}
+    Let $u(x)=x$ and $v(x)=x^2+1$.
+    \begin{multiequation}
+        \frac{dy}{dx} &= \frac{(x^{2}+1)\frac{d}{dx}(x)-x\frac{d}{dx}(x^{2}+1)}{(x^{2}+1)^{2}} \\
+        &= \frac{(x^{2}+1)\cdot 1-x\cdot 2x}{(x^{2}+1)^{2}} \\
+        &= \frac{x^{2}+1-2x^{2}}{(x^{2}+1)^{2}} \\
+        &= \frac{1-x^{2}}{(x^{2}+1)^{2}}
+    \end{multiequation}
+
+    \item Evaluate $\int\frac{x+1}{x^{3}+x^{2}-6x}dx$.
+    
+    \textbf{Solution:}
+    First, use partial fraction decomposition:
+    \begin{multiequation}
+        \frac{x+1}{x^{3}+x^{2}-6x} &= \frac{x+1}{x(x^{2}+x-6)} \\
+        &= \frac{x+1}{x(x+3)(x-2)} \\
+        &= \frac{A}{x}+\frac{B}{x-2}+\frac{C}{x+3}
+    \end{multiequation}
+    Setting the numerators equal: $A(x-2)(x+3)+Bx(x+3)+Cx(x-2)=x+1$.
+    The coefficients are found to be $A=-1/6$, $B=3/10$, and $C=-2/15$.
+    \begin{multiequation}
+        \int\frac{x+1}{x^{3}+x^{2}-6x}dx &= \int\left(\frac{-1/6}{x}+\frac{3/10}{x-2}+\frac{-2/15}{x+3}\right)dx \\
+        &= -\frac{1}{6}\int\frac{1}{x}dx+\frac{3}{10}\int\frac{1}{x-2}dx-\frac{2}{15}\int\frac{1}{x+3}dx \\
+        &= -\frac{1}{6}\ln|x|+\frac{3}{10}\ln|x-2|-\frac{2}{15}\ln|x+3|+C
+    \end{multiequation}
+
+    \item Find the indefinite integral of $f(x)=3x^{2}+4x-2$.
+    
+    \textbf{Solution:}
+    \begin{multiequation}
+        \int f(x)dx &= \int(3x^{2}+4x-2)dx \\
+        &= \int3x^{2}dx+\int4xdx-\int2dx \\
+        &= 3\frac{x^{3}}{3}+4\frac{x^{2}}{2}-2x+C \\
+        &= x^{3}+2x^{2}-2x+C
+    \end{multiequation}
+
+    \item Find $\int x\sin xdx$. \fancymarginnote{Hint: Use integration by parts: $\int u dv=uv-\int v du$}
+    
+    \textbf{Solution:}
+    Let $u=x$ and $dv=\sin xdx$.
+    Then $du=dx$ and $v=\int \sin xdx=-\cos x$.
+    \begin{multiequation}
+        \int x\sin xdx &= x(-\cos x)-\int(-\cos x)dx \\
+        &= -x\cos x+\int\cos xdx \\
+        &= -x\cos x+\sin x+C
+    \end{multiequation}
+
+    \item Solve the differential equation $\frac{dy}{dx}=3x^{2}$.
+    
+    \textbf{Solution:}
+
+    \begin{multiequation}
+        \frac{dy}{dx} &= 3x^{2} \\
+        dy &= 3x^{2}dx \\
+        \int dy &= \int 3x^{2}dx \\
+        y &= \frac{3x^3}{3}+C \\
+        y &= x^3+C
+    \end{multiequation}
+    Thus, the correct answer is $y=x^3+C$.
+
+    \item Solve the equation: $(1+y^{2})y'=\frac{3}{x}$.
+    
+    \textbf{Solution:}
+    Separate the variables:
+    \begin{multiequation}
+        (1+y^{2})\frac{dy}{dx} &= \frac{3}{x} \\
+        (1+y^{2})dy &= \frac{3}{x}dx \\
+        \int(1+y^{2})dy &= \int\frac{3}{x}dx \\
+        \int 1 dy + \int y^2 dy &= 3\int \frac{1}{x} dx \\
+        y+\frac{y^{3}}{3} &= 3\ln|x|+\ln C \\
+        y+\frac{y^{3}}{3} &= \ln(C|x|^3) \\
+        e^{y+y^{3}/3} &= C|x|^3
+    \end{multiequation}
+
+\end{enumerate}
+
+
+\section{Sequences and Series}
+
+\begin{enumerate}
+\item
+Show that a sequence given by the term $u_n = \cfrac{2n}{3n+7}$ is strictly increasing.
+
+\textbf{Solution:}
+We can prove this by computing and simplifying the expression $u_{n+1}-u_n$:
+\begin{multiequation}
+u_{n+1}-u_n &= \frac{2(n+1)}{3(n+1)+7} - \frac{2n}{3n+7} \\
+&= \frac{2(n+1)(3n+7) - 2n(3(n+1)+7)}{(3(n+1)+7)(3n+7)} \\
+&= \frac{(6n+14)(3n+10) - (6n^2+20n)}{(3n+10)(3n+7)} \\
+&= \frac{(6n^2+40n+14) - (6n^2+20n)}{(3n+10)(3n+7)} \\
+&= \frac{14}{(3n+10)(3n+7)} > 0, \quad \forall n \in \mathbb{N}.
+\end{multiequation}
+
+\item Show that the sequence $u_n = \cfrac{5n}{n^2+1}$ is strictly decreasing.
+
+\textbf{Solution:}
+
+\begin{multiequation}
+u_{n+1}-u_n &= \frac{5(n+1)}{(n+1)^2+1} - \frac{5n}{n^2+1} \\
+&= \frac{5(n+1)(n^2+1) - 5n((n+1)^2+1)}{((n+1)^2+1)(n^2+1)} \\
+&= \frac{5(n+1)(n^2+1) - 5n(n^2+2n+1+1)}{(n^2+2n+2)(n^2+1)} \\
+&= \frac{5(n^3+n+n^2+1) - 5n(n^2+2n+2)}{(n^2+2n+2)(n^2+1)} \\
+&= \frac{5n^3+5n+5n^2+5 - (5n^3+10n^2+10n)}{(n^2+2n+2)(n^2+1)} \\
+&= \frac{-5n^2-5n+5}{(n^2+2n+2)(n^2+1)} \\
+&= \frac{-5(n^2+n-1)}{(n^2+2n+2)(n^2+1)} < 0, \quad \forall n \in \mathbb{N}.
+\end{multiequation}
+
+\item For $f(x) = \sin(x)$, write down its Maclaurin series.
+
+\textbf{Solution:}
+
+We know that $f \in C^\infty(\mathbb{R})$ and $f^{(n)}(x) = \sin(x + \frac{n\pi}{2})$, $\forall n \in \mathbb{N}$. Then $f^{(n)}(0) = \sin(\frac{n\pi}{2})$, and therefore, the Maclaurin series of $f$ is
+$$x - \frac{x^3}{3!} + \frac{x^5}{5!} - \frac{x^7}{7!} + \dots = \sum_{n=0}^\infty (-1)^n \frac{x^{2n+1}}{(2n+1)!}.$$
+
+\item Find the Taylor series expansion for $e^{x} + \cos(x)$.
+
+\textbf{Solution:}
+
+\fancymarginnote{Taylor series expansion gives $f(x) = f(a) + f'(a)(x-a) + \cfrac{f''(a)}{2!}(x-a)^2 + \cdots$}
+
+Using Taylor series with $a=0$, 
+
+
+$$
+e^{x} = 1 + x + \cfrac{x^2}{2!} + \cfrac{x^3}{3!} + \cfrac{x^4}{4!} + \cdots 
+$$
+
+and
+
+$$
+\cos(x) =  1- \cfrac{x^2}{2!} + \cfrac{x^4}{4!} - \cfrac{x^6}{6!} + \cdots
+$$
+
+
+Hence,
+
+\begin{multiequation}
+e^{x} + \cos(x) &  = 1 + x + \cfrac{x^2}{2!} + \cfrac{x^3}{3!} + \cfrac{x^4}{4!} + \cdots  + 1- \cfrac{x^2}{2!} + \cfrac{x^4}{4!} - \cfrac{x^6}{6!} + \cdots\\
+& = 1 + x +  \cfrac{x^3}{3!} + 2\cfrac{x^4}{4!} + \cfrac{x^5}{5!} + \cdots
+\end{multiequation}
+
+\end{enumerate}
+
+
+\chapter{Continuous Linear Time-Invariant Signals and System}
+
+
+\section{Additivity, Homogeneity, Linearity, and Time-Invariance}
+
+
+
+\begin{enumerate}
+
+\item  Define additivity for a system. 
+
+\textbf{Solution:} A system is additive if the response to the sum of any two arbitrary inputs is equal to the sum of the responses to the individual inputs. Mathematically, if $y_1(t) = T[x_1(t)]$ and $y_2(t) = T[x_2(t)]$, then $T[x_1(t) + x_2(t)] = y_1(t) + y_2(t)$.
+
+\item Define homogeneity (or scaling) for a system.
+
+\textbf{Solution:} A system is homogeneous if scaling the input by any arbitrary complex constant $\alpha$ results in the output being scaled by the same factor. Mathematically, $T[\alpha x(t)] = \alpha T[x(t)] = \alpha y(t)$.
+
+\item Define linearity by combining its two necessary properties.
+
+\textbf{Solution:} A system is linear if it satisfies both additivity and homogeneity. That is, for any two inputs $x_1(t)$, $x_2(t)$ and any two constants $\alpha$, $\beta$, the following holds: $T[\alpha x_1(t) + \beta x_2(t)] = \alpha T[x_1(t)] + \beta T[x_2(t)]$.
+
+\item \textbf{Question:} Define time-invariance for a system. 
+
+\textbf{Solution:} A system is time-invariant if a time shift in the input signal causes an identical time shift in the output signal. The characteristics of the system do not change with time. Mathematically, if $y(t) = T[x(t)]$, then $y(t - t_0) = T[x(t - t_0)]$ for any arbitrary $t_0$.
+
+\item \textbf{Question:} What is an LTI system?
+
+\textbf{Solution:} An LTI system is one that is both \textbf{L}inear and \textbf{T}ime-\textbf{I}nvariant. These properties are fundamental to signals and systems analysis as they allow the use of powerful tools like convolution and Fourier analysis.
+
+
+\item For a system defined by $y(t) = T[x(t)]$, determine if it is additive.
+
+\begin{enumerate}
+
+\item $y(t) = x(t) + 3$ 
+
+\textbf{Solution:} \textbf{Not additive.} 
+
+Check: $T[x_1(t) + x_2(t)] = (x_1(t) + x_2(t)) + 3$
+
+
+$T[x_1(t)] + T[x_2(t)] = (x_1(t) + 3) + (x_2(t) + 3) = x_1(t) + x_2(t) + 6$
+
+Since $3 \neq 6$, the property fails.
+
+\item $y(t) = t \cdot x(t)$
+
+\textbf{Solution:} \textbf{Additive.}
+
+Check: $T[x_1(t) + x_2(t)] = t \cdot (x_1(t) + x_2(t)) = t x_1(t) + t x_2(t)$
+
+$T[x_1(t)] + T[x_2(t)] = t x_1(t) + t x_2(t)$
+
+They are equal, so the system is additive.
+
+\item  $y(t) = x(2t)$
+
+\textbf{Solution:} \textbf{Additive.}
+
+Check: $T[x_1(t) + x_2(t)] = (x_1 + x_2)(2t) = x_1(2t) + x_2(2t)$
+
+$T[x_1(t)] + T[x_2(t)] = x_1(2t) + x_2(2t)$
+
+They are equal, so the system is additive.
+
+
+\item $y(t) = (x(t))^2$
+
+\textbf{Solution:} \textbf{Not additive.}
+
+Check: $T[x_1(t) + x_2(t)] = (x_1(t) + x_2(t))^2 = x_1^2(t) + 2x_1(t)x_2(t) + x_2^2(t)$
+
+$T[x_1(t)] + T[x_2(t)] = x_1^2(t) + x_2^2(t)$ 
+
+Since $2x_1(t)x_2(t) \neq 0$ in general, the property fails.
+
+
+\end{enumerate}
+
+
+\item For the same systems (or new ones), determine if they are homogeneous.
+
+\begin{enumerate}
+
+\item $y(t) = x(t) + 3$
+
+\textbf{Solution:} \textbf{Not homogeneous.}
+
+Check: $T[\alpha x(t)] = \alpha x(t) + 3$ 
+
+$\alpha T[x(t)] = \alpha (x(t) + 3) = \alpha x(t) + 3\alpha$ 
+
+Since $3 \neq 3\alpha$ for $\alpha \neq 1$, the property fails.
+
+
+\item  $y(t) = t \cdot x(t)$
+
+\textbf{Solution:} \textbf{Homogeneous.}
+
+Check: $T[\alpha x(t)] = t \cdot (\alpha x(t)) = \alpha (t x(t))$
+
+$\alpha T[x(t)] = \alpha (t x(t))$
+
+They are equal, so the system is homogeneous.
+
+\item  $y(t) = t \cdot x(t)$
+
+\textbf{Solution:} \textbf{Homogeneous.}
+
+Check: $T[\alpha x(t)] = t \cdot (\alpha x(t)) = \alpha (t x(t))$
+
+$\alpha T[x(t)] = \alpha (t x(t))$
+
+They are equal, so the system is homogeneous.
+
+\item $y(t) = \mathfrak{Re}\{x(t)\}$ (takes the real part of a potentially complex input) 
+
+\textbf{Solution:} \textbf{Homogeneous for real $\alpha$ only. Not homogeneous for general complex $\alpha$.} 
+
+Check for a complex constant $\alpha = j$: $T[j x(t)] = \mathfrak{Re}\{j x(t)\} = \mathfrak{Re}\{j (a(t)+jb(t))\} = \mathfrak{Re}\{-b(t) + j a(t)\} = -b(t)$
+
+$j T[x(t)] = j \cdot \mathfrak{Re}\{x(t)\} = j \cdot a(t)$
+
+Since $-b(t) \neq j a(t)$, the property fails for complex scalars.
+
+\item $y(t) = \sin(x(t))$ 
+
+\textbf{Solution:} \textbf{Not homogeneous.}
+
+Check: $T[\alpha x(t)] = \sin(\alpha x(t))$
+
+$\alpha T[x(t)] = \alpha \sin(x(t))$ 
+
+$\sin(\alpha x(t)) \neq \alpha \sin(x(t))$ in general (e.g., try $\alpha=2$, $x(t)=\pi/2$).
+
+\end{enumerate}
+
+\item Determine if the following systems are linear. Check both additivity and homogeneity (or use the superposition combo check).
+
+\begin{enumerate}
+
+\item $y(t) = x(t) \cdot \cos(2\pi t)$ (Modulator System) \\
+\textbf{Solution:} \textbf{Linear.} 
+
+Check superposition: $T[\alpha x_1(t) + \beta x_2(t)] = (\alpha x_1(t) + \beta x_2(t)) \cdot \cos(2\pi t) = \alpha x_1(t)\cos(2\pi t) + \beta x_2(t)\cos(2\pi t)$ 
+
+$\alpha T[x_1(t)] + \beta T[x_2(t)] = \alpha (x_1(t)\cos(2\pi t)) + \beta (x_2(t)\cos(2\pi t))$
+
+They are equal. The system is linear. \textit{(Note: It is linear but time-varying.}
+
+\end{enumerate}
+
+
+\item Determine if the following systems are time-invariant.
+
+\begin{enumerate}
+
+\item $y(t) = \sin(x(t))$ 
+
+\textbf{Solution:} \textbf{Time-Invariant.} 
+
+Check: Let $y(t) = \sin(x(t))$. 
+
+For a shifted input $x_d(t) = x(t - t_0)$, the output is $T[x_d(t)] = \sin(x_d(t)) = \sin(x(t - t_0))$. 
+
+The shifted output is $y(t - t_0) = \sin(x(t - t_0))$.
+
+They are equal, so the system is time-invariant.
+
+\item  $y(t) = t \cdot x(t)$  \\
+
+\textbf{Solution:} \textbf{Time-Variant.} 
+
+Check: For input $x_d(t) = x(t - t_0)$, the output is $T[x_d(t)] = t \cdot x_d(t) = t \cdot x(t - t_0)$.
+
+The shifted output is $y(t - t_0) = (t - t_0) \cdot x(t - t_0)$.
+
+Since $t \cdot x(t - t_0) \neq (t - t_0) \cdot x(t - t_0)$, the system is time-varying.
+
+\item  $y(t) = x(t) \cdot \cos(2\pi t)$ 
+
+\textbf{Solution:} \textbf{Time-Variant.}
+
+Check: For input $x_d(t) = x(t - t_0)$, the output is $T[x_d(t)] = x_d(t) \cdot \cos(2\pi t) = x(t - t_0) \cdot \cos(2\pi t)$.
+
+The shifted output is $y(t - t_0) = x(t - t_0) \cdot \cos(2\pi (t - t_0))$.
+
+
+Since $\cos(2\pi t) \neq \cos(2\pi (t - t_0))$ for all $t_0$ not an integer, the system is time-varying.
+
+
+\item $y(t) = x(0)$ (System output is the input's value at t=0) 
+
+\textbf{Solution:} \textbf{Time-Variant.} 
+
+Check: For input $x_d(t) = x(t - t_0)$, the output is $T[x_d(t)] = x_d(0) = x(-t_0)$. 
+
+The shifted output would be $y(t - t_0) = x(0)$ (a constant for all $t$). 
+
+Since $x(-t_0) \neq x(0)$ for an arbitrary input and $t_0 \neq 0$, the system is time-varying.
+
+\end{enumerate}
+
+\end{enumerate}
+
+\section{Causality and BIBO Stability}
+
+\begin{enumerate}
+
+
+\item Define causality for a continuous-time system.
+
+\textbf{Solution:} A system is causal if its output $ y(t) $ at any arbitrary time $ t = t_0 $ depends only on the input $ x(t) $ for $ t \leq t_0 $. In other words, the output does not depend on future values of the input. A system violating this is called non-causal.
+
+\item Define BIBO stability for a continuous-time system.
+
+\textbf{Solution:} A system is Bounded-Input Bounded-Output (BIBO) stable if every bounded input signal results in a bounded output signal. Mathematically, if there exists a finite number $ M_x $ such that $ |x(t)| \leq M_x < \infty $ for all $ t $, then there must exist a finite number $ M_y $ such that $ |y(t)| \leq M_y < \infty $ for all $ t $.
+
+\item State the necessary and sufficient condition for the BIBO stability of an LTI system based on its impulse response $ h(t) $. 
+
+\textbf{Solution:} An LTI system is BIBO stable if and only if its impulse response $ h(t) $ is absolutely integrable. That is:
+$$
+\int_{-\infty}^{\infty} |h(\tau)|  d\tau < \infty
+$$
+
+\item What is the relationship between causality and the impulse response $ h(t) $ of an LTI system?
+
+\textbf{Solution:} An LTI system is causal if and only if its impulse response $ h(t) = 0 $ for all $ t < 0 $. This ensures the output $ y(t) = \int_{-\infty}^{\infty} x(\tau)h(t-\tau)d\tau = \int_{-\infty}^{t} x(\tau)h(t-\tau)d\tau $ does not depend on future input values.
+
+\item  Can a system be BIBO stable but not causal? Explain with an example.
+
+\textbf{Solution:} Yes. Stability (bounded output) and causality (no future dependence) are independent properties. \\
+
+\textbf{Example:} The system $ y(t) = x(t + 1) $ (a perfect predictor) is non-causal because its output at time $ t $ depends on the input at future time $ t+1 $. However, if $ |x(t)| \leq M_x $, then $ |y(t)| = |x(t+1)| \leq M_x $, so the output is bounded. Thus, it is BIBO stable but non-causal.
+
+
+\item For each system described by the input-output relationship, determine if it is causal.
+
+\begin{enumerate}
+
+
+\item  $ y(t) = x(t + 2) $ 
+
+\textbf{Solution:} \textbf{Non-causal.} 
+
+The output at time $ t $ depends on the input at time $ t+2 $, which is in the future.
+
+\item $ y(t) = x(2t) $ 
+
+\textbf{Solution:} \textbf{Non-causal.} 
+
+For $ t > 0 $, $ 2t > t $. For example, at $ t=1 $, $ y(1) = x(2) $. The output at time 1 depends on a future input value at time 2.
+
+\item $ y(t) = \int_{t-5}^{t} x(\tau)  d\tau $
+
+\textbf{Solution:} \textbf{Causal.}
+
+The integral is computed from $ \tau = t-5 $ to $ \tau = t $. This uses only the past and present inputs, not future inputs.
+
+
+\item $ y(t) = \int_{t}^{t+5} x(\tau)  d\tau $ 
+
+\textbf{Solution:} \textbf{Non-causal.}
+
+The integral is computed from $ \tau = t $ to $ \tau = t+5 $. This uses future input values (from $ t $ to $ t+5 $).
+
+
+\item $ y(t) = \frac{1}{2} \{x(t) + x(-t)\} $ (A system creating an even signal)
+
+
+\textbf{Solution:} \textbf{Non-causal.}
+
+For any $ t > 0 $, $ x(-t) $ is a value from the past (e.g., at $ t=1 $, $ x(-1) $). However, for any $ t < 0 $, $ x(-t) $ is a value from the future (e.g., at $ t=-1 $, $ x(1) $). Since the future is used for $ t<0 $, the system is non-causal.
+
+\item \textbf{Question:} $ y(t) = \sum_{k=1}^{3} x(t - k) $ (A simple causal filter)
+
+\textbf{Solution:} \textbf{Causal.}
+
+The output is a sum of the input at the current time $ t $ and its past values at $ t-1, t-2, t-3 $.
+
+
+\end{enumerate}
+
+
+\item For each system, determine if it is BIBO stable. For LTI systems described by $ h(t) $, use the absolute integrability criterion. For other systems, apply the BIBO definition directly.
+
+\begin{enumerate}
+
+
+\item $ h(t) = e^{-3t} u(t) $
+
+\textbf{Solution:} \textbf{Stable.} 
+
+Check absolute integrability:
+
+\begin{multiequation}
+\int_{-\infty}^\infty |h(\tau) d\tau = \int_{0}^\infty | e^{-3\tau}d\tau = \int_{0}^\infty e^{-3\tau}d\tau = -\bigg[ -\frac{1}{3}e^{-3\tau} \bigg]_0^\infty = 0 - (-\frac{1}{3}) = \frac{1}{3} < \infty
+\end{multiequation}
+The integral is finite, so the system is BIBO stable.
+
+\item $ h(t) = e^{2t} u(t) $ \\
+\textbf{Solution:} \textbf{Unstable.} \\
+
+\begin{multiequation}
+\int_{-\infty}^{\infty} |h(\tau)|  d\tau = \int_{0}^{\infty} e^{2\tau}  d\tau = \left[ \frac{1}{2}e^{2\tau} \right]_{0}^{\infty} = \infty - \frac{1}{2} = \infty
+\end{multiequation}
+
+The integral diverges, so the system is unstable.
+
+\item $ h(t) = \delta(t) $ (Ideal identity system)
+
+\textbf{Solution:} \textbf{Stable.} 
+
+\begin{multiequation}
+\int_{-\infty}^{\infty} |\delta(\tau)|  d\tau = \int_{-\infty}^{\infty} \delta(\tau)  d\tau = 1 < \infty
+\end{multiequation}
+
+The integral is finite (by the sifting property), so the system is stable.
+
+\item  $ h(t) = \delta(t - 5) $
+
+\textbf{Solution:} \textbf{Stable.} 
+
+\begin{multiequation}
+\int_{-\infty}^{\infty} |\delta(\tau - 5)|  d\tau = \int_{-\infty}^{\infty} \delta(\tau - 5)  d\tau = 1 < \infty
+\end{multiequation}
+
+The system is stable.
+
+\item $ h(t) = u(t) $ (Integrator) 
+
+\textbf{Solution:} \textbf{Unstable.} 
+
+\begin{multiequation}
+\int_{-\infty}^{\infty} |u(\tau)|  d\tau = \int_{0}^{\infty} 1  d\tau = \infty
+\end{multiequation}
+
+The integral diverges. Physically, a constant bounded input $ x(t) = u(t) $ (which is bounded by 1) produces the output $ y(t) = \int_{-\infty}^{t} u(\tau)d\tau = \int_{0}^{t} d\tau = t $, which is unbounded as $ t \to \infty $.
+
+\item $ h(t) = e^{-2|t|} $ 
+
+\textbf{Solution:} \textbf{Stable.} 
+
+Check absolute integrability. Note the absolute value in the exponent makes the function even.
+\begin{multiequation}
+\int_{-\infty}^{\infty} |h(\tau)|  d\tau = \int_{-\infty}^{\infty} e^{-2|\tau|}  d\tau = 2 \int_{0}^{\infty} e^{-2\tau}  d\tau = 2 \cdot \left( \frac{1}{2} \right) = 1 < \infty
+\end{multiequation}
+The integral is finite, so the system is BIBO stable.
+
+\item $ h(t) = e^{-t} u(t) + e^{t} u(-t) $
+
+\textbf{Solution:} \textbf{Stable.} 
+
+Check absolute integrability. Break the integral into two parts.
+\begin{multiequation}
+\int_{-\infty}^{\infty} |h(\tau)|  d\tau & = \int_{-\infty}^{0} |e^{\tau}|  d\tau + \int_{0}^{\infty} |e^{-\tau}|  d\tau = \int_{-\infty}^{0} e^{\tau}  d\tau + \int_{0}^{\infty} e^{-\tau}  d\tau \\
+& = \left[ e^{\tau} \right]_{-\infty}^{0} + \left[ -e^{-\tau} \right]_{0}^{\infty} = (1 - 0) + (0 - (-1)) = 1 + 1 = 2 < \infty
+\end{multiequation}
+
+The integral is finite. The system is stable. \textit{(This question is a good check for understanding. The term $ e^{t}u(-t) $ is a left-sided signal that decays as t goes to negative infinity, making it absolutely integrable).}
+
+
+\end{enumerate}
+
+
+\end{enumerate}
+
+
+\section{Convolutional Integral}
+
+\begin{enumerate}
+\item Convolve the signals $x(t) = u(t) - u(t-2)$ and $h(t) = u(t) - u(t-3)$.
+
+\textbf{Solution:}
+
+The convolution $y(t) = x(t)*h(t) = \int_{-\infty}^{\infty} x(\tau)h(t-\tau)d\tau$ can be considered to be multiplication of $x(t)$ and shifted version of $h(t)$.
+
+It essentially involves flipping one signal, slidinggi it past the other, and integrating the overlap at each point. Given that both signals are causal (start at t=0), the convolution will start at t=0 and extend to t=5 (since the sum of the durations is 2 + 3 = 5).
+
+In this case, $x(\tau) \neq 0 $ when $0<\tau<2$ and $h(t-\tau) \neq 0$ when $0<t-\tau<3$ or $ t - 3 < \tau < t$.
+
+Therefore, the product $x(\tau) h(t - \tau)$ is $1$ where both conditions are met: $\max(0,t-3)<\tau<\min(2,t)$.
+
+Now, we need to consider different ranges of t where the expressions for the limits change:
+
+\begin{enumerate}
+\item $t < 0$:
+
+
+$\max(0,t - 3)=0$, $\min(2,t)=t$.
+
+But $t < 0$, so $\min(2,t)=t$, and the upper limit is $t$, which is less than the lower limit $0$. Hence, there is no overlap, and $y(t) = 0$.
+
+\item $0 \leq t < 2$:
+
+$\max(0,t-3)=0$ (since $t-3 < 0$). $\min(2,t)=t$. 
+
+Hence, integration from 0 to t:
+
+\begin{multiequation}
+y(t) = \int_0^t 1 d\tau = t
+\end{multiequation}
+
+
+\item $2\leq t<3$:
+
+$\max(0,t-3)=0$ (since $t-3 < 0$).  $\min(2,t)=2$.
+
+So, integration from 0 to 2:
+
+\begin{multiequation}
+y(t) = \int_0^2 1 d\tau = 2
+\end{multiequation}
+
+
+\item $3\leq t<5$:
+
+$\max(0,t-3)=t-3$ (since $t-3 < 0$).  $\min(2,t)=2$.
+
+
+So, integration from $t-3$ to $2$:
+
+\begin{multiequation}
+y(t) = \int_{t-3}^2 1 d\tau = 2 - (t-3) = 5 -t
+\end{multiequation}
+
+\item $t\geq 5$:
+
+$\max(0,t-3)=t-3$, $\min(2,t)=2$.
+
+But $t-3\geq 2$ (since $t\geq 5$), so lower limit $\geq$ upper limit.
+
+Hence, there is no overlap, and the integration $y(t) = 0$. 
+
+Taking together all, we can write:
+
+\begin{multiequation}
+y(t) & = \begin{cases}
+0, \quad t < 0\\
+t, \quad 0 \leq t < 2\\
+2, \quad 2\leq t<3\\
+5 -t, \quad 3\leq t<5\\
+0, \quad t \geq 5
+\end{cases}
+\end{multiequation}
+
+
+\end{enumerate}
+
+
+\item Compute the convolution of two signals:
+
+$x(t) = \delta(t) + \delta(t-1)$  and  $h(t) = e^{-t} u(t)$.
+
+\textbf{Hint: } Use Sifting property of $\delta$ function.
+
+
+\textbf{Solution:}
+
+
+Convolution is linear, so
+\begin{multiequation}
+y(t) &= x(t)*h(t) \\
+     &= \bigl[\delta(t)+\delta(t-1)\bigr]*h(t) \\
+     &= \delta(t)*h(t) + \delta(t-1)*h(t).
+\end{multiequation}
+Sifting property of $\delta$:
+\begin{multiequation}
+\delta(t-a)*h(t)=h(t-a).
+\end{multiequation}
+Therefore
+\begin{multiequation}
+y(t)=h(t)+h(t-1).
+\end{multiequation}
+
+Knowing $h(t)=e^{-t}u(t)$ is causal and starts at $t=0$.
+
+$h(t-1)=e^{-(t-1)}u(t-1)$ is the same shape shifted right by 1 s.
+
+Hence
+\begin{multiequation}
+y(t)=e^{-t}u(t) + e^{-(t-1)}u(t-1).
+\end{multiequation}
+Piece-wise expression:
+\begin{itemize}
+\item $t<0$: both unit steps are 0. Thus, $y(t)=0$
+\item $0\le t<1$: only the first term is active. Thus,$y(t)=e^{-t}$
+\item $t\ge1$: both terms are active. Thus, $y(t)=e^{-t}+e^{-(t-1)}=e^{-t}(1+e)$.
+\end{itemize}
+So the result can be written compactly as
+\begin{multiequation}
+y(t)=e^{-t}u(t) + e^{-(t-1)}u(t-1),
+\end{multiequation}
+or piece-wise
+\begin{multiequation}
+y(t)=
+\begin{cases}
+0, & t<0\\[2mm]
+e^{-t}, & 0\le t<1\\[2mm]
+e^{-t}(1+e), & t\ge 1.
+\end{cases}
+\end{multiequation}
+
+The waveform is a decaying exponential that starts at $1$ when $t=0$, drops to $e^{-1}$ at $t=1$, and from that instant onward continues to decay with the same time constant but with the amplitude increased by the factor $(1+e)$.
+
+
+\end{enumerate}
+
+\section{Fundamental Time Period of Sum of Signals}
+
+The fundamental time period of a sum of periodic signals is the least common multiple (LCM) of the individual periods, provided the signals are commensurable (i.e., the ratio of any two periods is rational). If the signals are not commensurable, the sum is not periodic.
+
+The process for computing the fundamental time period is:
+\begin{enumerate}
+\item Find the fundamental period of each individual signal.
+\item Check if the periods are commensurable by verifying that the ratio of any two periods is rational.
+\item If commensurable, find the LCM of the periods by:
+\begin{itemize}
+\item Expressing each period as a fraction.
+\item Finding the LCM of the numerators and the GCD of the denominators.
+\item The LCM of the periods is LCM(numerators) / GCD(denominators).
+\end{itemize}
+\item If not commensurable, the sum is not periodic.
+\end{enumerate}
+
+
+
+\subsection{Solved Problems}
+
+\begin{enumerate}
+
+
+
+
+\item Find the fundamental period of $x(t) = \cos(4\pi t) + \sin(6\pi t)$.
+
+
+\textbf{Solution:}
+\begin{itemize}
+    \item $ T_1 = 2\pi / (4\pi) = 0.5 $ s (for $\cos(4\pi t)$)
+    \item $ T_2 = 2\pi / (6\pi) = 1/3 $ s (for $\sin(6\pi t)$)
+    \item $ T_1 / T_2 = 0.5 / (1/3) = 1.5 = 3/2 $, which is rational, hence, commensurable.
+    \item LCM of $ T_1 $ and $ T_2 $: $ T_1 = 1/2 $, $ T_2 = 1/3 $; LCM of numerators $(1,1) = 1$, GCD of denominators $(2,3) = 1$ which gives  $ T = 1/1 = 1 $ s
+    \item \textbf{Thus, fundamental period: 1 second}
+\end{itemize}
+  
+  
+  \item Find the fundamental period of $x(t) = \cos(2\pi t) + \sin(4\pi t) + \cos(6\pi t) $.
+  
+\textbf{Solution:}
+\begin{itemize}
+    \item $T_1 = 1 $ s (for $\cos(2\pi t)$)
+    \item $T_2 = 0.5 $ s (for $\sin(4\pi t)$)
+    \item $T_3 = 1/3 $ s (for $\cos(6\pi t)$)
+    \item All ratios are rational, hence, commensurable.
+    \item LCM of $T_1 $, $T_2 $, $T_3 $: since $T_1 = 1 $, $T $ must be integer. Check $T = 1 $ s: multiple of $T_2 $ and $T_3 $
+    \item \textbf{Thus, fundamental period: 1 second}
+\end{itemize}
+
+
+\item  Find the fundamental period of $x(t) = \sin(4\pi t) + \cos(6\pi t) + \sin(8\pi t) $. 
+
+\textbf{Solution:}
+\begin{itemize}
+    \item $T_1 = 0.5 $ s (for $\sin(4\pi t)$)
+    \item $T_2 = 1/3 $ s (for $\cos(6\pi t)$)
+    \item $T_3 = 0.25 $ s (for $\sin(8\pi t)$)
+    \item All ratios are rational and hence commensurable.
+    \item Express as fractions: $T_1 = 1/2 $, $T_2 = 1/3 $, $T_3 = 1/4 $
+    \item LCM of numerators $(1,1,1) = 1$, GCD of denominators $(2,3,4) = 1$ which gives $T = 1/1 = 1 $ s
+    \item \textbf{Thus, fundamental period: 1 second}
+\end{itemize}
+
+\item 
+
+Find the fundamental period of $x(t) = \cos(2\pi t) + \sin(3\pi t) + \cos(5\pi t) + \sin(7\pi t) $. \\
+\textbf{Solution:}
+\begin{itemize}
+    \item $T_1 = 1 $ s (for $\cos(2\pi t)$)
+    \item $T_2 = 2/3 $ s (for $\sin(3\pi t)$)
+    \item $T_3 = 2/5 $ s (for $\cos(5\pi t)$)
+    \item $T_4 = 2/7 $ s (for $\sin(7\pi t)$)
+    \item All ratios are rational and hence commensurable.
+    \item Express with denominator 105: $T_1 = 105/105 $, $T_2 = 70/105 $, $T_3 = 42/105 $, $T_4 = 30/105 $
+    \item LCM of numerators $(105,70,42,30) = 210$, GCD of denominators $(105,105,105,105) = 105$ which gives $T = 210/105 = 2 $ s
+    \item \textbf{Fundamental period: 2 seconds}
+\end{itemize}
+
+\end{enumerate}
+
+\chapter{Fourier Series and its Applications in Electrical \& Computer Engineering}
+
+We describe the theoretical foundation of Fourier series analysis and its practical applications in various electrical and computer engineering domains. Fourier series decomposition enables the analysis of periodic signals in terms of their harmonic components, providing important analysis for power systems, motor drives, power electronics, and communication systems.
+
+\section{Introduction to Fourier Series}
+
+\subsection{Mathematical Foundation}
+
+The Fourier series represents a periodic function $f(t)$ with period $T$ as an infinite sum of sinusoidal components:
+
+\begin{equation}
+f(t) = \frac{a_0}{2} + \sum_{n=1}^{\infty} \left[a_n \cos(n\Omega_0 t) + b_n \sin(n\Omega_0 t)\right]
+\end{equation}
+
+where $\Omega_0 = \frac{2\pi}{T}$ is the fundamental angular frequency, and the coefficients are given by:
+
+\begin{align}
+a_0 &= \frac{2}{T} \int_{0}^{T} f(t) \, dt \\
+a_n &= \frac{2}{T} \int_{0}^{T} f(t) \cos(n\Omega_0 t) \, dt \\
+b_n &= \frac{2}{T} \int_{0}^{T} f(t) \sin(n\Omega_0 t) \, dt
+\end{align}
+
+\subsection{Alternative Forms}
+
+The Fourier series can also be expressed in amplitude-phase form:
+
+\begin{equation}
+f(t) = \frac{A_0}{2} + \sum_{n=1}^{\infty} A_n \cos(n\Omega_0 t + \phi_n)
+\end{equation}
+
+where:
+\begin{align}
+A_n &= \sqrt{a_n^2 + b_n^2} \\
+\phi_n &= -\arctan\left(\frac{b_n}{a_n}\right)
+\end{align}
+
+Average power distributed across harmonics is
+\begin{equation}
+P_{\text{tot}}=\Bigl(\frac{a_{0}}{2}\Bigr)^{2}+\frac{1}{2}\sum_{n=1}^{\infty}(a_{n}^{2}+b_{n}^{2}).
+\end{equation}
+
+
+\section{Power Grid Voltage Analysis}
+
+\subsection{Theory of Power System Harmonics}
+
+In power systems, ideal voltage waveforms are purely sinusoidal at the fundamental frequency (50/60 Hz). However, non-linear loads introduce harmonic distortion:
+
+\begin{equation}
+v(t) = V_1 \sin(\Omega t) + \sum_{h=2}^{\infty} V_h \sin(h\Omega t + \phi_h)
+\end{equation}
+
+where $h$ represents the harmonic order.
+
+\subsection{Total Harmonic Distortion (THD)}
+
+THD quantifies the distortion in a waveform and is defined as:
+
+\begin{equation}
+\text{THD} = \frac{\sqrt{\sum_{h=2}^{\infty} V_h^2}}{V_1} \times 100\%
+\end{equation}
+
+IEEE Standard 519-2014 specifies THD limits for different voltage levels:
+\begin{itemize}
+\item \textbf{Low Voltage ($<1$ kV):} THD $<$ 5\%
+\item \textbf{Medium Voltage (1-69 kV):} THD $<$ 8\%
+\item \textbf{High Voltage ($>$69 kV):} THD $<$ 12.5\%
+\end{itemize}
+
+
+\subsection{Measurement Model}
+The measured bus voltage for 60 Hz can be
+\begin{equation}
+v(t)=\sqrt{2}\,V_{1}\sin(2\pi\cdot\SI{60}{Hz}\cdot t)+\sum_{h\in\mathcal{H}}\sqrt{2}\,V_{h}\sin(2\pi h\cdot\SI{60}{Hz}\cdot t)+n(t),
+\end{equation}
+where $\mathcal{H}=\{3,5,7,11,13\}$ and $n(t)$ is Gaussian instrumentation noise.  
+Numerical integration (trapezoidal rule) on the recorded data yields $\{a_{n},b_{n}\}$, hence
+\begin{equation}
+V_{h}=\frac{1}{\sqrt{2}}\sqrt{a_{h}^{2}+b_{h}^{2}}.
+\end{equation}
+
+You will notice $\sqrt{2}$ as a multiplying factor compared to the previous equation. In power systems, voltages are always quoted in RMS (root-mean-square) values of sinusoidal voltages, e.g., "120 V" means 120 V RMS, not peak.
+
+So when we write:
+
+$$
+v(t) = \sqrt{2}V_{rms}sin(2\pi f t)
+$$
+
+we are reconstructing the time-domain signal from its RMS value.  The $\sqrt{2}$  scales the RMS back up to the peak of the sine wave.
+
+We also notice only odd harmonics, because even harmonics cancel out in symmetric waveforms. Most power electronics (rectifiers, inverters, fluorescent ballasts, etc.) produce odd harmonics because the positive and negative half-cycles are identical. IEEE 519 and IEC 61000 standards only require reporting up to the 40th harmonic, and even harmonics are usually negligible even when we consider imperfections in the real world. Because, even if the load or the system is unbalanced or asymmetric, even harmonics can appear, although faint ones. But for typical grid-tied equipment, odd harmonics dominate.
+
+\subsection{Harmonic Sources and Effects}
+
+Common harmonic sources include:
+\begin{itemize}
+\item Variable frequency drives
+\item Switch-mode power supplies
+\item Rectifiers and inverters
+\item Arc furnaces
+\end{itemize}
+
+Harmonic effects include:
+\begin{itemize}
+\item Increased heating in transformers and motors
+\item Neutral conductor overloading
+\item Capacitor bank failures
+\item Communication interference
+\end{itemize}
+
+\section{Motor-Drive Current Analysis}
+\subsection{PWM Spectrum and Harmonic Clusters}
+An inverter-fed induction motor is supplied by a two-level voltage-source inverter.  
+The phase-current spectrum consists of:
+
+\begin{enumerate}
+  \item \textbf{Fundamental component} at the mechanical (electrical) frequency $f_{m}$:
+        \begin{equation}
+          i_{1}(t)=I_{1}\sin(2\pi f_{m}t+\phi_{1}).
+        \end{equation}
+
+  \item \textbf{Side-band harmonics} generated by the PWM switching function
+        \begin{equation}
+          f_{h}=m\,f_{\text{sw}}\pm n\,f_{m},\qquad m=1,2,\dots;\;n=1,2,\dots
+        \end{equation}
+        with $f_{\text{sw}}=\SI{2}{kHz}$ and $f_{m}=\SI{30}{Hz}$ in the reference dataset.
+
+        Denoting the harmonic impedance at $f_{h}$ by $Z_{h}$ (magnitude), the current harmonic becomes
+        \begin{equation}
+          I_{h}=\frac{m_{h}V_{\text{DC}}}{Z_{h}},
+        \end{equation}
+        so the total motor current is
+        \begin{equation}
+          i(t)=I_{1}\sin(2\pi f_{m}t)+\sum_{h\neq 1}\frac{m_{h}V_{\text{DC}}}{Z_{h}}
+          \sin\!\bigl(2\pi f_{h}t+\phi_{h}\bigr).
+        \end{equation}
+\end{enumerate}
+
+\subsection{Additional Copper Losses and Heating Factor}
+Skin and proximity effects raise the AC resistance:
+\begin{equation}
+R_{h}=R_{\text{DC}}\cdot k_{h}\qquad(k_{h}\ge 1).
+\end{equation}
+The total copper loss is therefore
+\begin{equation}
+P_{\text{cu}}=\sum_{h=1}^{\infty}I_{h}^{2}R_{h}
+=R_{\text{DC}}\sum_{h=1}^{\infty}k_{h}I_{h}^{2}.
+\end{equation}
+Normalising to the loss produced by the fundamental alone gives the \emph{heating factor}
+\begin{equation}
+K_{h}\triangleq\frac{P_{\text{cu}}}{I_{1}^{2}R_{\text{DC}}}
+=1+\frac{\sum_{h=2}^{\infty}k_{h}I_{h}^{2}}{I_{1}^{2}}
+\approx 1+\frac{\sum_{h=2}^{\infty}I_{h}^{2}}{I_{1}^{2}}
+\quad\text{(if }k_{h}\approx 1\text{)}.
+\end{equation}
+Using the Fourier-series coefficients obtained from measured data,
+\begin{equation}
+I_{h}=\sqrt{\tfrac{1}{2}(a_{h}^{2}+b_{h}^{2})},
+\end{equation}
+the heating factor is evaluated as
+\begin{equation}
+K_{h}=1+\frac{\sum_{h=2}^{H}(a_{h}^{2}+b_{h}^{2})}{a_{1}^{2}+b_{1}^{2}}.
+\end{equation}
+
+\section{Rectifier Ripple Analysis}
+
+\subsection{Rectifier Operation Theory}
+
+Full-wave rectifiers convert AC to pulsating DC:
+
+\begin{equation}
+v_{\text{rect}}(t) = |V_m \sin(\Omega t)|
+\end{equation}
+
+The Fourier series of a full-wave rectified sine wave is:
+
+\begin{equation}
+v_{\text{rect}}(t) = \frac{2V_m}{\pi} - \frac{4V_m}{\pi} \sum_{n=1}^{\infty} \frac{\cos(2n\Omega t)}{4n^2 - 1}
+\end{equation}
+
+\subsection{Ripple Factor}
+
+Ripple factor quantifies the AC component in DC output:
+
+\begin{equation}
+r = \frac{V_{\text{rms, AC}}}{V_{\text{DC}}} = \frac{\sqrt{V_{\text{rms}}^2 - V_{\text{DC}}^2}}{V_{\text{DC}}}
+\end{equation}
+
+For design purposes, the dominant ripple frequency is $2f_{\text{line}}$ for full-wave rectifiers.
+
+
+
+\section{Digital Communication Signal Analysis}
+
+\subsection{Manchester Encoding Theory}
+
+Manchester encoding ensures clock recovery and DC balance:
+
+\begin{itemize}
+\item \textbf{Logic 0:} High-to-low transition at bit center
+\item \textbf{Logic 1:} Low-to-high transition at bit center
+\end{itemize}
+
+A bit stream $b_{k}\in\{0,1\}$ is mapped to
+\begin{equation}
+s(t)=\sum_{k}p(t-kT_{b}),\qquad
+p(t)=\begin{cases}
++1,& 0\le t<T_{b}/2,\;b_{k}=0,\\
+-1,& T_{b}/2\le t<T_{b},\;b_{k}=0,\\
+-1,& 0\le t<T_{b}/2,\;b_{k}=1,\\
++1,& T_{b}/2\le t<T_{b},\;b_{b}=1.
+\end{cases}
+\end{equation}
+
+
+
+The signal can be expressed as:
+
+\begin{equation}
+s(t) = \sum_{k=-\infty}^{\infty} p(t - kT_b) \cdot (-1)^{b_k}
+\end{equation}
+
+where $p(t)$ is the pulse shape and $b_k$ is the bit value.
+
+\subsection{Spectral Characteristics}
+
+Manchester encoding has no DC component and its power spectral density is:
+
+\begin{equation}
+S(f) = T_b \left(\frac{\sin(\pi f T_b/2)}{\pi f T_b/2}\right)^2 \sin^2(\pi f T_b/2)
+\end{equation}
+
+The null-to-null bandwidth is $2R_b$, where $R_b$ is the bit rate.
+
+\subsection{Bandwidth Efficiency}
+
+The 99\% power bandwidth is commonly used for system design:
+
+\begin{equation}
+B_{99} = \min \left\{ B : \int_{-B}^{B} S(f) df \geq 0.99 \int_{-\infty}^{\infty} S(f) df \right\}
+\end{equation}
+
+
+When considering Fourier series expansion, let cumulative power
+\begin{equation}
+P_{99}(B)=0.99\,P_{\text{tot}}.
+\end{equation}
+The smallest harmonic index $N$ satisfying
+\begin{equation}
+\sum_{n=0}^{N}\tfrac{1}{2}(a_{n}^{2}+b_{n}^{2})\ge 0.99\,P_{\text{tot}}
+\end{equation}
+gives bandwidth $B=N/T$.
+
+\section{Numerical Implementation}
+
+\subsection{Discrete Fourier Coefficients}
+
+For sampled data, the integrals become summations:
+
+\begin{align}
+a_0 &= \frac{2}{N} \sum_{k=0}^{N-1} f[k] \\
+a_n &= \frac{2}{N} \sum_{k=0}^{N-1} f[k] \cos\left(\frac{2\pi n k}{N}\right) \\
+b_n &= \frac{2}{N} \sum_{k=0}^{N-1} f[k] \sin\left(\frac{2\pi n k}{N}\right)
+\end{align}
+
+\subsection{Trapezoidal Rule Integration}
+
+The MATLAB implementation uses trapezoidal integration for improved accuracy:
+
+\begin{equation}
+\int_{a}^{b} f(x) dx \approx \frac{b-a}{2N} \left[f(x_0) + 2\sum_{k=1}^{N-1} f(x_k) + f(x_N)\right]
+\end{equation}
+
+
+
+Fourier series analysis provides a way to understan and design electrical systems across multiple domains. The four examples presented demonstrate how harmonic analysis enables:
+
+\begin{itemize}
+\item \textbf{Power Quality:} THD calculation and standards compliance
+\item \textbf{Motor Drives:} Efficiency optimization and thermal management
+\item \textbf{Power Supplies:} Ripple analysis and filter design
+\item \textbf{Communications:} Bandwidth analysis and system optimization
+\end{itemize}
+
+The numerical implementation using direct coefficient calculation from measured data provides a practical approach applicable to real-world engineering problems.
+
+\subsection{Numerical Implementation Notes}
+\begin{itemize}
+\item Integration uses the trapezoidal rule on uniformly sampled data; anti-aliasing requires $f_{s}\ge 10f_{\max}$.
+\item Spectral leakage is minimized by ensuring an integer number of periods in the analysis window.
+\item THD, RF, and $K_{h}$ are computed directly from $\{a_{n},b_{n}\}$ 
+
+\end{itemize}
+
+
+\end{document}
+
+
