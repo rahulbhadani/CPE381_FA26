@@ -1,0 +1,344 @@
+\documentclass[11pt]{report}
+
+% Fonts and encoding
+\usepackage[T1]{fontenc}
+\usepackage[utf8]{inputenc}
+\usepackage{mathpazo}          % Palatino text and math
+\usepackage{microtype}
+
+% Colours
+\usepackage[table,dvipsnames,svgnames,x11names]{xcolor}
+\definecolor{winemaroon}{HTML}{872341}
+\definecolor{coral}{HTML}{E17564}
+
+% Full page width geometry (US Letter)
+\usepackage[letterpaper,top=1in,bottom=1in,left=1.1in,right=1.1in,headheight=15pt]{geometry}
+
+% Tables, lists, graphics
+\usepackage{array}
+\usepackage{booktabs}
+\usepackage{tabularx}
+\usepackage{enumitem}
+\usepackage{graphicx}
+\usepackage{ragged2e}
+
+\setlength{\parindent}{0pt}
+
+\setlength{\parskip}{10pt}
+
+\setlist[itemize]{leftmargin=1.6em,itemsep=3pt,topsep=4pt}
+\renewcommand{\labelitemi}{\textcolor{coral}{\textbullet}}
+\renewcommand{\labelitemii}{\textcolor{winemaroon}{\small\textbullet}}
+
+% Section and chapter styling
+\usepackage{titlesec}
+\usepackage{titletoc}
+
+% Numbered chapter: large coral number, maroon title, double rule
+\titleformat{\chapter}[display]
+  {\normalfont}
+  {\raggedleft\fontsize{66}{66}\selectfont\color{coral}\thechapter}
+  {6pt}
+  {\raggedright\Huge\bfseries\color{winemaroon}}
+  [\vspace{6pt}{\color{winemaroon}\titlerule[1.5pt]}\vspace{2pt}{\color{coral}\titlerule[3pt]}]
+
+% Unnumbered chapter (used by table of contents heading)
+\titleformat{name=\chapter,numberless}[display]
+  {\normalfont}
+  {}
+  {0pt}
+  {\raggedright\Huge\bfseries\color{winemaroon}}
+  [\vspace{6pt}{\color{winemaroon}\titlerule[1.5pt]}\vspace{2pt}{\color{coral}\titlerule[3pt]}]
+
+\titlespacing*{\chapter}{0pt}{6pt}{26pt}
+
+% Sections
+\titleformat{\section}
+  {\normalfont\Large\bfseries\color{winemaroon}}
+  {\thesection}{0.7em}{}
+\titleformat{name=\section,numberless}
+  {\normalfont\Large\bfseries\color{winemaroon}}
+  {}{0pt}{}
+\titlespacing*{\section}{0pt}{14pt}{6pt}
+
+% Subsections
+\titleformat{\subsection}
+  {\normalfont\large\bfseries\color{coral!82!black}}
+  {\thesubsection}{0.6em}{}
+
+% Headers and footers
+\usepackage{fancyhdr}
+\pagestyle{fancy}
+\fancyhf{}
+\fancyhead[L]{\small\itshape\color{winemaroon}\nouppercase{\leftmark}}
+\fancyhead[R]{\small\color{winemaroon}CPE 381 Syllabus}
+\fancyfoot[C]{\small\color{winemaroon}\thepage}
+\renewcommand{\headrulewidth}{1.2pt}
+\renewcommand{\footrulewidth}{0pt}
+\renewcommand{\headrule}{{\color{coral}\hrule height \headrulewidth}}
+
+\fancypagestyle{plain}{%
+  \fancyhf{}%
+  \fancyfoot[C]{\small\color{winemaroon}\thepage}%
+  \renewcommand{\headrulewidth}{0pt}%
+}
+
+% Hyperlinks
+\usepackage{hyperref}
+\hypersetup{
+    colorlinks=true,
+    linkcolor=winemaroon,
+    urlcolor=winemaroon,
+    citecolor=winemaroon,
+    filecolor=winemaroon,
+    pdftitle={CPE 381: Signals and Systems for Computer Engineers},
+    pdfauthor={Rahul Bhadani}
+}
+\usepackage{xurl}   % allow long URLs to break across lines
+
+% Table of contents entry styling
+\titlecontents{chapter}[0pt]
+  {\addvspace{7pt}\bfseries}
+  {\textcolor{coral}{\thecontentslabel}\hspace{0.8em}\textcolor{winemaroon}{}}
+  {\textcolor{winemaroon}{}}
+  {\hfill\textcolor{winemaroon}{\thecontentspage}}
+  [\vspace{1pt}]
+
+\titlecontents{section}[2.4em]
+  {\addvspace{2pt}}
+  {\thecontentslabel\hspace{0.6em}}
+  {}
+  {\titlerule*[0.7pc]{.}\thecontentspage}
+
+\begin{document}
+
+% ---------- Title page ----------
+\begin{titlepage}
+\centering
+\vspace*{0.5in}
+
+{\color{coral}\rule{\textwidth}{4pt}}\\[3pt]
+{\color{winemaroon}\rule{\textwidth}{1.5pt}}\\[40pt]
+
+{\fontsize{22}{26}\selectfont\itshape\color{winemaroon}Rahul Bhadani}\\[54pt]
+
+{\fontsize{42}{46}\selectfont\bfseries\color{winemaroon}CPE 381}\\[16pt]
+{\fontsize{22}{28}\selectfont Signals and Systems for Computer Engineers}\\[34pt]
+
+{\Huge\scshape\color{coral}Syllabus}\\[26pt]
+
+{\color{winemaroon}\rule{0.5\textwidth}{1.2pt}}\\[30pt]
+
+{\Large\scshape\color{winemaroon}Fall 2026}\\[12pt]
+{\large Mon / Wed, 11:20 AM to 12:40 PM}\\[7pt]
+{\large Location: ENG 240}\\[20pt]
+
+{\normalsize\url{https://uah.instructure.com/courses/90368}}
+
+\vfill
+
+{\color{winemaroon}\rule{\textwidth}{1.5pt}}\\[3pt]
+{\color{coral}\rule{\textwidth}{4pt}}\\[16pt]
+{\itshape Department of Electrical \& Computer Engineering\\
+The University of Alabama in Huntsville\par}
+\vspace{6pt}
+\end{titlepage}
+
+% ---------- Front matter ----------
+\section*{Subject to Change}
+Every effort is made to follow the guidelines in the syllabus; however, if needed, the syllabus will be amended. You will be notified if changes are made.
+
+\section*{Technology Statement}
+This course will use UAH's learning management system, Canvas, as well as other technology tools. Students will be expected to have access to a computer with internet capabilities in order to fully participate in this course.
+
+\section*{Copyright Rahul Bhadani, 2026}
+I reserve all federal and state copyrights in my lectures and course materials. You are authorized to take notes in class for your personal use and no other purpose. You are not authorized to record my lectures to make any commercial use of them or to provide them to anyone else other than students currently enrolled in this course, without my prior written permission. In addition to legal sanctions for violations of copyright law, students found in violation of these prohibitions may be subject to University disciplinary action under the Code of Student Conduct.
+
+\section*{Important Dates}
+\href{https://www.uah.edu/registrar/calendars}{Review the semester dates and deadlines and the academic calendar}: \url{https://www.uah.edu/registrar/calendars}.
+
+\vspace{14pt}
+
+{\renewcommand{\arraystretch}{1.4}%
+\begin{tabular}{|>{\raggedright\arraybackslash}p{3.2cm}|>{\raggedright\arraybackslash}p{5.2cm}|>{\raggedright\arraybackslash}p{4.6cm}|}
+\hline
+\rowcolor{winemaroon}\multicolumn{3}{|c|}{\textbf{\textcolor{white}{Exam Dates}}}\\\hline
+\rowcolor{coral!22}\textbf{Exam} & \textbf{Date} & \textbf{Time}\\\hline
+Mid-Term 1 & Monday, September 28, 2026 & 11:20 AM to 12:40 PM\\\hline
+Mid-Term 2 & Monday, November 09, 2026 & 11:20 AM to 12:40 PM\\\hline
+Final Exam & Friday, December 11, 2026 & 11:30 AM to 2:00 PM\\\hline
+\end{tabular}}
+
+% ---------- Table of contents ----------
+\clearpage
+\tableofcontents
+
+% ---------- Body ----------
+\chapter{Textbooks}
+\begin{tabular}{>{\raggedright\arraybackslash}p{0.20\textwidth}>{\raggedright\arraybackslash}p{0.74\textwidth}}
+
+\textbf{\textcolor{winemaroon}{Reference(s)}}
+    & \underline{Required:} \emph{\textcolor{winemaroon}{Signals and Systems using Matlab}}. Luis F. Chaparro. \par{\textcolor{coral!80!black}{Elsevier, 3rd Edition, 2019}}. \par ISBN: 978-0-12-814204-2, eBook ISBN: 9780128142059\par\vspace{7pt}
+
+    \underline{Suggested Reading:} \textit{Linear Systems and Signals}, B. P. Lathi, Roger Green, Oxford University Press, 2017, 3rd Edition\par\vspace{7pt}
+
+    \underline{Other Notable Textbooks:}
+        \begin{itemize}
+            \item Schaum's Outline of Signals and Systems
+            \item \textit{Signals and Systems}. Haykin, Simon, and Barry Van Veen. John Wiley \& Sons, 2007.
+            \item Asadi, Farzin. Signals and Systems with MATLAB and Simulink. Springer, Dec 2023. ISBN: 9783031456220, 303145622X
+        \end{itemize}
+
+\end{tabular}
+
+\chapter{Course Description}
+The course introduces fundamental concepts of signals and systems. We introduce system organization and methods for signal and system analysis. The course offers hands-on experience with signal analysis using Matlab and C programming, which is very useful for skill development in careers in Controls, Robotics, and Computer Engineering in general.
+
+\section*{Objectives}
+\begin{itemize}
+    \item L01: Identify, formulate, and solve complex engineering problems by applying principles of engineering, science, and mathematics
+    \item L02: Use Laplace transform and Z-transform to analyze systems, and Fourier transform to analyze signals
+    \item L03: Implement custom signal processing procedures in MATLAB and C/C++
+\end{itemize}
+
+\section*{Academic Topics}
+The set of topics and areas covered by this course, and upon which you may be tested, includes:
+\begin{itemize}
+    \item \textbf{\textcolor{winemaroon}{\underline{Introduction, Mathematical Preliminaries}:}} Trigonometry, Complex Numbers, Calculus
+
+    \item \textbf{\textcolor{coral!85!black}{\underline{Continuous and Discrete Signals:}}} Types of Signals and Their Usage, Sketching Signals, Transformation of Signals
+
+    \item \textbf{\textcolor{winemaroon}{\underline{Linear-time Invariant (LTI) Systems:}}} Continuous Time Systems. System concept. LTI continuous-time systems, Linearity. Time invariance. Convolution integral. Causality. BIBO stability
+
+    \item \textbf{\textcolor{coral!85!black}{\underline{Laplace Transform:}}} The Laplace Transform. Two-sided Laplace. One-sided Laplace, Analysis of LTI systems, Inverse Laplace Transform, The Transfer Function of LTI Systems, Analysis of LTI Systems Represented by Differential Equations, Inverse of Two-Sided Laplace Transforms
+
+    \item \textbf{\textcolor{winemaroon}{\underline{Fourier Series for Frequency Analysis:}}} The Fourier Series, Eigenfunctions, Complex exponential Fourier Series, Time and Frequency Shifting, Response of LTI Systems to Periodic Signals
+
+    \item \textbf{\textcolor{coral!85!black}{\underline{Fourier Transform:}}} Fourier Transform from Laplace Transform, Inverse Proportionality of Time and Frequency, Applications of Fourier transform, Spectral Representation, Convolution and Filtering
+
+    \item \textbf{\textcolor{winemaroon}{\underline{Sampling Theory:}}} Uniform sampling, Nyquist-Shannon sampling theorem, Quantization and Coding
+
+    \item \textbf{\textcolor{coral!85!black}{\underline{Discrete-Time Signals and Systems:}}} Basic Discrete-time Signals, Recursive and Non-recursive Discrete-time Systems, Convolution Sum
+
+    \item \textbf{\textcolor{winemaroon}{\underline{Z-transform:}}} Z-Transform and Discrete Fourier Transform, Two-sided Z-transform, Inverse Z transforms, Fourier Analysis of Discrete-time Signals and Systems, Discrete-time Fourier transform, Discrete Fourier transform
+
+    \item \textbf{\textcolor{coral!85!black}{\underline{Discrete Fourier Analysis:}}} The Discrete-Time Fourier Transform, Fourier Series of Discrete-time Periodic Signals, Complex and Exponential Discrete Fourier Series, Discrete Fourier Transform
+\end{itemize}
+
+\section*{Summary of your responsibilities as an active participant in this course}
+Commit to taking part in every single class meeting. Commit to being engaged by switching off your mobile devices. Commit to learning the material in advance by performing the reading assignments without distraction. Commit to starting your homework and quizzes early by reading the homework descriptions before you start working on the code. Commit to helping everyone in the class by actively engaging in all the in-class exercises, even if you don't understand the topic, and even if you understand the topic better than everyone (including the instructors).
+
+Commit to being an engaged member of this class, and your reward will be a deeper understanding of your own abilities and a deeper appreciation of how you can succeed in your career through committing to doing better.
+
+\chapter{Submission and Grading Policy}
+
+\section*{Grading}
+As your instructor, I do not \textit{give} grades: I assign the grade that you earn, based on your individual performance. You will not be competing with other students for your grade for all assignments in this course: your grade is solely based on the points you earn, in the below-weighted categories:
+
+\vspace{5pt}
+
+{\renewcommand{\arraystretch}{1.2}%
+\begin{tabular}{|>{\raggedright\arraybackslash}p{7cm}|>{\centering\arraybackslash}p{3cm}|}
+\hline
+\rowcolor{winemaroon}\multicolumn{2}{|c|}{\textbf{\textcolor{white}{Grade Weighting}}}\\\hline
+\rowcolor{coral!22}\textbf{Category} & \textbf{Weight}\\\hline
+Attendance & 1\%\\\hline
+Handwritten Course Notes & 5\%\\\hline
+Quizzes & 5\%\\\hline
+Classwork & 14\%\\\hline
+Homework & 15\%\\\hline
+Mid-term Exam 1 & 15\%\\\hline
+Mid-term Exam 2 & 15\%\\\hline
+Final Exam & 30\%\\\hline
+\textbf{Total} & \textbf{100\%}\\\hline
+\end{tabular}}
+
+\vspace{10pt}
+
+{\renewcommand{\arraystretch}{1.25}%
+\begin{tabular}{|>{\raggedright\arraybackslash}p{4.2cm}|>{\centering\arraybackslash}p{3cm}|}
+\hline
+\rowcolor{winemaroon}\multicolumn{2}{|c|}{\textbf{\textcolor{white}{Grading Scale}}}\\\hline
+\rowcolor{coral!22}\textbf{Percentage} & \textbf{Grade}\\\hline
+90\% to 100\% & A\\\hline
+75\% to 89\% & B\\\hline
+60\% to 74\% & C\\\hline
+45\% to 59\% & D\\\hline
+0\% to 44\% & F\\\hline
+\end{tabular}}
+
+\vspace{5pt}
+
+The percent score will be rounded to the nearest integer before assigning the final grade.
+
+\section*{Homework Submission Policy}
+You must submit all of the code, data, and PDF files in a zip folder (i.e., not rar, 7z, etc) on Canvas. If the submission requires only a single file, it doesn't need to be zipped. Assignments must be submitted as a zip file with code and a PDF document with your solutions! You must include a single PDF file (not doc, docx, or multiple JPEG figures of the pages from your homework) with the solutions. Failure to follow any/all of these policies leaves the instructor the option not to grade the homework based on a failure to follow the homework submission policy. Your zip and pdf should be named as follows \texttt{CPE381-LastFirst-HW-XX.zip} and \texttt{CPE381-LastFirst-HW-X.pdf}, where Last is your last name as it appears on Canvas, First is your first name as it appears on Canvas, and X is the homework number. Example: \texttt{CPE381-TaylorSam-HW-01.zip}
+
+\section{Missed Assignments / Make-Ups / Extra Credit}
+Homework assignments that will be submitted after the due date will receive a penalty of 10\% for each day, for a maximum of 5 days, after which no submission will be entertained. Solution to homework will be posted note before 5 days after the due date. Students are expected to start working on their assignments as soon as it is posted. There will not be extra credit assignments; however, individual homework may have bonus questions constituting not more than 10\% of the individual assignment.
+
+\chapter{Attendance Policy}
+All students are expected to arrive on time and attend lectures. If there are extenuating circumstances, please email the instructor. If you are absent, you are responsible for learning the material covered in class. If you are absent when an assignment is due, you must have submitted the assignment before the due date to receive credit. Please contact your instructor if you have specific questions or concerns.
+
+\section*{Attendance, Participation, and Quizzes}
+Attendance is mandatory. You are permitted a maximum of \textbf{two unexcused absences}. A daily roll will be taken. Pop quizzes or class handouts may be distributed without notice; these \emph{cannot} be made up. All in-class exercises serve as objective measures of participation and attendance; these activities \emph{cannot} be made up. Anticipated absences for valid reasons (e.g., conference travel) \emph{must be cleared in advance} to avoid a participation penalty.
+
+\chapter{Academic Integrity}
+Students are expected to do all work by themselves, except when specified by the instructor in writing. All exceptions will be plainly marked in the requirements for that exercise or project. Any violations of this policy will be dealt with to the full extent permitted by the University of Alabama in Huntsville, and \emph{may result in suspension or expulsion from the university, in addition to a failing grade}. Please familiarize yourself with the Code of Academic Integrity if you have any questions.
+
+\section*{Class Disruptions}
+Please silence your cell phone, and do not use it during the class. The use of a phone in class will adversely affect your attendance grade\footnote{Uh, um, unless you are programming it as part of an in-class exercise. But please, no talking or texting. Unless, uh, that is part of the class exercise too.}.
+
+\chapter{Communication \& Instructional Continuity}
+In this class, the official mode of communication is through email or Canvas. During the week, students can expect a response from the instructor within a 24-48 hour timeframe. Messages sent during the weekend may not be answered until the following week. On occasion, response times may vary due to domestic and international travel for conferences or meetings.
+
+In the event a regularly scheduled course is unexpectedly interrupted, course requirements, due dates, and grading policy are subject to change when necessitated by revised course delivery, semester calendar, or other instances. Information about changes in this course can be obtained from the Canvas course webpage or by contacting me. If, under these circumstances, I do not respond within 72 hours, please contact my department at \href{mailto:ece@uah.edu}{ece@uah.edu}.
+
+If our regular scheduled class meeting is interrupted or the campus should unexpectedly close, students should immediately log onto Canvas and read any course announcements. Students are encouraged to continue the readings and other assignments as outlined on the course syllabus until otherwise advised. Any student who does not study could fall behind in the course.
+
+\chapter{Course Conduct}
+All students must treat others with civility and respect and conduct themselves in a way that does not unreasonably interfere with the opportunity of other students to learn. All communication between student/instructor and between student/student should be respectful and professional.
+
+\chapter{Academic Honesty}
+Your written assignments and examinations must be your own work. Academic misconduct will not be tolerated. Examples of unacceptable behavior include plagiarism/use of prior work/use of Chegg and other online problem-solving sites/etc. To ensure that you are aware of what academic misconduct is considered, you should carefully review the definitions and examples provided in \href{https://www.uah.edu/dos/office-of-student-ethics-education/handbook}{Student Handbook}. If you have questions in this regard, please contact me without delay.
+
+\chapter{Course Artificial Intelligence (AI) Policy}
+You are allowed to use a generative model-based AI tool for your assignment. However, you must submit an accompanying reflection report on how you used the AI tool, what the query was for the tool, and how it improved your understanding of the subject. You must also add your thoughts on how you would tackle the assignment if there were no such tool available. Failure to provide a reflection report for every single assignment where an AI tool was used may result in a penalty, a zero grade and subsequent actions will be taken in line with the plagiarism policy.
+
+
+\chapter{Safety Instructions}
+The frequent operation of a computer, such as will be required in this course, may have long-term disabling effects if you do not appropriately consider your ergonomic interaction with the computer, desk, chair, and light sources. Poorly designed workstations/practices can lead to musculoskeletal disorders and may result in chronic pain, inability to sleep, or expensive surgery decades from today. The habits you form in your university years may well impact your future performance, and it is highly recommended that you consult with the office of risk management and compliance \href{https://www.uah.edu/rmi}{https://www.uah.edu/rmi}.
+
+\chapter{Disability Statement}
+The University of Alabama in Huntsville will make reasonable accommodations for students with documented disabilities. If you need support or assistance due to a disability, you may be eligible for academic accommodations. \href{https://kea.accessiblelearning.com/s-UAH/ApplicationStudent.aspx}{Apply here} (\url{https://kea.accessiblelearning.com/s-UAH/ApplicationStudent.aspx}) or contact \href{https://www.uah.edu/dss}{Disability Support Services} (\url{https://www.uah.edu/dss}) (256.824.1997 or Wilson Hall 128) as soon as possible to coordinate accommodations.
+
+\chapter{Mental Health Statement}
+As a student, you may experience a range of issues that can cause barriers to learning, such as strained relationships, increased anxiety, alcohol/drug problems, feeling down, difficulty concentrating, and/or lack of motivation. These mental health concerns or stressful events may lead to diminished academic performance or reduce a student's ability to participate in daily activities.
+
+The University of Alabama in Huntsville offers services to assist you with addressing these and other concerns you may be experiencing. If you or someone you know are suffering from any of the aforementioned conditions, you can learn more about the broad range of confidential mental health services available on campus via the \href{https://www.uah.edu/dos}{Department of Student Affairs} located under the Health and Wellness or the \href{https://www.uah.edu/counseling-center}{UAH Counseling Center} by calling 256.824.6203.
+
+24-hour emergency help is also available through the 24/7 National Suicide Prevention Hotline at 1.800.273.TALK or at \href{https://suicidepreventionlifeline.org/}{suicidepreventionlifeline.org} or a student who lives on-campus can reach out to the UAH PD dispatch to contact an on-call counselor by calling 256.824.6596. If you find yourself in a mental health emergency, call 6911 on campus or 911 off-campus.
+
+\chapter{Pertinent UAH Policies \& Guidelines}
+\begin{itemize}
+    \item UAH Student Handbook: \url{https://www.uah.edu/dos/office-of-student-ethics-education/handbook}
+    \item Academic Misconduct Policy: \url{https://www.uah.edu/policies/02-01-67-academic-misconduct-policy}
+    \item Complete listing of UAH Policies and Procedures: \url{https://www.uah.edu/policies}
+    \item AI and the Classroom: \url{https://www.uah.edu/etl/training-resources/faculty-and-staff?view=article&id=17868:ai-and-the-classroom&catid=919:enhanced-teaching-and-learning}
+\end{itemize}
+
+\chapter{Campus Resources}
+The University of Alabama in Huntsville offers a range of student services to enhance the experience of students.
+\begin{itemize}
+    \item \href{https://www.uah.edu/ssc}{Academic Support Services}, ASAP, Student Success Center, Tutoring, PASS, Academic Support Centers by College: \url{https://www.uah.edu/ssc}
+    \item \href{https://www.uah.edu/ualert}{UAlert}, sign up for UAH's emergency notification system to receive urgent messages from the university: \url{https://www.uah.edu/ualert}
+    \item \href{https://www.uah.edu/registrar}{Registrar's Office}, Academic Calendars, Course Registration, Student Records, Commencement: \url{https://www.uah.edu/registrar}
+    \item \href{https://www.uah.edu/library}{M. Louis Salmon Library}, Printed and Online Resources, Reference Services, Group Study Rooms, AV Resources, Printing: \url{https://www.uah.edu/library}
+    \item \href{https://community.canvaslms.com/t5/Student-Guide/How-do-I-get-help-with-Canvas-as-a-student/ta-p/498}{Canvas Support}, call 844-219-5802 to report an issue with Canvas: \url{https://community.canvaslms.com/t5/Student-Guide/How-do-I-get-help-with-Canvas-as-a-student/ta-p/498}
+    \item \href{https://www.uah.edu/oit/contact}{OIT Help Desk}, for technical support, contact the OIT Help Desk (\href{mailto:helpdesk@uah.edu}{helpdesk@uah.edu}; 256.824.3333): \url{https://www.uah.edu/oit/contact}
+\end{itemize}
+
+\vspace{8pt}
+\noindent NOTE: When submitting a support ticket, include your name, your class, the element/assignment being affected, and a detailed description of the issue. Providing a screenshot is often very helpful in diagnosing an issue.
+
+\end{document}
