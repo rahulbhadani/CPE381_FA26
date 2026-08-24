@@ -1,0 +1,137 @@
+\usepackage[most]{tcolorbox}
+\usepackage{xcolor}
+\usepackage{mdframed}
+\usepackage{multimedia}
+
+% ===== New Theme Colors: "Midnight Academic" =====
+\definecolor{primaryNavy}{HTML}{1A2744}
+\definecolor{accentTeal}{HTML}{00897B}
+\definecolor{accentAmber}{HTML}{E65100}
+\definecolor{lightNavy}{HTML}{EDF0F5}
+\definecolor{lightTeal}{HTML}{E0F2F1}
+\definecolor{lightAmber}{HTML}{FFF3E0}
+\definecolor{midNavy}{HTML}{2C3E6B}
+
+% ===== All original color definitions preserved for .tex compatibility =====
+
+\definecolor{InvisibleRed}{rgb}{0.96, 0.91, 0.82}
+\definecolor{InvisibleGreen}{rgb}{0.90, 0.90, 0.89}
+\definecolor{InvisibleBlue}{rgb}{0.95, 0.85, 0.92}
+
+\definecolor{MediumRed}{rgb}{0.99, 0.145, 0.145}
+\definecolor{MediumGreen}{rgb}{0.17, 0.67, 0.26}
+\definecolor{MediumBlue}{rgb}{0.35, 0.315, 0.55}
+
+\definecolor{DarkBlue}{rgb}{0.105, 0.15, 0.30} 
+\definecolor{DarkRed}{rgb}{0.60, 0.105, 0.15} 
+
+\definecolor{roseRed}{HTML}{e20047}
+\definecolor{coolGray}{HTML}{474747} % Neutral gray to contrast roseRed
+\definecolor{peachPink}{HTML}{ff6f61}
+\definecolor{softLilac}{HTML}{c1a7d1}
+\definecolor{deepBlue}{HTML}{003366}
+\definecolor{pineGreen}{HTML}{00593B}
+
+\definecolor{cherryRed}{HTML}{d50032}  % Cherry Red
+\definecolor{burgundy}{HTML}{800020}  % Burgundy
+\definecolor{salmonPink}{HTML}{ff91a4}  % Salmon Pink
+\definecolor{crimson}{HTML}{dc143c}  % Crimson
+\definecolor{darkRose}{HTML}{c71585}  % Dark Rose
+\definecolor{carmine}{HTML}{960018}  % Carmine
+\definecolor{indianRed}{HTML}{cd5c5c}  % Indian Red
+\definecolor{raspberryRed}{HTML}{e30b5c}  % Raspberry Red
+\definecolor{fuchsia}{HTML}{ff00ff}  % Fuchsia
+\definecolor{rosewood}{HTML}{65000b}  % Rosewood
+\definecolor{tomatoRed}{HTML}{ff6347}  % Tomato Red
+
+\definecolor{cashyellow}{HTML}{F9BA2E}
+\definecolor{cashblue}{HTML}{1AA6EA}
+\definecolor{cpeyellow}{HTML}{fff3b0}
+\definecolor{cpepink}{HTML}{ffccd5}
+\definecolor{cpegreen}{HTML}{d0f4de}
+\definecolor{cpelime}{HTML}{eeef20}
+\definecolor{lavenderblue}{HTML}{bde0fe}
+
+\definecolor{lightRed}{HTML}{FF9999} % Light Red
+\definecolor{pastelRed}{HTML}{FF6961} % Pastel Red
+\definecolor{softCoral}{HTML}{FF7F7F} % Soft Coral
+\definecolor{blushPink}{HTML}{FFC0CB} % Blush Pink
+\definecolor{lightRose}{HTML}{FFB6C1} % Light Rose
+\definecolor{dustyPink}{HTML}{DCAE96} % Dusty Pink
+\definecolor{powderPink}{HTML}{F8E4E3} % Powder Pink
+\definecolor{rosyPink}{HTML}{E75480} % Rosy Pink
+
+\definecolor{cherryBlossom}{HTML}{FFB7C5} % Cherry Blossom Pink
+\definecolor{bubblegumPink}{HTML}{FFC1CC} % Bubblegum Pink
+\definecolor{carnationPink}{HTML}{FFA6C9} % Carnation Pink
+\definecolor{lightCrimson}{HTML}{F56991} % Light Crimson
+\definecolor{pinkLace}{HTML}{FFDDF4} % Pink Lace
+\definecolor{pastelPink}{HTML}{FFD1DC} % Pastel Pink
+\definecolor{mistyRose}{HTML}{FFE4E1} % Misty Rose
+\definecolor{roseGold}{HTML}{B76E79} % Rose Gold
+\definecolor{apricotBlush}{HTML}{FDD5B1} % Apricot Blush
+\definecolor{pearlPink}{HTML}{FDE0DC} % Pearl Pink
+\definecolor{strawberryCream}{HTML}{FFC4CE} % Strawberry Cream
+\definecolor{watermelonPink}{HTML}{FE6F5E} % Watermelon Pink
+\definecolor{flamingoPink}{HTML}{FC8EAC} % Flamingo Pink
+\definecolor{softPink}{HTML}{F4C2C2} % Soft Pink
+\definecolor{sunsetBlush}{HTML}{FFDAB3} % Sunset Blush
+\definecolor{babyPink}{HTML}{FADADD} % Baby Pink
+\definecolor{petalPink}{HTML}{FFB3C6} % Petal Pink
+\definecolor{cottonCandy}{HTML}{FFBCD9} % Cotton Candy
+\definecolor{peachFuzz}{HTML}{FFBE98}
+
+\definecolor{LightThistle}{HTML}{FFDEFF}
+\definecolor{Illuminate}{HTML}{F5DF4D}
+\definecolor{LivingCoral}{HTML}{FA7268}
+
+\definecolor{androidBlue}{HTML}{8AB4F8}
+\definecolor{androidBlueLight}{HTML}{E8F0FE}
+\definecolor{androidGreen}{HTML}{81C995}
+\definecolor{androidGreenLight}{HTML}{E6F4EA}
+
+% Red variants - based on Android's "error" and warning colors
+\definecolor{androidRed}{HTML}{F28B82}
+\definecolor{androidRedLight}{HTML}{FADAD7}
+
+% Yellow variants - based on Android's accent/warning colors
+\definecolor{androidYellow}{HTML}{FDD663}
+\definecolor{androidYellowLight}{HTML}{FEF7E0}
+
+% Purple variants - based on Android's system UI accents
+\definecolor{androidPurple}{HTML}{D7AEFB}
+\definecolor{androidPurpleLight}{HTML}{F4EAFC}
+
+% Orange variants - based on Android's notification colors
+\definecolor{androidOrange}{HTML}{FCAD70}
+\definecolor{androidOrangeLight}{HTML}{FEEADC}
+
+% Teal variants - based on Android's Material You palette
+\definecolor{androidTeal}{HTML}{78D9EC}
+\definecolor{androidTealLight}{HTML}{E6F6F9}
+
+% Gray variants - based on Android's neutral colors
+\definecolor{androidGray}{HTML}{DADCE0}
+\definecolor{androidGrayLight}{HTML}{F1F3F4}
+
+
+% ===== Apply new color scheme =====
+% set color - changed from roseRed to primaryNavy
+\usecolortheme[named=primaryNavy]{structure}
+
+\setbeamercolor{titlelike}{parent=structure}
+\setbeamercolor{block title}{bg=midNavy,fg=white}
+\setbeamercolor{block body}{bg=lightNavy}
+\setbeamercolor{block title example}{bg=accentTeal,fg=white}
+\setbeamercolor{block body example}{bg=lightTeal}
+\setbeamercolor{block title alerted}{bg=accentAmber,fg=white}
+\setbeamercolor{block body alerted}{bg=lightAmber}
+
+\usepackage{hyperref}
+
+\hypersetup{ 
+     colorlinks=true,
+     filecolor=accentTeal, 
+     citecolor=accentTeal,       
+     urlcolor=midNavy, 
+     }
