@@ -1,0 +1,316 @@
+\usepackage{tikz}
+\usepackage{pgfplots}
+
+\newcommand{\coursenumber}{CPE381}
+\newcommand{\courseyear}{2026\xspace}
+\newcommand{\coursedatetime}{Mon/Wed 11:20 AM -- 12:40 PM\xspace}
+\newcommand{\coursetitle}{Signals and Systems for Computer Engineers\xspace}
+\newcommand{\courseterm}{Fall, \courseyear}
+\newcommand{\courseurl}{\url{http://uah.instructure.com/}}
+\newcommand{\courselocation}{ENG 207\xspace}
+\newcommand{\courselocationurl}{TBD}
+
+\newcommand{\instructorname}{Rahul Bhadani\xspace}
+\newcommand{\instructoremail}{\href{mailto:rahul.bhadani@uah.edu}{rahul.bhadani@uah.edu}}
+\newcommand{\instructoroffice}{ENG 217-H\xspace}
+\newcommand{\instructorofficehours}{Mon/Tue/Wed 2:00 PM - 4:00 PM}
+
+
+% \everymath{\color{Navy}}
+\everydisplay{\color{roseRed}}
+\usepackage{sectsty}
+\sectionfont{\color{dustyblue}}  % sets colour of sections
+\subsectionfont{\color{terracotta}}  % sets colour of sections
+\subsubsectionfont{\color{lavender}}  % sets colour of sections
+
+
+\def\m@th{\normalcolor\mathsurround\z@}
+
+\setlength{\parskip}{\baselineskip}%
+\setlength{\parindent}{0pt}%
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+
+\def\e{{\textrm{e}}}
+\def\d{\textrm{d}}
+\def\T{{\textsf{T}}}
+\def\sech{{\textrm{sech}}}
+\def\x{{\mathbf x}}
+
+\def\++{{$^{++}$}}
+
+\def\Abb{{\mathbb A}}
+\def\Bbb{{\mathbb B}}
+\def\Cbb{{\mathbb C}}
+\def\Dbb{{\mathbb D}}
+\def\Ebb{{\mathbb E}}
+\def\Fbb{{\mathbb F}}
+\def\Gbb{{\mathbb G}}
+\def\Hbb{{\mathbb H}}
+\def\Ibb{{\mathbb I}}
+\def\Jbb{{\mathbb J}}
+\def\Kbb{{\mathbb K}}
+\def\Lbb{{\mathbb L}}
+\def\Mbb{{\mathbb M}}
+\def\Nbb{{\mathbb N}}
+\def\Obb{{\mathbb O}}
+\def\Pbb{{\mathbb P}}
+\def\Qbb{{\mathbb Q}}
+\def\Rbb{{\mathbb R}}
+\def\Sbb{{\mathbb S}}
+\def\Tbb{{\mathbb T}}
+\def\Ubb{{\mathbb U}}
+\def\Vbb{{\mathbb V}}
+\def\Wbb{{\mathbb W}}
+\def\Xbb{{\mathbb X}}
+\def\Ybb{{\mathbb Y}}
+\def\Zbb{{\mathbb Z}}
+
+
+
+\def\Acal{{\mathcal A}}
+\def\Bcal{{\mathcal B}}
+\def\Ccal{{\mathcal C}}
+\def\Dcal{{\mathcal D}}
+\def\Ecal{{\mathcal E}}
+\def\Fcal{{\mathcal F}}
+\def\Gcal{{\mathcal G}}
+\def\Hcal{{\mathcal H}}
+\def\Ical{{\mathcal I}}
+\def\Jcal{{\mathcal J}}
+\def\Kcal{{\mathcal K}}
+\def\Lcal{{\mathcal L}}
+\def\Mcal{{\mathcal M}}
+\def\Ncal{{\mathcal N}}
+\def\Ocal{{\mathcal O}}
+\def\Pcal{{\mathcal P}}
+\def\Qcal{{\mathcal Q}}
+\def\Rcal{{\mathcal R}}
+\def\Scal{{\mathcal S}}
+\def\Tcal{{\mathcal T}}
+\def\Ucal{{\mathcal U}}
+\def\Vcal{{\mathcal V}}
+\def\Wcal{{\mathcal W}}
+\def\Xcal{{\mathcal X}}
+\def\Ycal{{\mathcal Y}}
+\def\Zcal{{\mathcal Z}}
+
+\def\abf{{\mathbf a}}
+\def\bbf{{\mathbf b}}
+\def\cbf{{\mathbf c}}
+\def\dbf{{\mathbf d}}
+\def\ebf{{\mathbf e}}
+\def\fbf{{\mathbf f}}
+\def\gbf{{\mathbf g}}
+\def\hbf{{\mathbf h}}
+\def\ibf{{\mathbf i}}
+\def\jbf{{\mathbf j}}
+\def\kbf{{\mathbf k}}
+\def\lbf{{\mathbf l}}
+\def\mbf{{\mathbf m}}
+\def\nbf{{\mathbf n}}
+\def\obf{{\mathbf o}}
+\def\pbf{{\mathbf p}}
+\def\qbf{{\mathbf q}}
+\def\rbf{{\mathbf r}}
+\def\sbf{{\mathbf s}}
+\def\tbf{{\mathbf t}}
+\def\ubf{{\mathbf u}}
+\def\vbf{{\mathbf v}}
+\def\wbf{{\mathbf w}}
+\def\xbf{{\mathbf x}}
+\def\ybf{{\mathbf y}}
+\def\zbf{{\mathbf z}}
+
+\def\Abf{{\mathbf A}}
+\def\Bbf{{\mathbf B}}
+\def\Cbf{{\mathbf C}}
+\def\Dbf{{\mathbf D}}
+\def\Ebf{{\mathbf E}}
+\def\Fbf{{\mathbf F}}
+\def\Gbf{{\mathbf G}}
+\def\Hbf{{\mathbf H}}
+\def\Ibf{{\mathbf I}}
+\def\Jbf{{\mathbf J}}
+\def\Kbf{{\mathbf K}}
+\def\Lbf{{\mathbf L}}
+\def\Mbf{{\mathbf M}}
+\def\Nbf{{\mathbf N}}
+\def\Obf{{\mathbf O}}
+\def\Pbf{{\mathbf P}}
+\def\Qbf{{\mathbf Q}}
+\def\Rbf{{\mathbf R}}
+\def\Sbf{{\mathbf S}}
+\def\Tbf{{\mathbf T}}
+\def\Ubf{{\mathbf U}}
+\def\Vbf{{\mathbf V}}
+\def\Wbf{{\mathbf W}}
+\def\Xbf{{\mathbf X}}
+\def\Ybf{{\mathbf Y}}
+\def\Zbf{{\mathbf Z}}
+
+\def\phat{{\hat p}}
+
+\usepackage{amsmath}
+\DeclareMathOperator*{\argmax}{arg\,max}
+\DeclareMathOperator*{\argmin}{arg\,min}
+
+\def\xbar{{\overline x}}
+\def\ybar{{\overline y}}
+\def\e{{\textrm{e}}}
+\def\d{\textrm{d}}
+\def\T{{\textsf{T}}}
+\def\sech{{\textrm{sech}}}
+\def\x{{\mathbf x}}
+
+\def\++{{$^{++}$}}
+
+\def\Abb{{\mathbb A}}
+\def\Bbb{{\mathbb B}}
+\def\Cbb{{\mathbb C}}
+\def\Dbb{{\mathbb D}}
+\def\Ebb{{\mathbb E}}
+\def\Fbb{{\mathbb F}}
+\def\Gbb{{\mathbb G}}
+\def\Hbb{{\mathbb H}}
+\def\Ibb{{\mathbb I}}
+\def\Jbb{{\mathbb J}}
+\def\Kbb{{\mathbb K}}
+\def\Lbb{{\mathbb L}}
+\def\Mbb{{\mathbb M}}
+\def\Nbb{{\mathbb N}}
+\def\Obb{{\mathbb O}}
+\def\Pbb{{\mathbb P}}
+\def\Qbb{{\mathbb Q}}
+\def\Rbb{{\mathbb R}}
+\def\Sbb{{\mathbb S}}
+\def\Tbb{{\mathbb T}}
+\def\Ubb{{\mathbb U}}
+\def\Vbb{{\mathbb V}}
+\def\Wbb{{\mathbb W}}
+\def\Xbb{{\mathbb X}}
+\def\Ybb{{\mathbb Y}}
+\def\Zbb{{\mathbb Z}}
+
+
+
+\def\Acal{{\mathcal A}}
+\def\Bcal{{\mathcal B}}
+\def\Ccal{{\mathcal C}}
+\def\Dcal{{\mathcal D}}
+\def\Ecal{{\mathcal E}}
+\def\Fcal{{\mathcal F}}
+\def\Gcal{{\mathcal G}}
+\def\Hcal{{\mathcal H}}
+\def\Ical{{\mathcal I}}
+\def\Jcal{{\mathcal J}}
+\def\Kcal{{\mathcal K}}
+\def\Lcal{{\mathcal L}}
+\def\Mcal{{\mathcal M}}
+\def\Ncal{{\mathcal N}}
+\def\Ocal{{\mathcal O}}
+\def\Pcal{{\mathcal P}}
+\def\Qcal{{\mathcal Q}}
+\def\Rcal{{\mathcal R}}
+\def\Scal{{\mathcal S}}
+\def\Tcal{{\mathcal T}}
+\def\Ucal{{\mathcal U}}
+\def\Vcal{{\mathcal V}}
+\def\Wcal{{\mathcal W}}
+\def\Xcal{{\mathcal X}}
+\def\Ycal{{\mathcal Y}}
+\def\Zcal{{\mathcal Z}}
+
+\def\abf{{\mathbf a}}
+\def\bbf{{\mathbf b}}
+\def\cbf{{\mathbf c}}
+\def\dbf{{\mathbf d}}
+\def\ebf{{\mathbf e}}
+\def\fbf{{\mathbf f}}
+\def\gbf{{\mathbf g}}
+\def\hbf{{\mathbf h}}
+\def\ibf{{\mathbf i}}
+\def\jbf{{\mathbf j}}
+\def\kbf{{\mathbf k}}
+\def\lbf{{\mathbf l}}
+\def\mbf{{\mathbf m}}
+\def\nbf{{\mathbf n}}
+\def\obf{{\mathbf o}}
+\def\pbf{{\mathbf p}}
+\def\qbf{{\mathbf q}}
+\def\rbf{{\mathbf r}}
+\def\sbf{{\mathbf s}}
+\def\tbf{{\mathbf t}}
+\def\ubf{{\mathbf u}}
+\def\vbf{{\mathbf v}}
+\def\wbf{{\mathbf w}}
+\def\xbf{{\mathbf x}}
+\def\ybf{{\mathbf y}}
+\def\zbf{{\mathbf z}}
+
+\def\Abf{{\mathbf A}}
+\def\Bbf{{\mathbf B}}
+\def\Cbf{{\mathbf C}}
+\def\Dbf{{\mathbf D}}
+\def\Ebf{{\mathbf E}}
+\def\Fbf{{\mathbf F}}
+\def\Gbf{{\mathbf G}}
+\def\Hbf{{\mathbf H}}
+\def\Ibf{{\mathbf I}}
+\def\Jbf{{\mathbf J}}
+\def\Kbf{{\mathbf K}}
+\def\Lbf{{\mathbf L}}
+\def\Mbf{{\mathbf M}}
+\def\Nbf{{\mathbf N}}
+\def\Obf{{\mathbf O}}
+\def\Pbf{{\mathbf P}}
+\def\Qbf{{\mathbf Q}}
+\def\Rbf{{\mathbf R}}
+\def\Sbf{{\mathbf S}}
+\def\Tbf{{\mathbf T}}
+\def\Ubf{{\mathbf U}}
+\def\Vbf{{\mathbf V}}
+\def\Wbf{{\mathbf W}}
+\def\Xbf{{\mathbf X}}
+\def\Ybf{{\mathbf Y}}
+\def\Zbf{{\mathbf Z}}
+
+\def\phat{{\hat p}}
+\def\what{{\hat w}}
+\def\yhat{{\hat y}}
+
+
+\newcommand{\answer}{
+    \fcolorbox{orange}{PapayaWhip}{
+\begin{minipage}{\textwidth}
+        \textbf{Answer}
+    \end{minipage}
+}
+}
+
+\newcommand{\codeoutput}[1]{
+Output:\\\vspace{5px}
+    \fcolorbox{orange}{WhiteSmoke}{
+\begin{minipage}{\textwidth}
+        { \color{DodgerBlue} 
+        
+        
+       \texttt{#1}
+       }
+    \end{minipage}
+}
+}
+
+
+\newcommand{\orangebox}[1]{
+    \fcolorbox{orange}{white}{
+\begin{minipage}{\textwidth}
+       {\color{MidnightBlue} 
+       #1
+       }
+    \end{minipage}
+}
+}
+
+

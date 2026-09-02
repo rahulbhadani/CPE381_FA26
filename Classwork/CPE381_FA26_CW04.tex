@@ -1,0 +1,307 @@
+\documentclass[12pt, xcolor=dvipsnames,svgnames,x11names]{article}
+\usepackage{xcolor}
+%\usepackage{universityos}
+\usepackage{xspace}
+\usepackage{url}
+\usepackage[colorlinks=true,bookmarks=false,linkcolor=black,urlcolor=blue,citecolor=black]{hyperref}
+\usepackage{minted}
+\usepackage{fancyhdr}
+\usepackage[top=1in,bottom=1in,left=1in,right=1in]{geometry}
+\usepackage{multicol}
+\usepackage{pgfplots}
+\usetikzlibrary{circuits.logic.US}
+% \usepackage{tgschola}
+\let\temp\rmdefault
+\usepackage{mathpazo}
+\let\rmdefault\temp
+
+\definecolor{roseRed}{HTML}{e20047}
+\definecolor{coolGray}{HTML}{474747} % Neutral gray to contrast roseRed
+\definecolor{mocha}{HTML}{a47864}
+\definecolor{sage}{HTML}{8a9a5b}
+\definecolor{dustyblue}{HTML}{6e8ca0}
+\definecolor{terracotta}{HTML}{c87f5b}
+\definecolor{lavender}{HTML}{9d8bb0}
+\definecolor{darkmocha}{HTML}{7a5a4b}
+\definecolor{darksage}{HTML}{667244}
+\definecolor{darkdustyblue}{HTML}{526878}
+\definecolor{darkterracotta}{HTML}{9e6347}
+\definecolor{darklavender}{HTML}{766688}
+\definecolor{winery}{HTML}{7e212a}
+
+\definecolor{lightmocha}{HTML}{c2a190}
+\definecolor{lightmocha1}{HTML}{d1b09c}
+\definecolor{lightmocha2}{HTML}{e2c4b0}
+\definecolor{lightmocha3}{HTML}{f0d9c7}
+
+\definecolor{androidBlue}{HTML}{8AB4F8}
+\definecolor{androidBlueLight}{HTML}{E8F0FE}
+\definecolor{androidGreen}{HTML}{81C995}
+\definecolor{androidGreenLight}{HTML}{E6F4EA}
+
+% Red variants - based on Android's "error" and warning colors
+\definecolor{androidRed}{HTML}{F28B82}
+\definecolor{androidRedLight}{HTML}{FADAD7}
+
+% Yellow variants - based on Android's accent/warning colors
+\definecolor{androidYellow}{HTML}{FDD663}
+\definecolor{androidYellowLight}{HTML}{FEF7E0}
+
+% Purple variants - based on Android's system UI accents
+\definecolor{androidPurple}{HTML}{D7AEFB}
+\definecolor{androidPurpleLight}{HTML}{F4EAFC}
+
+% Orange variants - based on Android's notification colors
+\definecolor{androidOrange}{HTML}{FCAD70}
+\definecolor{androidOrangeLight}{HTML}{FEEADC}
+
+% Teal variants - based on Android's Material You palette
+\definecolor{androidTeal}{HTML}{78D9EC}
+\definecolor{androidTealLight}{HTML}{E6F6F9}
+
+% Gray variants - based on Android's neutral colors
+\definecolor{androidGray}{HTML}{DADCE0}
+\definecolor{androidGrayLight}{HTML}{F1F3F4}
+
+\usepackage{biolinum} % included with the {Libertine} font package
+\renewcommand{\familydefault}{\sfdefault}
+
+
+
+\usepackage[many]{tcolorbox}
+\usepackage{CJKutf8}
+
+\newcommand{\hw}{Classwork 04: Discrete and Continuous Representations}
+\newcommand{\duedate}{September 02, 2026}
+
+
+% Redefine \maketitle to include tcolorbox
+\makeatletter
+\renewcommand{\maketitle}{%
+    \begin{center}
+        \begin{tcolorbox}[
+            enhanced,
+            colback=white,
+            colframe=red!70!black,
+            arc=0mm,
+            title={\textcolor{white}{\bfseries CPE 381 \@title}},
+            coltitle=white,
+            fonttitle=\bfseries\large,
+            attach boxed title to top left={xshift=10pt, yshift=-\tcboxedtitleheight/2},
+            boxed title style={
+            sharp corners,
+            colback=red!70!black,
+            frame hidden,
+            boxrule=0pt,
+            left=10pt, right=10pt,
+            top=3pt, bottom=3pt
+            }
+        ]
+        \large
+        \vspace{10pt}
+        \noindent Student Name (as in Canvas): \underline{\hspace{8cm}} 
+        
+        \vspace{10pt}
+        \noindent A Number: \underline{\hspace{12cm}}
+
+        \vspace{10pt}
+        \noindent Points: 20 \quad Duration: 15 minutes \hfill \quad Due:~\duedate  ~(In-Class)
+
+            \end{tcolorbox}
+    \end{center}
+}
+\makeatother
+
+\setlength{\parindent}{0pt}
+\setlength{\parskip}{4pt}%
+
+\input{common}
+
+
+% Add showanswer toggle (set to "yes" for solutions, anything else for student version)
+\usepackage{ifthen}
+\newcommand{\showanswer}{yes}
+
+\newenvironment{multiequation}[1][]{%
+    \begin{equation}%
+    \begin{aligned}%
+        \ifx#1\@empty\else\label{#1}\fi%
+}{%
+    \end{aligned}%
+\end{equation}% 
+}
+\pagestyle{fancy}
+
+\lhead{\footnotesize{\coursenumber, \courseterm}, \footnotesize{The University of Alabama in Huntsville}}
+\chead{}
+\rhead{\footnotesize{\emph{\hw}}}
+\lfoot{\footnotesize{Instructor: \instructorname}}
+\cfoot{\footnotesize{\thepage}}
+\rfoot{\footnotesize{\textit{Last Revised:~\today}}}
+\renewcommand{\headrulewidth}{0.1pt}
+\renewcommand{\footrulewidth}{0.1pt}
+\newcommand{\minipagewidth}{0.8\columnwidth}
+
+\renewcommand{\thefootnote}{\fnsymbol{footnote}}
+
+
+\renewcommand{\headrulewidth}{0.1pt}
+\renewcommand{\footrulewidth}{0.1pt}
+
+\renewcommand{\thefootnote}{\fnsymbol{footnote}}
+
+\usepackage{mdframed} 
+
+
+\begin{document}
+
+
+\title{\textsc{\hw}}
+
+\author{Instructor: \instructorname}
+\date{Due: \duedate}
+
+\maketitle
+
+
+\begin{enumerate}
+
+\item Consider a signal $f(t)$ where $f(3) = 6$, and $f(5) = 12$. What will be the value of signal at $t = 4$, i.e. $f(4)$ if you happen to employ linear interpolation. \hfill \textbf{(10 Points)}
+
+\resizebox{!}{0.4\linewidth}{
+    \begin{tikzpicture}
+\begin{axis}[
+    axis lines=middle,
+    xlabel={$t$},
+    ylabel={$f(t)$},
+    title={$f(t)$},
+    xmin=-1, xmax=8,
+    ymin=-2, ymax=16,
+    xtick={-1,0,1,2,3,4,5,6,7,8},
+    ytick={-2,0,2,4,6,8,10,12,14,16},
+    grid=both,
+    grid style={dashed, gray!30},
+    width=10cm, height=10cm,
+    enlargelimits=false,
+    tick align=outside,
+    % Position the title at the top left
+    title style={at={(0.5,1.05)}, anchor=south} 
+]
+
+% Linear interpolation line between known points
+\addplot[thick, black, mark=*, mark options={solid, black, fill=black}] coordinates {(3,6) (5,12)};
+
+% Labels for known points
+\node[anchor=south west] at (axis cs:3,6) {(3, 6)};
+\node[anchor=south west] at (axis cs:5,12) {(5, 12)};
+
+% Mark query point at t=4 on x-axis with bold 'x'
+% A white background is added behind the node so it sits cleanly over the grid/axis line
+\node[font=\bfseries, fill=white, inner sep=1pt] at (axis cs:4,0) {\L0arge x};
+
+\end{axis}
+\end{tikzpicture}
+}
+
+\begin{tcolorbox}[
+    enhanced,breakable,
+    colback=androidBlueLight!80,
+    colframe=androidBlue,
+    arc=5pt,
+    boxrule=1pt,
+    title=\textbf{Answer},
+    fonttitle=\bfseries,
+    coltitle=black,
+    top=10pt,
+    bottom=8pt,
+    left=8pt,
+    right=8pt,
+    attach boxed title to top left={xshift=10pt, yshift=-\tcboxedtitleheight/2},
+    boxed title style={
+    colback=androidBlue,    
+        colframe=androidBlue,
+        arc=3pt,
+        boxrule=0pt,
+        left=6pt, right=6pt,
+        top=3pt, bottom=3pt
+    }
+    ]
+
+    \vspace{9.0cm}
+    ~
+    
+\end{tcolorbox}
+
+\item What are some non-ideal scenarios you may encounter while dealing with real-world signals? \hfill \textbf{(5 Points)}
+
+\begin{tcolorbox}[
+    enhanced,breakable,
+    colback=androidBlueLight!80,
+    colframe=androidBlue,
+    arc=5pt,
+    boxrule=1pt,
+    title=\textbf{Answer},
+    fonttitle=\bfseries,
+    coltitle=black,
+    top=10pt,
+    bottom=8pt,
+    left=8pt,
+    right=8pt,
+    attach boxed title to top left={xshift=10pt, yshift=-\tcboxedtitleheight/2},
+    boxed title style={
+    colback=androidBlue,    
+        colframe=androidBlue,
+        arc=3pt,
+        boxrule=0pt,
+        left=6pt, right=6pt,
+        top=3pt, bottom=3pt
+    }
+    ]
+
+    \vspace{8.0cm}
+    ~
+    
+\end{tcolorbox}
+
+\item Consider a MATLAB code snippet for the time vector
+
+\begin{minted}{matlab}
+t = 0:0.03:10;
+\end{minted}
+
+\begin{enumerate}
+\item What is the sampling time period $T_s$? \hfill \textbf{(2.5 Points)}
+\item What is the final time ?\hfill \textbf{(2.5 Points)}
+\end{enumerate}
+
+\begin{tcolorbox}[
+    enhanced,breakable,
+    colback=androidBlueLight!80,
+    colframe=androidBlue,
+    arc=5pt,
+    boxrule=1pt,
+    title=\textbf{Answer},
+    fonttitle=\bfseries,
+    coltitle=black,
+    top=10pt,
+    bottom=8pt,
+    left=8pt,
+    right=8pt,
+    attach boxed title to top left={xshift=10pt, yshift=-\tcboxedtitleheight/2},
+    boxed title style={
+    colback=androidBlue,    
+        colframe=androidBlue,
+        arc=3pt,
+        boxrule=0pt,
+        left=6pt, right=6pt,
+        top=3pt, bottom=3pt
+    }
+    ]
+
+    \vspace{6.0cm}
+    ~
+    
+\end{tcolorbox}
+
+\end{enumerate}
+\end{document}

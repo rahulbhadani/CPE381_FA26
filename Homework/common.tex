@@ -1,0 +1,386 @@
+\usepackage{tikz}
+\usepackage{pgfplots}
+\usepackage{minted}
+
+
+
+
+
+\def\m@th{\normalcolor\mathsurround\z@}
+
+\setlength{\parskip}{\baselineskip}%
+\setlength{\parindent}{0pt}%
+
+\def\e{{\textrm{e}}}
+\def\d{\textrm{d}}
+\def\T{{\textsf{T}}}
+\def\sech{{\textrm{sech}}}
+\def\x{{\mathbf x}}
+
+\def\++{{$^{++}$}}
+
+\def\Abb{{\mathbb A}}
+\def\Bbb{{\mathbb B}}
+\def\Cbb{{\mathbb C}}
+\def\Dbb{{\mathbb D}}
+\def\Ebb{{\mathbb E}}
+\def\Fbb{{\mathbb F}}
+\def\Gbb{{\mathbb G}}
+\def\Hbb{{\mathbb H}}
+\def\Ibb{{\mathbb I}}
+\def\Jbb{{\mathbb J}}
+\def\Kbb{{\mathbb K}}
+\def\Lbb{{\mathbb L}}
+\def\Mbb{{\mathbb M}}
+\def\Nbb{{\mathbb N}}
+\def\Obb{{\mathbb O}}
+\def\Pbb{{\mathbb P}}
+\def\Qbb{{\mathbb Q}}
+\def\Rbb{{\mathbb R}}
+\def\Sbb{{\mathbb S}}
+\def\Tbb{{\mathbb T}}
+\def\Ubb{{\mathbb U}}
+\def\Vbb{{\mathbb V}}
+\def\Wbb{{\mathbb W}}
+\def\Xbb{{\mathbb X}}
+\def\Ybb{{\mathbb Y}}
+\def\Zbb{{\mathbb Z}}
+
+
+
+\def\Acal{{\mathcal A}}
+\def\Bcal{{\mathcal B}}
+\def\Ccal{{\mathcal C}}
+\def\Dcal{{\mathcal D}}
+\def\Ecal{{\mathcal E}}
+\def\Fcal{{\mathcal F}}
+\def\Gcal{{\mathcal G}}
+\def\Hcal{{\mathcal H}}
+\def\Ical{{\mathcal I}}
+\def\Jcal{{\mathcal J}}
+\def\Kcal{{\mathcal K}}
+\def\Lcal{{\mathcal L}}
+\def\Mcal{{\mathcal M}}
+\def\Ncal{{\mathcal N}}
+\def\Ocal{{\mathcal O}}
+\def\Pcal{{\mathcal P}}
+\def\Qcal{{\mathcal Q}}
+\def\Rcal{{\mathcal R}}
+\def\Scal{{\mathcal S}}
+\def\Tcal{{\mathcal T}}
+\def\Ucal{{\mathcal U}}
+\def\Vcal{{\mathcal V}}
+\def\Wcal{{\mathcal W}}
+\def\Xcal{{\mathcal X}}
+\def\Ycal{{\mathcal Y}}
+\def\Zcal{{\mathcal Z}}
+
+\def\abf{{\mathbf a}}
+\def\bbf{{\mathbf b}}
+\def\cbf{{\mathbf c}}
+\def\dbf{{\mathbf d}}
+\def\ebf{{\mathbf e}}
+\def\fbf{{\mathbf f}}
+\def\gbf{{\mathbf g}}
+\def\hbf{{\mathbf h}}
+\def\ibf{{\mathbf i}}
+\def\jbf{{\mathbf j}}
+\def\kbf{{\mathbf k}}
+\def\lbf{{\mathbf l}}
+\def\mbf{{\mathbf m}}
+\def\nbf{{\mathbf n}}
+\def\obf{{\mathbf o}}
+\def\pbf{{\mathbf p}}
+\def\qbf{{\mathbf q}}
+\def\rbf{{\mathbf r}}
+\def\sbf{{\mathbf s}}
+\def\tbf{{\mathbf t}}
+\def\ubf{{\mathbf u}}
+\def\vbf{{\mathbf v}}
+\def\wbf{{\mathbf w}}
+\def\xbf{{\mathbf x}}
+\def\ybf{{\mathbf y}}
+\def\zbf{{\mathbf z}}
+
+\def\Abf{{\mathbf A}}
+\def\Bbf{{\mathbf B}}
+\def\Cbf{{\mathbf C}}
+\def\Dbf{{\mathbf D}}
+\def\Ebf{{\mathbf E}}
+\def\Fbf{{\mathbf F}}
+\def\Gbf{{\mathbf G}}
+\def\Hbf{{\mathbf H}}
+\def\Ibf{{\mathbf I}}
+\def\Jbf{{\mathbf J}}
+\def\Kbf{{\mathbf K}}
+\def\Lbf{{\mathbf L}}
+\def\Mbf{{\mathbf M}}
+\def\Nbf{{\mathbf N}}
+\def\Obf{{\mathbf O}}
+\def\Pbf{{\mathbf P}}
+\def\Qbf{{\mathbf Q}}
+\def\Rbf{{\mathbf R}}
+\def\Sbf{{\mathbf S}}
+\def\Tbf{{\mathbf T}}
+\def\Ubf{{\mathbf U}}
+\def\Vbf{{\mathbf V}}
+\def\Wbf{{\mathbf W}}
+\def\Xbf{{\mathbf X}}
+\def\Ybf{{\mathbf Y}}
+\def\Zbf{{\mathbf Z}}
+
+\def\phat{{\hat p}}
+
+\usepackage{amsmath}
+\DeclareMathOperator*{\argmax}{arg\,max}
+\DeclareMathOperator*{\argmin}{arg\,min}
+
+\def\xbar{{\overline x}}
+\def\ybar{{\overline y}}
+\def\e{{\textrm{e}}}
+\def\d{\textrm{d}}
+\def\T{{\textsf{T}}}
+\def\sech{{\textrm{sech}}}
+\def\x{{\mathbf x}}
+
+\def\++{{$^{++}$}}
+
+\def\Abb{{\mathbb A}}
+\def\Bbb{{\mathbb B}}
+\def\Cbb{{\mathbb C}}
+\def\Dbb{{\mathbb D}}
+\def\Ebb{{\mathbb E}}
+\def\Fbb{{\mathbb F}}
+\def\Gbb{{\mathbb G}}
+\def\Hbb{{\mathbb H}}
+\def\Ibb{{\mathbb I}}
+\def\Jbb{{\mathbb J}}
+\def\Kbb{{\mathbb K}}
+\def\Lbb{{\mathbb L}}
+\def\Mbb{{\mathbb M}}
+\def\Nbb{{\mathbb N}}
+\def\Obb{{\mathbb O}}
+\def\Pbb{{\mathbb P}}
+\def\Qbb{{\mathbb Q}}
+\def\Rbb{{\mathbb R}}
+\def\Sbb{{\mathbb S}}
+\def\Tbb{{\mathbb T}}
+\def\Ubb{{\mathbb U}}
+\def\Vbb{{\mathbb V}}
+\def\Wbb{{\mathbb W}}
+\def\Xbb{{\mathbb X}}
+\def\Ybb{{\mathbb Y}}
+\def\Zbb{{\mathbb Z}}
+
+
+
+\def\Acal{{\mathcal A}}
+\def\Bcal{{\mathcal B}}
+\def\Ccal{{\mathcal C}}
+\def\Dcal{{\mathcal D}}
+\def\Ecal{{\mathcal E}}
+\def\Fcal{{\mathcal F}}
+\def\Gcal{{\mathcal G}}
+\def\Hcal{{\mathcal H}}
+\def\Ical{{\mathcal I}}
+\def\Jcal{{\mathcal J}}
+\def\Kcal{{\mathcal K}}
+\def\Lcal{{\mathcal L}}
+\def\Mcal{{\mathcal M}}
+\def\Ncal{{\mathcal N}}
+\def\Ocal{{\mathcal O}}
+\def\Pcal{{\mathcal P}}
+\def\Qcal{{\mathcal Q}}
+\def\Rcal{{\mathcal R}}
+\def\Scal{{\mathcal S}}
+\def\Tcal{{\mathcal T}}
+\def\Ucal{{\mathcal U}}
+\def\Vcal{{\mathcal V}}
+\def\Wcal{{\mathcal W}}
+\def\Xcal{{\mathcal X}}
+\def\Ycal{{\mathcal Y}}
+\def\Zcal{{\mathcal Z}}
+
+\def\abf{{\mathbf a}}
+\def\bbf{{\mathbf b}}
+\def\cbf{{\mathbf c}}
+\def\dbf{{\mathbf d}}
+\def\ebf{{\mathbf e}}
+\def\fbf{{\mathbf f}}
+\def\gbf{{\mathbf g}}
+\def\hbf{{\mathbf h}}
+\def\ibf{{\mathbf i}}
+\def\jbf{{\mathbf j}}
+\def\kbf{{\mathbf k}}
+\def\lbf{{\mathbf l}}
+\def\mbf{{\mathbf m}}
+\def\nbf{{\mathbf n}}
+\def\obf{{\mathbf o}}
+\def\pbf{{\mathbf p}}
+\def\qbf{{\mathbf q}}
+\def\rbf{{\mathbf r}}
+\def\sbf{{\mathbf s}}
+\def\tbf{{\mathbf t}}
+\def\ubf{{\mathbf u}}
+\def\vbf{{\mathbf v}}
+\def\wbf{{\mathbf w}}
+\def\xbf{{\mathbf x}}
+\def\ybf{{\mathbf y}}
+\def\zbf{{\mathbf z}}
+
+\def\Abf{{\mathbf A}}
+\def\Bbf{{\mathbf B}}
+\def\Cbf{{\mathbf C}}
+\def\Dbf{{\mathbf D}}
+\def\Ebf{{\mathbf E}}
+\def\Fbf{{\mathbf F}}
+\def\Gbf{{\mathbf G}}
+\def\Hbf{{\mathbf H}}
+\def\Ibf{{\mathbf I}}
+\def\Jbf{{\mathbf J}}
+\def\Kbf{{\mathbf K}}
+\def\Lbf{{\mathbf L}}
+\def\Mbf{{\mathbf M}}
+\def\Nbf{{\mathbf N}}
+\def\Obf{{\mathbf O}}
+\def\Pbf{{\mathbf P}}
+\def\Qbf{{\mathbf Q}}
+\def\Rbf{{\mathbf R}}
+\def\Sbf{{\mathbf S}}
+\def\Tbf{{\mathbf T}}
+\def\Ubf{{\mathbf U}}
+\def\Vbf{{\mathbf V}}
+\def\Wbf{{\mathbf W}}
+\def\Xbf{{\mathbf X}}
+\def\Ybf{{\mathbf Y}}
+\def\Zbf{{\mathbf Z}}
+
+\def\phat{{\hat p}}
+\def\what{{\hat w}}
+\def\yhat{{\hat y}}
+
+
+\newcommand{\answer}{
+    \fcolorbox{orange}{PapayaWhip}{
+\begin{minipage}{\textwidth}
+        \textbf{Answer}
+    \end{minipage}
+}
+}
+
+\newcommand{\codeoutput}[1]{
+Output:\\\vspace{5px}
+    \fcolorbox{orange}{WhiteSmoke}{
+\begin{minipage}{\textwidth}
+        { \color{DodgerBlue} 
+        
+        
+       \texttt{#1}
+       }
+    \end{minipage}
+}
+}
+
+
+\newcommand{\orangebox}[1]{
+    \fcolorbox{orange}{white}{
+\begin{minipage}{\textwidth}
+       {\color{MidnightBlue} 
+       #1
+       }
+    \end{minipage}
+}
+}
+
+
+\definecolor{lightapricot}{rgb}{0.99, 0.84, 0.69}
+\definecolor{lightblue}{rgb}{0.68, 0.85, 0.90}
+\definecolor{blanchedalmond}{rgb}{1.0, 0.92, 0.8}
+\definecolor{blizzardblue}{rgb}{0.67, 0.9, 0.93}
+\definecolor{blond}{rgb}{0.98, 0.94, 0.75}
+\definecolor{babyblueeyes}{rgb}{0.63, 0.79, 0.95}
+\definecolor{babypink}{rgb}{0.96, 0.76, 0.76}
+\definecolor{bananamania}{rgb}{0.98, 0.91, 0.71}
+\definecolor{beaublue}{rgb}{0.74, 0.83, 0.9}
+\definecolor{antiquewhite}{rgb}{0.98, 0.92, 0.84}
+\definecolor{anti-flashwhite}{rgb}{0.95, 0.95, 0.96}
+\definecolor{brightlavender}{rgb}{0.75, 0.58, 0.89}
+\definecolor{brightube}{rgb}{0.82, 0.62, 0.91}
+\definecolor{brilliantlavender}{rgb}{0.96, 0.73, 1.0}
+\definecolor{lightcerulean}{rgb}{0.11, 0.67, 0.84}
+\definecolor{cpeyellow}{HTML}{F5F5DC}                 % Beige (much softer)
+\definecolor{powderGreen}{HTML}{F0F8E8}               % Very pale mint
+
+
+% Darker versions of the original colors
+\definecolor{deepapricot}{rgb}{0.85, 0.65, 0.45}        % darker lightapricot
+\definecolor{deepblue}{rgb}{0.45, 0.65, 0.75}           % darker lightblue
+\definecolor{toastedalmond}{rgb}{0.85, 0.75, 0.60}      % darker blanchedalmond
+\definecolor{stormblue}{rgb}{0.45, 0.70, 0.75}          % darker blizzardblue
+\definecolor{goldenrod}{rgb}{0.80, 0.75, 0.50}          % darker blond
+\definecolor{royalblue}{rgb}{0.40, 0.60, 0.80}          % darker babyblueeyes
+\definecolor{rosewood}{rgb}{0.75, 0.45, 0.45}           % darker babypink
+\definecolor{mustardyellow}{rgb}{0.80, 0.70, 0.45}      % darker bananamania
+\definecolor{navyblue}{rgb}{0.50, 0.60, 0.70}           % darker beaublue
+\definecolor{antiquetan}{rgb}{0.80, 0.70, 0.60}         % darker antiquewhite
+\definecolor{silvergray}{rgb}{0.75, 0.75, 0.80}         % darker anti-flashwhite
+\definecolor{darklavender}{rgb}{0.55, 0.35, 0.70}       % darker brightlavender
+\definecolor{deepube}{rgb}{0.65, 0.40, 0.75}            % darker brightube
+\definecolor{plumviolet}{rgb}{0.75, 0.50, 0.85}         % darker brilliantlavender
+\definecolor{deepcerulean}{rgb}{0.08, 0.45, 0.65}       % darker lightcerulean
+
+\definecolor{roseRed}{HTML}{e20047}
+\definecolor{coolGray}{HTML}{474747} % Neutral gray to contrast roseRed
+\definecolor{mocha}{HTML}{a47864}
+\definecolor{sage}{HTML}{8a9a5b}
+\definecolor{dustyblue}{HTML}{6e8ca0}
+\definecolor{terracotta}{HTML}{c87f5b}
+\definecolor{lavender}{HTML}{9d8bb0}
+\definecolor{darkmocha}{HTML}{7a5a4b}
+\definecolor{darksage}{HTML}{667244}
+\definecolor{darkdustyblue}{HTML}{526878}
+\definecolor{darkterracotta}{HTML}{9e6347}
+\definecolor{darklavender}{HTML}{766688}
+\definecolor{winery}{HTML}{7e212a}
+
+\usepackage{sectsty}
+\sectionfont{\color{darklavender}}  % sets colour of sections
+\subsectionfont{\color{plumviolet}}  % sets colour of sections
+\subsubsectionfont{\color{deepube}}  % sets colour of sections
+
+\usepackage{xcolor}
+%\usepackage{universityos}
+\usepackage{xspace}
+\usepackage{url}
+\usepackage[colorlinks=true,bookmarks=false,linkcolor=black,urlcolor=blue,citecolor=black]{hyperref}
+\usepackage{fancyhdr}
+\usepackage[top=1in,bottom=1in,left=1in,right=1in]{geometry}
+\usepackage{multicol}
+\usepackage{pgfplots}
+\usetikzlibrary{circuits.logic.US}
+% \usepackage{tgschola}
+\let\temp\rmdefault
+\usepackage{mathpazo}
+\let\rmdefault\temp
+
+\usepackage{eso-pic}
+
+
+
+\usetikzlibrary{calc}
+\usepackage{circuitikz}
+
+
+
+\usepackage[many]{tcolorbox}
+\setlength{\parindent}{0pt}
+\setlength{\parskip}{4pt}%
+
+\newcommand{\coursenumber}{CPE 381}
+\newcommand{\courseyear}{2026\xspace}
+\newcommand{\coursedatetime}{Mon/Wed 11:20 AM -- 12:40 PM\xspace}
+\newcommand{\coursetitle}{Signals \& Systems for Computer Engineers\xspace}
+\newcommand{\courseterm}{Fall, \courseyear}
+\newcommand{\instructorname}{Rahul Bhadani\xspace}
+\newcommand{\instructoremail}{\href{mailto:rahul.bhadani@uah.edu}{rahul.bhadani@uah.edu}}
+\newcommand{\instructoroffice}{ENG 217-H\xspace}
