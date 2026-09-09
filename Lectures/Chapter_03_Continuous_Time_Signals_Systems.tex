@@ -1,0 +1,1099 @@
+%----------------------------------------------------------------------------------------
+%	PACKAGES AND THEMES
+%----------------------------------------------------------------------------------------
+
+\PassOptionsToPackage{table}{xcolor}
+\documentclass[aspectratio=169,xcolor=dvipsnames,svgnames,x11names,fleqn]{beamer}
+% \documentclass[aspectratio=169,xcolor=dvipsnames,fleqn]{beamer}
+
+\usetheme{RedVelvet}
+\usefonttheme[onlymath]{serif}
+\usepackage{xspace}
+\usepackage{amsmath}
+\usepackage{amssymb}
+\usepackage{amsfonts}
+\usepackage{color}
+\usepackage{physics}
+% \usepackage{mathbb}
+\usepackage{rahul_math}
+\usepackage{bigints}
+\usepackage{hyperref}
+\hypersetup{
+colorlinks,
+citecolor=Violet,
+linkcolor=Black}
+\usepackage{graphicx} % Allows including images
+\usepackage{booktabs} % Allows the use of \toprule, \midrule and \bottomrule in tables
+\usepackage{tikz,pgfplots}
+\usepackage{subfigure}
+\usetikzlibrary{arrows}
+\usepackage{minted}
+\definecolor{LightGray}{gray}{0.9}
+\definecolor{cream}{rgb}{0.92, 0.9, 0.55}
+\definecolor{lightblue}{rgb}{0.68, 0.85, 0.9}
+
+
+\usepackage{xcolor-material}
+\usetikzlibrary{fit}
+\tikzset{%
+apple/.pic={
+    \fill [MaterialBrown] (-1/8,0)  arc (180:120:1 and 3/2) coordinate [pos=3/5] (@)-- ++(1/6,-1/7)  arc (120:180:5/4 and 3/2) -- cycle;
+    \fill [MaterialLightGreen500] (0,-9/10)  .. controls ++(180:1/8) and ++(  0:1/4) .. (-1/3,  -1) .. controls ++(180:1/3) and ++(270:1/2) .. (  -1,   0) .. controls ++( 90:1/3) and ++(180:1/3) .. (-1/2, 3/4) .. controls ++(  0:1/8) and ++(135:1/8) .. (   0, 4/7)
+}
+}
+
+\newcommand{\leftdoublequote}{\textcolor{blue}{\scalebox{3}{``}}}
+
+\newcommand{\rightdoublequote}{\textcolor{blue}{\scalebox{3}{''}}}
+
+
+\usepackage{textcomp}
+\usepackage{fontawesome}
+
+\usepackage{overpic}
+
+%----------------------------------------------------------------------------------------
+%	TITLE PAGE
+%----------------------------------------------------------------------------------------
+
+\usepackage{tikz-qtree,tikz-qtree-compat}
+\usetikzlibrary{calc}
+
+
+\title[CPE 381: Signals and Systems]{CPE 381: Fundamentals of Signals and Systems for Computer Engineers} % The short title appears at the bottom of every slide, the full title is only on the title page
+\subtitle{03 Continuous-Time Signals and Systems}
+
+\author[Rahul Bhadani] {{\Large \textbf{Rahul Bhadani}}}
+
+\institute[UAH] % Your institution as it will appear on the bottom of every slide, maybe shorthand to save space
+{
+    Electrical \& Computer Engineering,  The University of Alabama in Huntsville
+}
+\date
+
+% \titlegraphic{
+%    \includegraphics[width=0.4\linewidth]{figures/UAH_primary.png}
+% }
+    
+\begin{document}
+
+%-------------------------------------------------
+\begin{frame}
+    \titlepage
+\end{frame}
+
+%-------------------------------------------------
+\begin{frame}{Outline}
+    \tableofcontents
+\end{frame}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\section{Motivation}
+
+%-----------------------------------------
+
+\begin{frame}{}
+    \begin{center}
+    \Huge \bf \color{DarkBlue}
+    \faFire
+    
+    Motivation
+\end{center}
+\end{frame}
+
+
+\begin{frame}{}
+    \begin{center}
+    \Huge \bf 
+    
+    Signals and Systems is `Grandfather' of Data Science for Electrical and Computer Engineers
+
+\end{center}
+\end{frame}
+
+\section{Continuous-Time Signals}
+
+\begin{frame}
+    \sectionpage
+\end{frame}
+
+\begin{frame}{Classification of Signals}
+
+We care about the following properties when dealing with signals:
+
+\begin{itemize}
+    \item Predictability:  Random or Deterministic
+    \item Variations of time and amplitude: continuous, discrete (time or x-axis) / quantized (amplitude or y-axis)
+    \item Periodic/Aperiodic
+    \item Finite energy/finite power;  Infinite energy/Infinite power
+
+\end{itemize}
+
+\end{frame}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\subsection{Operation on Signals}
+
+%-----------------------------------------
+
+\begin{frame}
+    \subsectionpage
+\end{frame}
+
+\begin{frame}{Basic Mathematical Operations}
+\begin{itemize}
+    \item Addition: $x(t) + y(t)$
+\item Subtraction: $x(t) - y(t)$
+\item Constant multiplication: $kx(t)$ where $k$ is a constant
+\end{itemize}
+\end{frame}
+
+\begin{frame}{Time-shift}
+
+\begin{itemize}
+    \item $x(t - \tau) \to $ Signal is delayed
+\item $x(t + \tau) \to $ Signal is advanced
+\end{itemize}
+    \includegraphics[width=0.8\linewidth,trim=0 0 0 0cm,clip]{figures/Signal_Delay.png}
+    
+\end{frame}
+
+\begin{frame}{Time Reflection}
+\begin{columns}
+    \column{0.3\linewidth}
+    \begin{itemize}
+    \item $x(t) \to x(-t)$ : take  mirror image\textbf{ along the y-axis}
+    \end{itemize}
+        \column{0.7\linewidth}
+        Note: The book doesn’t specify whether to take the mirror image along the y-axis or not and it is confusing because the signal used in example 1.3.1 is symmetric with respect to both the x and y axes.
+        \includegraphics[width=0.9\linewidth,trim=0 0 0 0cm,clip]{figures/Time_Reflection.png}
+\end{columns}
+\end{frame}
+
+
+\begin{frame}{Signal Stretching along $y$-axis}
+
+    \begin{itemize}
+    \item $f(x) \to a f(x); \quad a > 1$ : Shrink the graph of $f(x)$ `$a$' times along y-axis.
+    \item $f(x) \to \cfrac{1}{a} f(x); \quad a > 1$ : Stretch the graph of $f(x)$ `$a$' times along y-axis.
+    
+    \end{itemize}
+
+        \includegraphics[width=0.9\linewidth,trim=0 0 0 0cm,clip]{figures/Signal_Stretch.png}
+
+\end{frame}
+
+\begin{frame}{Signal Stretching along $x$-axis}
+
+    \begin{itemize}
+    \item $f(x) \to  f(ax); \quad a > 1$ : Stretch the graph of $f(x)$ `$a$' times along x-axis.
+    \item $f(x) \to f\bigg(\cfrac{1}{a} x\bigg); \quad a > 1$ : Shrink the graph of $f(x)$ `$a$' times along x-axis.
+    
+    \end{itemize}
+
+        \includegraphics[width=0.9\linewidth,trim=0 0 0 0cm,clip]{figures/Signal_Sretch2.png}
+
+\end{frame}
+
+\begin{frame}{Example and MATLAB Code}
+
+
+\begin{columns}
+    \column{0.25\linewidth}
+    $$
+x(t) = 6t^2 + 4t + 70
+$$
+Code: \url{https://github.com/rahulbhadani/CPE381_FA26/blob/main/Code/Ch03_signal_operation.m}
+
+        \column{0.75\linewidth}
+        \includegraphics[width=0.99\linewidth,trim=0 0.0 0 1.0cm,clip]{figures/signal_operations.pdf}
+
+\end{columns}
+    
+\end{frame}
+
+\begin{frame}{Even and Odd Signals}
+\begin{itemize}
+    \item Even Signal: $x(t) = x(-t)$
+\item Odd Signal:
+$x(t) = -x(-t)$
+\item Any signal can be represented by the sum of even and odd signals
+
+$y(t) = y_e(t) + y_o(t)$
+
+$$
+y_e(t) = 0.5[ y(t)  + y(-t) ]$$
+
+$$
+y_o(t) = 0.5[y(t) - y(-t) ]
+$$
+
+\end{itemize}
+\end{frame}
+
+\begin{frame}{Periodic Signals}
+
+\footnotesize
+
+\begin{itemize}
+    \item Defined for all possible values of $t, -\infty < t < \infty$.
+    \item 
+There is the real value $T_0 \in \Rbb^+$, called the fundamental frequency such that $x(  t + kT_0 ) = x(t), k \in \Ibb$.
+
+\item A constant signal is periodic of a non-definable fundamental period.
+\item A $\cos(\omega t + \theta)$, $\omega = 2\pi/T_0$ ,
+$\omega = 2, \theta = -\pi/2, A= 2$.
+
+\vspace{5pt}
+
+\bf \color{red}
+What’s the fundamental frequency, $1/T_0$?
+\end{itemize}
+\vfill
+
+\end{frame}
+
+\begin{frame}{Energy and Power of Signals}
+
+
+    \begin{itemize}
+        \item \textbf{Energy:}
+        $$
+        E_x = \int_{-\infty}^\infty | x(t)| ^2 dt
+        $$
+
+        \item \textbf{Power:}
+        $$
+        P_x = \lim_{T\to\infty}\cfrac{1}{2T} \int_{-T}^T | x(t)| ^2 dt
+        $$
+    \end{itemize}
+
+    \bf A signal is called finite power if the signal power is finite.
+\end{frame}
+
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\subsection{Basic Signals as Building Blocks}
+
+%-----------------------------------------
+
+\begin{frame}
+    \subsectionpage
+\end{frame}
+
+\begin{frame}{Complex Exponentials}
+Consider $A = |A|e^{j\theta}$, $a = r + k\Omega_0$
+\begin{itemize}
+    \item $x(t) = Ae^{at}$ = ...
+    \item Real part $f(t) = \Re{x(t)}, = ... $
+    
+    \vspace{20pt}
+    
+    $\quad  -|A|e^{rt} \leq f(t)) \leq |A|e^{rt}$. $r< 0$, $f(t)$ is damped, $r>0 $, $f(t)$ grows.
+    \item  Imaginary part $g(t) = \Im{x(t)}, = ... $
+    
+    \vspace{20pt}
+\end{itemize}
+    
+\end{frame}
+
+\begin{frame}{Sinusoids}
+A sinusoid of the general form:
+$$
+A\cos(\Omega_0 t + \theta) = A\sin (\Omega_0 t + \theta + \pi/ 2), \quad -\infty < t < \infty
+$$
+
+\begin{itemize}
+    \item $A$ is the amplitude
+    \item $\Omega_0 = 2\pi f_0$ is angular frequency in \texttt{rad/s}.
+    \item $\theta$ is phase shift
+    \item Fundamental period $T_0$ is 
+
+    $$
+    T_0 = \cfrac{2\pi}{\Omega_0} = \cfrac{1}{f_0}
+    $$
+\end{itemize}
+    
+\end{frame}
+
+\begin{frame}{Rectangular pulse and Unit impulse}
+
+\begin{columns}
+    \column{0.7\linewidth}
+    \begin{itemize}
+        \item  A rectangular pulse of duration $\Delta$ and unit area:
+        \begin{equation*}
+            \begin{aligned}
+                p_\Delta(t)= \begin{cases}
+                    \cfrac{1}{\Delta},\quad -\Delta/2 \leq t \leq \Delta/2\\
+                    0, \quad \textrm{otherwise}
+                \end{cases}
+            \end{aligned}
+        \end{equation*}
+        \item Unit Impulse:
+        \begin{equation*}
+            \delta(t) = \lim_{\Delta \to 0}p_\Delta (t)
+        \end{equation*}
+        \item \bf \color{red} Calculate 
+        $$
+        \int_{ -\infty}^{t}   p_\Delta(t)  dt
+        $$
+        Hint: there are three possible cases.
+    \end{itemize}
+    \column{0.3\linewidth}
+\includegraphics[width=0.7\linewidth,trim=0 0 0 0cm,clip]{figures/unitpulse.png}
+\end{columns}
+\end{frame}
+
+\begin{frame}{}
+    
+\end{frame}
+
+\begin{frame}{Unit Step}
+
+    \small
+\begin{columns}
+    \column{0.6\linewidth}
+    \begin{itemize}
+        \item  Integration of rectangular pulse:
+        \begin{equation*}
+            \begin{aligned}
+                u_\Delta(t)= \int_{ -\infty}^{t}   p_\Delta(t) = \begin{cases}
+                    1,\quad t \geq \cfrac{\Delta}{2}\\
+                    \tfrac{1}{\Delta}(t + \tfrac{\Delta}{2}), \quad -\cfrac{\Delta}{2} \leq t \leq \cfrac{\Delta}{2}\\
+                    0, \quad t < -\cfrac{\Delta}{2}
+                \end{cases}
+            \end{aligned}
+        \end{equation*}
+        \item Limit case:
+        \begin{equation*}
+            \lim_{\Delta \to 0}u_\Delta (t) = \begin{cases}
+                    1,\quad t \geq 0\\
+                    0, \quad t <0
+                \end{cases}
+        \end{equation*}
+
+    \end{itemize}
+    \column{0.4\linewidth}
+    \begin{itemize}
+            \item A common case is to ignore $t=0$ case, which gives us unit step function as
+        \begin{equation*}
+        u(t) = \begin{cases}
+                    1,\quad t \geq 0\\
+                    0, \quad t <0
+                \end{cases}
+        \end{equation*}
+    \end{itemize}
+\includegraphics[width=0.35\linewidth,trim=0 0 0 0cm,clip]{figures/unitstep.png}
+\end{columns}
+\end{frame}
+
+\begin{frame}{Ramp Signal}
+The ramp signal is $r(t) = t u(t)$
+\begin{columns}
+    \column{0.4\linewidth}
+    \begin{itemize}
+        \item The relation between the ramp, the unit step, and the unit impulse:
+        \begin{equation*}
+            \begin{aligned}
+                \cfrac{dr(t)}{dt} & = u(t)\\
+                \cfrac{d^2r(t)}{dt^2} & = \delta(t)
+            \end{aligned}
+        \end{equation*}
+    \end{itemize}
+    \column{0.6\linewidth}
+    \includegraphics[width=0.65\linewidth,trim=0 0 0 0cm,clip]{figures/ramp_function.png}
+    \end{columns}
+\end{frame}
+
+\begin{frame}{Triangular Pulse}
+The triangular pulse is 
+\begin{columns}
+    \column{0.4\linewidth}
+    \begin{equation*}
+    \begin{aligned}
+        \Lambda(t) = \begin{cases}
+            t ,\quad 0 \leq t \leq 1\\
+            -t + 2, \quad 1 < t \leq 2\\
+            0,\quad \textrm{otherwise}
+        \end{cases}
+    \end{aligned}
+    \end{equation*}
+    \begin{itemize}
+        \item $ \Lambda(t)$ can also be written as:
+        \begin{equation*}
+            \begin{aligned}
+                \Lambda(t) =   r(t) - 2r(t-1) + r(t-2)
+            \end{aligned}
+        \end{equation*}
+    \end{itemize}
+        \column{0.6\linewidth}
+        \includegraphics[width=0.85\linewidth,trim=0 0 0 0cm,clip]{figures/triangular_pulse.png}
+    \end{columns}
+\end{frame}
+
+\begin{frame}[allowframebreaks]{Triangular Pulse as Ramp Functions}
+Let's verify this by evaluating \( \Lambda(t) \) at different intervals:
+
+\begin{columns}
+    \column{0.5\linewidth}
+        First, find out the first part:
+
+    \begin{equation*}
+            \begin{aligned}
+                \Lambda_1(t) =  \begin{cases}
+            t ,\quad 0 \leq t \leq 1\\
+            0,\quad \textrm{otherwise}
+        \end{cases}
+            \end{aligned}
+        \end{equation*}
+    which can be written as:
+
+can be written using the ramp function \( r(t) \) as:
+    \begin{equation*}
+        \Lambda_1(t) = r(t) - r(t-1)
+    \end{equation*}
+    \column{0.5\linewidth}
+    \includegraphics[width=0.75\linewidth,trim=0 0 0 0cm,clip]{figures/lambda_1.png}
+\end{columns}
+
+\begin{columns}
+    \column{0.5\linewidth}
+    Second part:
+        \begin{equation*}
+            \begin{aligned}
+                \Lambda_1(t) =  \begin{cases}
+            -t + 2, \quad 1 < t \leq 2\\
+            0,\quad \textrm{otherwise}
+        \end{cases}
+            \end{aligned}
+        \end{equation*}
+
+can be written using the ramp function \( r(t) \) as:
+    \begin{equation*}
+        \Lambda_1(t) = r(t-2) - r(t-1)
+    \end{equation*}
+    \column{0.5\linewidth}
+    \includegraphics[width=0.95\linewidth,trim=0 0 0 0cm,clip]{figures/lambda_2.png}
+\end{columns}
+
+    Putting together
+    \includegraphics[width=0.40\linewidth,trim=0 0 0 0cm,clip]{figures/lambda_1_2.png}
+
+    \bigskip
+
+    \small
+    
+    Code for the graph: \url{https://github.com/rahulbhadani/CPE381_FA26/blob/main/Code/Ch03_ramp.m}
+
+\end{frame}
+
+\begin{frame}{Sifting Property}
+The product of $f (t)$ and $\delta(t)$ gives zero everywhere except at the origin where we get an impulse of area $f (0)$, that is, $f (t)\delta(t) = f (0)\delta(t)$.
+
+Hence,
+
+$$
+\int_{-\infty}^\infty f(t)\delta(t)dt = \int_{-\infty}^\infty f(0)\delta dt = f(0) \int_{-\infty}^\infty\delta (t) dt  = f(0)
+$$
+This is called \textbf{Sifting Property}.
+
+If we delay or advance the $\delta(t)$ function in the integrated, the result is that all values of $f (t)$ are sifted out except for the value corresponding to the location of the delta function, that is,
+
+$$
+\int_{-\infty}^\infty f(t)\delta(t - \tau)dt  = \int_{-\infty}^\infty f(\tau)\delta(t- \tau) dt  = f(\tau) \int_{-\infty}^\infty \delta(t-\tau) dt  = f(\tau)\quad \text{for any }\tau
+$$
+
+\end{frame}
+
+\begin{frame}{Generic Representation of Signals}
+Hence, if we do integration in terms of variable $\tau$, we get a generic representation of signals in terms of impulse and shifted impulse.
+\begin{columns}
+    \column{0.45\linewidth}
+    $x(t) = \int_{-\infty}^\infty x(\tau ) \delta(t-\tau)d\tau $
+
+        \includegraphics[width=0.85\linewidth,trim=0 0 0 0cm,clip]{figures/signal_multiplication.png}
+
+    \column{0.55\linewidth}
+    \includegraphics[width=0.85\linewidth,trim=0 0 0 0cm,clip]{figures/signal_sums.png}
+        \begin{itemize}
+            \item Approximation of $x(t)$:
+            \footnotesize
+            {
+            \begin{equation*}
+                x_\Delta(t) = \sum_{-\infty}^\infty x_\Delta(t-k\Delta) = \sum_{-\infty}^\infty x(k\Delta) p_\Delta(t-k\Delta)\Delta
+            \end{equation*}
+            }
+        \end{itemize}
+\end{columns}
+In the limit as $\Delta \to 0$ these pulses become impulses, separated by an infinitesimal value:
+
+$\lim_{\Delta \to 0 }x_\Delta(t) \to x(t)  =  \int_{-\infty}^\infty x(\tau ) \delta(t-\tau)d\tau $
+    
+\end{frame}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\subsection{Modulation and Windowing}
+
+%-----------------------------------------
+
+\begin{frame}
+    \subsectionpage
+\end{frame}
+
+\begin{frame}{Modulation}
+    Multiplication by a complex exponential shifts the frequency of the original signal.
+    \begin{block}{Definition}
+        Superimposing a low-frequency signal on a high-frequency carrier signal is called \textbf{Modulation}.
+    \end{block}
+    
+    \textbf{Example:}
+
+    Consider an exponential signal $x(t) = e^{j\Omega_0 t}$ of frequency $\Omega_0$. If we multiply an exponential $e^{j\phi t}$ with $x(t)$, then:
+    $$
+    x(t)e^{j\phi t} = e^{j(\Omega_0 + \phi) t} = \cos((\Omega_0 + \phi) t) + j \sin((\Omega_0 + \phi) t)
+    $$
+
+    $
+    \phi > 0: 
+    $ the frequency of new exponential is greater than $\Omega_0$, otherwise lower.
+    
+\end{frame}
+
+\begin{frame}{Various Types of Modulation}
+$A(t)cos( \Omega(t)t + \theta(t) )$
+    \begin{itemize}
+        \item $A(t)$ changes: Amplitude Modulation
+\item $\Omega(t)$ changes: Frequency Modulation
+\item $\theta(t)$ changes: Phase Modulation
+    \end{itemize}
+\end{frame}
+
+\begin{frame}{Windowing}
+
+\begin{columns}
+    \column{0.5\linewidth}
+        For a window signal $w(t)$, the time-windowed signal 
+        
+        $x(t)w(t)$ displays $x(t)$ within the support of $w(t)$.
+        
+    \textbf{Example:}
+
+    $x(t) = \sin(2\pi t)$
+
+    \begin{equation*}
+        w(t) = \begin{cases} 1 \quad \text{if } -0.5 \leq t \leq 0.5 \\ 0 \quad \text{otherwise} \end{cases}
+    \end{equation*}
+
+\small
+
+    Code for the graph: \url{https://github.com/rahulbhadani/CPE381_FA26/blob/main/Code/Ch03_windowing.m}
+    \column{0.5\linewidth}
+            \includegraphics[width=0.65\linewidth,trim=0 0 0 0cm,clip]{figures/signal_windowing.pdf}
+\end{columns}
+
+\end{frame}
+
+\begin{frame}{Classwork}
+    
+\end{frame}
+
+\begin{frame}{Classwork}
+    
+\end{frame}
+\begin{frame}{Classwork}
+    
+\end{frame}
+\begin{frame}{Classwork}
+    
+\end{frame}
+\begin{frame}{Classwork}
+    
+\end{frame}
+\begin{frame}{Classwork}
+    
+\end{frame}
+\begin{frame}{Classwork}
+    
+\end{frame}
+\begin{frame}{Classwork}
+    
+\end{frame}
+\begin{frame}{Classwork}
+    
+\end{frame}
+
+
+\subsection{Linearity of Signals}
+
+\begin{frame}
+    \subsectionpage
+\end{frame}
+
+\begin{frame}{Properties of Linearity}
+
+    A signal $f$ is linear if it has these properties,
+
+    \begin{enumerate}
+        \item Homogeneity (scaling): $f(at) = af(t)$ where $a$ is a constant scalar.
+        \item Additivity: $f(t_1+t_2) = f(t_1) + f(t_2)$.
+    \end{enumerate}
+    
+    \bigskip
+
+    \centering
+
+    The homogeneity and additivity together are called the \textbf{principle of superposition}
+\end{frame}
+
+\begin{frame}{Example 1}
+
+    Consider a signal $f(t) = 5t$.  Does it satisfy homogeneity?
+
+    \bigskip
+
+    \textbf{Solution:}
+
+    \begin{enumerate}
+        \item Apply the function to a scaled input, i.e. $a \cdot t$: $$f(a\cdot t) = 5 · (a\cdot t) = 5a t$$
+        \item Now, scale the output $f(t)$ by the same factor $a$: $$a\cdot f(t) = a\cdot  (5t) = 5at$$
+        \item LHS = RHS. Hence it satisfies homogeneity.
+    \end{enumerate}
+    
+\end{frame}
+
+\begin{frame}{Example 2}
+    
+    Consider a signal $f(t) = 5t$.  Does it satisfy additivity?
+
+    \bigskip
+
+    \textbf{Solution:}
+
+    \begin{enumerate}
+        \item Apply the function to the sum of two inputs $t_1$ and $t_2$: $$f(t_1 + t_2) = 5 · (t_1 + t_2) = 5t_1 + 5t_2$$
+        \item Now, add the outputs of the function applied to each input individually: $$ f(t_1) + f(t_2) = (5t_1) + (5t_2) = 5t_1 + 5t_2 $$
+        \item LHS = RHS. Hence it satisfies additivity.
+    \end{enumerate}
+
+
+\end{frame}
+
+\begin{frame}{Example 3}
+    
+
+    Consider a signal $f(t) = 5t+3$.  Does it satisfy homogeneity?
+
+    \vfill
+
+\end{frame}
+
+\begin{frame}{}
+    
+\end{frame}
+
+\begin{frame}{Example 4}
+    
+
+    Consider a signal $f(t) = t^2$.  Does it satisfy additivity?
+
+    \vfill
+
+\end{frame}
+
+\begin{frame}{}
+    
+\end{frame}
+
+
+\section{Continuous-Time Systems}
+
+\begin{frame}
+    \sectionpage
+\end{frame}
+
+
+\begin{frame}{System Thinking}
+    \begin{center}
+        
+    \textbf{System is an abstraction.}
+    
+    Think of a device or a process as a system -- something that transforms one signal into another.
+    
+    \centering
+      \includegraphics[width=0.65\linewidth,trim=0 0 0 0cm,clip]{figures/system.pdf}
+
+      \end{center}
+      
+\end{frame}
+
+\begin{frame}{Continuous-time Systems}
+    \begin{center}
+        \bf \Large
+        When inputs and outputs are continuous, the system is continuous.
+    \end{center}
+\end{frame}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\subsection{Linear Time-Invariant (LTI) Continuous-Time Systems}
+
+%-----------------------------------------
+
+\begin{frame}
+    \subsectionpage
+\end{frame}
+
+\begin{frame}{Linear Time Invariant (LTI) Continuous-Time Systems}
+    For most analyses at system-level, we care about the following properties:
+    \begin{itemize}
+        \item Linearity
+        \item Time-invariance
+        \item Causality
+        \item Stability
+    \end{itemize}
+\end{frame}
+
+\begin{frame}{Linearity of a System}
+   \large
+   \centering
+   \begin{equation*}
+\mathcal{S}[a \cdot x(t) + b \cdot y(t)] = \mathcal{S}[a \cdot x(t)] + \mathcal{S}[b \cdot y(t)] = a \cdot \mathcal{S}[x(t)] + b \cdot \mathcal{S}[y(t)]
+\end{equation*}
+\end{frame}
+
+\begin{frame}{Time-invariance of a System}
+     \large
+   If
+   \begin{equation*}
+x(t) \Rightarrow y(t) = \mathcal{S}[x(t)],
+\end{equation*}
+
+then, the  time-invariance says:
+\begin{equation*}
+x(t \mp \tau) \Rightarrow y(t \mp \tau) = \mathcal{S}[x(t \mp \tau)].
+\end{equation*}
+\end{frame}
+
+\begin{frame}{Linear Time Invariant (LTI) Systems}
+    \begin{center}
+        \bf \large 
+        \begin{gradbox}{}
+            A system that satisfies both linearity and time-invariance is an LTI system.
+        \end{gradbox}
+    \end{center}
+\end{frame}
+
+\begin{frame}{Class Problem 1}
+    Consider a system 
+    $g(t) = \mathcal{S}[f(t)] = a [f(t)]^2 - b [f(t)]$
+    \begin{itemize}
+        \item Is this system linear?
+        \item Is this system time-invariant?
+    \end{itemize}
+\end{frame}
+
+\begin{frame}{Class Problem 2}
+    Consider 
+    \begin{equation*}
+        g(y) = \Scal[f(t)] = \int_{-\infty}^\infty  f(t)\textrm{rect}(y-t)dt
+    \end{equation*}
+    \begin{itemize}
+        \item Is this system linear?
+        \item Is this system time-invariant?
+    \end{itemize}
+\end{frame}
+
+\begin{frame}{Static Systems vs Dynamic Systems}
+    \begin{gradbox}{}
+        In static systems, output depends on the current input but not on the historical input or output
+    \end{gradbox}
+\vspace{10pt}
+    \begin{gradblock}{}
+    In dynamic systems, output depends on current input, past inputs, and past outputs.
+    \end{gradblock}
+\vspace{10pt}
+       \begin{gradbox}{}
+       Differential equations are used to represent dynamic systems (literature also refers to them as dynamical systems).
+    \end{gradbox}
+
+\end{frame}
+
+\begin{frame}{Representation of Dynamic Systems}
+Dynamic systems are represented by ordinary differential equations (ODE) with constant coefficients:
+\small
+\begin{equation*}
+\begin{aligned}
+    a_n \frac{d^n y(t)}{dt^n} + & a_{n-1} \frac{d^{n-1} y(t)}{dt^{n-1}} + \cdots + a_1 \frac{dy(t)}{dt} + a_0 y(t) = \\
+   &  b_m \frac{d^m x(t)}{dt^m} + b_{m-1} \frac{d^{m-1} x(t)}{dt^{m-1}} + \cdots + b_1 \frac{dx(t)}{dt} + b_0 x(t)
+\end{aligned}
+\end{equation*}
+with $n$ initial conditions, $x(t) = 0$ for $t < 0$.
+
+\bf
+\begin{center}
+    This equation represents a linear ordinary differential equation with constant coefficients, where $ y(t)$  is the output,  $x(t)$  is the input, and  $a_i$  and  $b_i$  are the constant coefficients. 
+\end{center}
+\end{frame}
+
+\begin{frame}{Response of a Dynamic Systems}
+    Assessing the output of the system:
+    \begin{itemize}
+        \item Consider output due to input only, considering initial conditions to be zero.  \textbf{(zero-state response)}.
+        \item Consider output due to initial conditions only, considering inputs to be zero. \textbf{(zero-input response)}.
+        \item Complete response is the sum of the above two.
+
+
+    \end{itemize}
+\end{frame}
+
+\begin{frame}{Differential Equations for Ideal Systems}
+\begin{columns}
+    \column{0.33\linewidth}
+    Electrical Inductance
+        \centering
+      \includegraphics[width=0.8\linewidth,trim=0 0 0 0cm,clip]{figures/electrical_inductance.png}
+ \column{0.33\linewidth}
+ Electrical Capacitance
+        \centering
+      \includegraphics[width=0.8\linewidth,trim=0 0 0 0cm,clip]{figures/electrical_capacitance.png}
+ \column{0.33\linewidth}
+ Electrical Resistance
+        \centering
+      \includegraphics[width=0.8\linewidth,trim=0 0 0 0cm,clip]{figures/electrical_resistance.png}
+      
+\end{columns}
+    
+\end{frame}
+
+\begin{frame}{Parallel RLC Circuit}
+\begin{columns}
+    \column{0.5\linewidth}
+    $$
+    \cfrac{v(t)}{R} + C \cfrac{dv(t)}{dt} + \cfrac{1}{L}\int_0^t v(t)dt = r(t)
+    $$
+    \column{0.5\linewidth}
+     \includegraphics[width=0.99\linewidth,trim=0 0 0 0cm,clip]{figures/parallel_RLC.png}
+      
+\end{columns}
+    
+\end{frame}
+
+\begin{frame}{Damped Mass-spring Oscillator}
+\begin{columns}
+    \column{0.5\linewidth}
+    $k = $ stiffness of the spring
+
+    $b = $ damping coefficient
+
+    $m = $ mass of the block
+
+    $y = y(t)$ time-dependent displacement from Equilibrium point.
+
+    $
+    my'' = F - ky - by'
+    $
+
+    \column{0.5\linewidth}
+ \includegraphics[width=0.75\linewidth,trim=0 0 0 0cm,clip]{figures/mass_spring_oscillator.png}
+    
+\end{columns}
+    
+\end{frame}
+
+\subsection{Convolutional Integral}
+
+%-----------------------------------------
+
+\begin{frame}
+    \subsectionpage
+\end{frame}
+
+\begin{frame}{Response to an Impulse Signal}
+
+\large
+\begin{center}
+    Output when a system is presented with a unit-impulse signal is called \textbf{response to an impulse signal}, or in short \textbf{impulse response}.
+\end{center}
+    
+\end{frame}
+
+\begin{frame}{Why is Impulse Response Useful?}
+It allows us to predict what the system's output will look like in the \textbf{time-domain}.
+
+\begin{gradblock}{}
+
+Do you remember generalized signal representation using impulse signals?
+\LARGE
+$$
+x(t) = \int_{-\infty}^\infty x(\tau) \delta (t - \tau)d \tau
+$$
+  
+\end{gradblock}
+
+    \color{red}\bf What would we get if we pass $x(t)$ through an LTI system $\Scal$?
+\end{frame}
+
+\begin{frame}{Impulse Response}
+What would we get if we pass $x(t)$ through an LTI system $\Scal$?
+
+\vspace{10pt}
+
+We get
+
+\begin{gradyellow}
+\Large
+    $$
+    y(t) = \int_{-\infty}^\infty x(\tau) h (t - \tau)d \tau
+    $$
+\end{gradyellow}
+
+\begin{columns}
+    \column{0.4\linewidth}
+    where $h(t)$ is the impulse response. Out is the superposition of the responses of each term in the figure.
+    \column{0.6\linewidth}
+    \includegraphics[width=0.88\linewidth,trim=0 0 0 0cm,clip]{figures/signal_sums.png}
+\end{columns}
+
+
+
+
+\end{frame}
+
+\begin{frame}{Definition of Convolution Integral}
+
+The response of an LTI system $\Scal$, represented by its impulse response $h(t)$, to any signal $x(t)$ is the \textbf{convolution integral}.
+
+\begin{gradgreen}
+    
+    $$
+    y(t) =  \int_{-\infty}^\infty  x(\tau) h(t-\tau)d\tau =  \int_{-\infty}^\infty  x(t-\tau) h(\tau) d\tau  = [x * h](t) = [h*x](t)
+    $$
+    
+\end{gradgreen}
+    where $*$ stands for the convolution integral of the input signal $x(t)$ and the impulse response $h(t)$ of the system.
+\end{frame}
+
+\begin{frame}{Some Points on Convolution Integral}
+
+\Large
+\begin{itemize}
+    \item Impulse response is fundamental to characterizing an LTI system.
+    \item A system represented by the convolution integral is LTI. It is a general representation of an LTI system.
+\end{itemize}
+\end{frame}
+\begin{frame}{Putting Multiple Systems Together}
+\begin{columns}
+    \column{0.5\linewidth}
+    \includegraphics[width=0.7\linewidth,trim=0 0 0 0cm,clip]{figures/connected_systems.png}
+    \column{0.5\linewidth}
+
+\Large 
+    A: $h(t) = [h_1 * h_2] (t) = [h_2 * h_1](t)$
+
+    B: $h(t) = h_1(t) + h_2(t)$
+
+    C: $h(t) = [h_1 - h*h_1*h_2](t)$
+\end{columns}    
+\end{frame}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\subsection{Causality and Stability}
+
+%-----------------------------------------
+
+\begin{frame}
+    \subsectionpage
+\end{frame}
+
+\begin{frame}{Causality}
+    \begin{itemize}
+        \item Cause-effect relationship,
+        \item A system is causal if
+        \begin{gradred}
+            \begin{itemize}
+                \item whenever its input $x(t) = 0$, and there is no initial condition, $y(t) = 0$.
+                \item the output $y(t)$ doesn't depend on the future inputs.
+            \end{itemize}
+        \end{gradred}
+        \item Causality is independent of linearity and time-invariance.
+    \end{itemize}
+    \bf LTI system with impulse response $h(t)$ is causal if $h(t) = 0$ for $t < 0$, and 
+    \begin{gradblue}
+        $$
+    y(t) = \int_0^t x(\tau) h(t-\tau)d\tau
+    $$
+    \end{gradblue}
+    
+\end{frame}
+
+\begin{frame}{Bounded Input Bounded Output Stability}
+\begin{itemize}
+    \item If input is bounded, i.e. $ |x(t)| \leq M, M  < \infty$, then output is bounded under certain conditions.
+    \item Condition for bounded output is
+\begin{gradyellow}
+   $$ |y(t)| = \bigg| \int_{-\infty}^\infty x(t-\tau)h(\tau)d\tau \bigg| \leq \int_{-\infty}^\infty|x(t-\tau)| | h(\tau)| d\tau \leq M \int_{-\infty}^\infty |h(\tau)| d\tau \leq MK <\infty $$
+
+   where the integral $\int_{-\infty}^\infty |h(\tau)|d\tau \leq K < \infty$
+
+i.e., the impulse is absolutely integrable.
+\end{gradyellow}
+\end{itemize}
+\end{frame}
+
+\begin{frame}{To Calculate if an LTI system is BIBO Stable}
+
+\Large
+    \begin{itemize}
+        \item Compute its impulse response $h(t)$.
+        \item Integrate it over $-\infty$ to $\infty$, effectively over the given support of the signal.
+        \item If the integration is finite, the system is BIBO Stable.
+    \end{itemize}
+\end{frame}
+
+\begin{frame}{Classwork}
+    
+\end{frame}
+
+\begin{frame}{Classwork}
+    
+\end{frame}
+\begin{frame}{Classwork}
+    
+\end{frame}
+\begin{frame}{Classwork}
+    
+\end{frame}
+\begin{frame}{Classwork}
+    
+\end{frame}
+\begin{frame}{Classwork}
+    
+\end{frame}
+\begin{frame}{Classwork}
+    
+\end{frame}
+\begin{frame}{Classwork}
+    
+\end{frame}
+\begin{frame}{Classwork}
+    
+\end{frame}
+\begin{frame}{Classwork}
+    
+\end{frame}
+
+
+\begin{frame}{Up Next}
+\begin{itemize}
+	\item Fourier Series
+%    \item Continuous-time Systems
+%    \begin{itemize}
+%        \item Linear-Time Invariance
+%        \item Static vs Dynamic Systems
+%        \item Convolutional Integral
+%        \item BIBO Stability
+%    \end{itemize}
+\end{itemize}
+    
+\end{frame}
+\end{document}
