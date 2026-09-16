@@ -17,11 +17,6 @@
 % \usepackage{mathbb}
 \usepackage{rahul_math}
 \usepackage{bigints}
-\usepackage{hyperref}
-\hypersetup{
-colorlinks,
-citecolor=Violet,
-linkcolor=Black}
 \usepackage{graphicx} % Allows including images
 \usepackage{booktabs} % Allows the use of \toprule, \midrule and \bottomrule in tables
 \usepackage{tikz,pgfplots}
@@ -186,8 +181,8 @@ We care about the following properties when dealing with signals:
 \begin{frame}{Signal Stretching along $x$-axis}
 
     \begin{itemize}
-    \item $f(x) \to  f(ax); \quad a > 1$ : Stretch the graph of $f(x)$ `$a$' times along x-axis.
-    \item $f(x) \to f\bigg(\cfrac{1}{a} x\bigg); \quad a > 1$ : Shrink the graph of $f(x)$ `$a$' times along x-axis.
+    \item $f(x) \to  f(ax); \quad a > 1$ : Shrink the graph of $f(x)$ `$a$' times along x-axis.
+    \item $f(x) \to f\bigg(\cfrac{1}{a} x\bigg); \quad a > 1$ : Stretch the graph of $f(x)$ `$a$' times along x-axis.
     
     \end{itemize}
 
@@ -436,7 +431,7 @@ The triangular pulse is
 Let's verify this by evaluating \( \Lambda(t) \) at different intervals:
 
 \begin{columns}
-    \column{0.5\linewidth}
+    \column{0.45\linewidth}
         First, find out the first part:
 
     \begin{equation*}
@@ -454,7 +449,52 @@ can be written using the ramp function \( r(t) \) as:
         \Lambda_1(t) = r(t) - r(t-1)
     \end{equation*}
     \column{0.5\linewidth}
-    \includegraphics[width=0.75\linewidth,trim=0 0 0 0cm,clip]{figures/lambda_1.png}
+    \resizebox{!}{0.5\linewidth}{
+\begin{tikzpicture}[
+    x=1.3cm, y=1.3cm,
+    axisline/.style={red!80!black, line width=1.2pt, ->},
+    curve/.style={green!50!black, line width=1.6pt},
+    guide/.style={green!50!black, thick, dashed},
+    lbl/.style={green!50!black, font=\small\bfseries,
+                fill=white, inner sep=2pt},
+    tick/.style={green!50!black, line width=1pt}
+]
+
+% ---------- grid ----------
+\draw[lightgray!40, thin, step=0.5] (-3,-2) grid (3,2);
+
+% ---------- axes ----------
+\draw[axisline] (-3.4,0) -- (3.6,0) node[right, black, inner sep=4pt] {$t$};
+\draw[axisline] (0,-2.4) -- (0,2.5) node[above, black, inner sep=4pt]
+      {$\Lambda_1(t)$};
+
+% ---------- guide to the plateau ----------
+\draw[guide] (1,1) -- (0,1);
+
+% ---------- signal ----------
+\draw[curve] (-3,0) -- (0,0) -- (1,1) -- (3,1);
+\foreach \p in {(0,0),(1,1)}
+  \fill[green!50!black] \p circle (2.2pt);
+
+% ---------- ticks ----------
+\foreach \u in {-3,-2,-1,1,2,3}
+  \draw[tick] ([yshift=-3.5pt]\u,0) -- ([yshift=3.5pt]\u,0);
+\foreach \v in {-2,-1.5,-1,-0.5,0.5,1,1.5,2}
+  \draw[tick] ([xshift=-3.5pt]0,\v) -- ([xshift=3.5pt]0,\v);
+
+% ---------- tick labels ----------
+\foreach \u in {-3,-2,-1,1,2,3}
+  \node[lbl, below=5pt] at (\u,0) {$\u$};
+\foreach \v in {-2,-1.5,-1,-0.5,0.5,1,1.5,2}
+  \node[lbl, left=5pt] at (0,\v) {$\v$};
+\node[lbl, anchor=north east, xshift=-2pt, yshift=-2pt] at (0,0) {$0$};
+
+% ---------- title above the grid ----------
+\node[green!50!black, font=\bfseries, anchor=south] at (0,2.9)
+      {$\Lambda_1(t) = r(t) - r(t-1)$};
+
+\end{tikzpicture}
+}
 \end{columns}
 
 \begin{columns}
@@ -462,7 +502,7 @@ can be written using the ramp function \( r(t) \) as:
     Second part:
         \begin{equation*}
             \begin{aligned}
-                \Lambda_1(t) =  \begin{cases}
+                \Lambda_2(t) =  \begin{cases}
             -t + 2, \quad 1 < t \leq 2\\
             0,\quad \textrm{otherwise}
         \end{cases}
@@ -471,10 +511,57 @@ can be written using the ramp function \( r(t) \) as:
 
 can be written using the ramp function \( r(t) \) as:
     \begin{equation*}
-        \Lambda_1(t) = r(t-2) - r(t-1)
+        \Lambda_2(t) = r(t-2) - r(t-1)
     \end{equation*}
     \column{0.5\linewidth}
-    \includegraphics[width=0.95\linewidth,trim=0 0 0 0cm,clip]{figures/lambda_2.png}
+    \resizebox{!}{0.5\linewidth}{
+    \begin{tikzpicture}[
+    x=1.3cm, y=1.3cm,
+    axisline/.style={red!80!black, line width=1.2pt, ->},
+    curve/.style={green!50!black, line width=1.6pt},
+    guide/.style={green!50!black, thick, dashed},
+    lbl/.style={green!50!black, font=\small\bfseries,
+                fill=white, inner sep=2pt},
+    tick/.style={green!50!black, line width=1pt}
+]
+
+% ---------- grid ----------
+\draw[lightgray!40, thin, step=0.5] (-3,-2) grid (3,2);
+
+% ---------- axes ----------
+\draw[axisline] (-3.4,0) -- (3.6,0) node[right, black, inner sep=4pt] {$t$};
+\draw[axisline] (0,-2.4) -- (0,2.5) node[above, black, inner sep=4pt]
+      {$\Lambda_2(t)$};
+
+% ---------- guide to the plateau ----------
+\draw[guide] (2,-1) -- (0,-1);
+
+% ---------- signal ----------
+\draw[curve] (-3,0) -- (1,0) -- (2,-1) -- (3,-1);
+\foreach \p in {(1,0),(2,-1)}
+  \fill[green!50!black] \p circle (2.2pt);
+
+% ---------- ticks ----------
+\foreach \u in {-3,-2,-1,1,2,3}
+  \draw[tick] ([yshift=-3.5pt]\u,0) -- ([yshift=3.5pt]\u,0);
+\foreach \v in {-2,-1.5,-1,-0.5,0.5,1,1.5,2}
+  \draw[tick] ([xshift=-3.5pt]0,\v) -- ([xshift=3.5pt]0,\v);
+
+% ---------- tick labels ----------
+\foreach \u in {-3,-2,-1,2,3}
+  \node[lbl, below=5pt] at (\u,0) {$\u$};
+% the falling edge starts at t=1, so its label steps aside
+\node[lbl, below=5pt, xshift=-6pt] at (1,0) {$1$};
+\foreach \v in {-2,-1.5,-1,-0.5,0.5,1,1.5,2}
+  \node[lbl, left=5pt] at (0,\v) {$\v$};
+\node[lbl, anchor=north east, xshift=-2pt, yshift=-2pt] at (0,0) {$0$};
+
+% ---------- title above the grid ----------
+\node[green!50!black, font=\bfseries, anchor=south] at (0,2.9)
+      {$\Lambda_2(t) = r(t-2) - r(t-1)$};
+
+\end{tikzpicture}
+    }
 \end{columns}
 
     Putting together
