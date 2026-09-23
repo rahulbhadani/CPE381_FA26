@@ -1,0 +1,513 @@
+\documentclass[12pt, xcolor=dvipsnames,svgnames,x11names]{article}
+
+\input{common}
+
+\newtcolorbox{answerbox}{
+  enhanced,
+  breakable,
+  sharp corners=northwest,
+  sharp corners=southeast,
+  colback=white,
+  colframe=red!75!black,
+  halign=left, 
+  boxrule=2pt, 
+  left=1em, 
+  right=1em, 
+  top=0.5em, 
+  bottom=0.5em, 
+  drop shadow=coolGray,
+  title=Answer
+}
+
+\renewcommand{\familydefault}{\sfdefault}
+
+
+% Redefine \maketitle to include tcolorbox
+\makeatletter
+\renewcommand{\maketitle}{%
+      \begin{center}
+         \begin{tcolorbox}[
+               enhanced,
+               colback=white,
+               colframe=stormblue,
+               boxrule=1pt,
+               arc=3pt,
+               left=0pt,
+               right=0pt,
+               top=0pt,
+               bottom=0pt,
+               drop shadow={goldenrod!25!white},
+         ]
+               % Header section
+               \begin{tcolorbox}[
+                  enhanced,
+                  colback=goldenrod,
+                  colframe=goldenrod,
+                  boxrule=0pt,
+                  arc=3pt,
+                  sharp corners=south,
+                  left=2em,
+                  right=2em,
+                  top=1em,
+                  bottom=1em
+               ]
+                  \centering
+                  {\LARGE\bfseries\textcolor{white}{\@title}}
+               \end{tcolorbox}
+               
+               % Content section
+               \vspace{1em}
+               \centering
+               {\large\textcolor{darkgray}{\@author}} \\[0.8em]
+               {\normalsize\textcolor{darkgray}{\@date}}
+               \vspace{1em}
+         \end{tcolorbox}
+      \end{center}
+      \vspace{2em}
+}
+\makeatother
+
+
+
+\newcommand{\hw}{Homework 1: Pre-requisites and Numerical Methods for Signals}
+\newcommand{\duedate}{Sept 11, 2026, 11:59 PM}
+\newcommand{\hwturnin}{hw01}
+
+\newenvironment{multiequation}[1][]{%
+\begin{equation}%
+   \begin{aligned}%
+   \ifx#1\@empty\else\label{#1}\fi%
+}{%
+   \end{aligned}%
+\end{equation}%
+}
+\pagestyle{fancy}
+
+\lhead{\footnotesize{\coursenumber, \courseterm}}
+\chead{}
+\rhead{\footnotesize{\emph{\hw}}}
+\lfoot{\footnotesize{\instructorname}}
+\cfoot{\footnotesize{\thepage}}
+\rfoot{\footnotesize{\textit{Last Revised:~\today}}\\ \footnotesize{The University of Alabama in Huntsville}}
+\renewcommand{\headrulewidth}{0.1pt}
+\renewcommand{\footrulewidth}{0.1pt}
+\newcommand{\minipagewidth}{0.8\columnwidth}
+
+\renewcommand{\thefootnote}{\fnsymbol{footnote}}
+
+
+\renewcommand{\headrulewidth}{0.1pt}
+\renewcommand{\footrulewidth}{0.1pt}
+
+\renewcommand{\thefootnote}{\fnsymbol{footnote}}
+
+\newcommand{\showanswers}{no}
+
+\begin{document}
+
+
+\title{\textsc{\hw\\
+\coursenumber}}
+\author{Instructor: \instructorname}
+\date{Due: \duedate\\ 100 points}
+
+\maketitle
+
+\setlength{\unitlength}{1in}
+You are allowed to use a generative model-based AI tool for your assignment. However, you must submit an accompanying reflection report detailing how you used the AI tool, the specific query you made, and how it improved your understanding of the subject. You are also required to submit screenshots of your conversation with any large language model (LLM) or equivalent conversational AI, clearly showing the prompts and your login avatar. Some conversational AIs provide a way to share a conversation link, and such a link is desirable for authenticity. Failure to do so may result in actions taken in compliance with the plagiarism policy.
+
+Additionally, you must include your thoughts on how you would approach the assignment if such a tool were not available. Failure to provide a reflection report for every assignment where an AI tool is used may result in a penalty, and subsequent actions will be taken in line with the plagiarism policy.
+
+\subsection*{Submission instruction:}
+Upload a .pdf on Canvas with the format  \texttt{CPE381-LastFirst-HW-XX}. For example, if your name is Sam Wells, your file name should be \texttt{CPE381-WellsSam-HW-XX.pdf}.  If there is a programming assignment, then you should include your source code along with your PDF files in a zip file \texttt{CPE381-LastFirst-HW-XX.zip}. 
+Your submission must contain your name and UAH Charger ID or your UAH email address.  Please number your pages as well.
+\vskip 1em
+\hrule
+\vskip 1em
+
+{{\LARGE \textbf{Theory}}}
+
+\section{Let's face the truth. (10 points)} % (fold)
+Prove:
+\begin{enumerate}
+      \item $1 + e^{j\pi} = 0$.
+      \item $\sin{(-\theta)} = -\sin{\theta}$ using Euler's identity.
+   \end{enumerate}
+
+\begin{answerbox}
+
+   \begin{enumerate}
+      \item Using Euler's Identity, we can write $e^{j\pi}$ as 
+      $$
+      e^{j\pi} = \cos\pi + j \sin \pi
+      $$
+
+      but $\cos\pi = -1$, and $\sin \pi = 0$, hence $e^{j\pi} = -1.$. Thus, $1 + e^{j\pi}  = 0$.
+
+      \item Using Euler's identity, 
+
+      \begin{equation}
+         \begin{split}
+               \sin \theta & = \cfrac{e^{j\theta} - e^{-j\theta}}{2j}\\
+               \text{Replace $\theta$ by $-\theta$,}\\
+               \Rightarrow \sin(-\theta) & = \cfrac{e^{-j\theta} - e^{j\theta}}{2j}\\
+               \text{Take the minus sign out of the} &\text{numerator from Right-hand side of the above equation}\\
+               \Rightarrow \sin(-\theta) & = - \cfrac{e^{j\theta} - e^{-j\theta}}{2j} = -\sin \theta
+         \end{split}
+      \end{equation}
+   \end{enumerate}
+  
+  \end{answerbox}
+
+   \section{Tigonometry Fun (20 points)}
+
+   \begin{enumerate}
+      % Question 8.32, Book: Trigonometry with calculator-based solutions (Moyer Robert E., Ayres Frank)
+      \item Verify the following identities: $1 - \cfrac{\cos^2 \theta}{1+\sin\theta} = \sin \theta$
+
+      % EXAMPLE 14.8 Trigonometry with calculator-based solutions (Moyer Robert E., Ayres Frank)
+      
+      \item Solve $\cos 2x - 3\sin x + 1 = 0$ for $x$.
+   \end{enumerate}
+   
+   \begin{answerbox}
+   
+   \begin{enumerate}
+    \item 
+
+    We know, $ \sin^2\theta  + \cos^2\theta = 1$
+    \begin{multiequation}
+        1- \cfrac{1-\sin^2\theta}{1+\sin\theta} =1 - \cfrac{(1-\sin\theta)(1+\sin\theta)}{1+\sin\theta} = 1 - (1 - \sin\theta) 
+        = \sin\theta
+    \end{multiequation}
+    \item \begin{multiequation}
+             \cos 2x - 3\sin x + 1 & = 0\\
+             (1-2\sin^2 x) - 3\sin x + 1 & = 0\\
+             -2\sin^2x - 3\sin x + 2 & = 0\\
+             2\sin^2x + 3\sin x - 2 & = 0\\
+             (2\sin x-1)(\sin x + 2) & = 0\\
+             \Rightarrow & \sin x = \cfrac{1}{2} \textrm{~~and~~} \sin x = -2
+    \end{multiequation}
+    For $\sin x = \cfrac{1}{2}$, $x = \cfrac{\pi}{6}$ and $\cfrac{5\pi}{6}$. For $\sin x = -2$, there is no solution as $\sin x \in [-1,1]$.
+\end{enumerate}
+
+
+   \end{answerbox}
+
+   \section{It's Complicated (20 points)}
+   \begin{enumerate}
+
+   % Signals and Systems A One Semester Modular Course (Khalid Sayood) 1.4 EXERCISES Q1
+
+      \item Using Euler’s formula evaluate the following complex numbers: (a) $ z = e^{j2\pi}$ (b) $z = e^{j\pi}$
+
+   % Signals and Systems A One Semester Modular Course (Khalid Sayood) 1.4 EXERCISES Q4
+      \item Using Euler’s formula derive the following: $\cos^2 \theta = \tfrac{1}{2}( 1 + \cos (2\theta))$
+   \end{enumerate}
+
+
+\begin{answerbox}
+
+\begin{enumerate}
+    \item (a) $z = e^{j2\pi}= \cos(2\pi ) + j\sin(2\pi) = 1 + 0 = 1$
+
+    (b) $z =e^{j\pi} =  \cos(\pi) + j\sin(\pi) = -1 + 0 = -1$
+    \item \begin{equation*}
+        \begin{aligned}
+            \cos^2\theta & = \bigg( \cfrac{e^{j\theta} + e^{-j\theta}}{2}\bigg)^2 = \cfrac{e^{2j\theta} + e^{-2j\theta} + 2e^{j\theta} e^{-j\theta}}{4} \\& = \cfrac{e^{2j\theta} + e^{-2j\theta}}{4} + \cfrac{2}{4} =  \cfrac{\cos(2\theta)}{2} + \cfrac{1}{2} = \tfrac{1}{2}( 1 + \cos (2\theta))
+        \end{aligned}
+    \end{equation*}
+\end{enumerate}
+
+
+\end{answerbox}
+
+   \section{It's all Derivatives (10 points)}
+   \begin{enumerate}
+   % Calculus and Linear Algebra Fundamentals and Applications (Aldo G. S. Ventre)
+   % Exercise 21.4
+      \item Taylor’s Formula is written as
+
+   $$
+   f(x) \approx g_n(x) = f(c) + f'(c)(x-c) + \cfrac{f''(c)}{2!}(x-c)^2 + \cdots + \cfrac{f^{(n)}(c)}{n!}(x-c)^n
+   $$
+
+
+   If $f(x) = e^{\sin x}$, what is the Taylor’s second degree $(n = 2)$ polynomial at around point $c = 0$ ?
+
+   % % Calculus and Linear Algebra Fundamentals and Applications (Aldo G. S. Ventre)
+   % 20.14 Solved Problems
+   \item Differentiate: (a) $f(x) = x( \ln x - 1)$, (b) $f(x) = \ln (\tan x)$.
+   \end{enumerate}
+   
+   
+   \begin{answerbox}
+   
+   \begin{enumerate}
+    \item $g_2 (x) = f(0) + f'(0) x + \cfrac{f''(0)}{2}x^2$
+
+    $$
+    f(x) = e^{\sin x} \Rightarrow f(0) = 1
+    $$
+
+    $$
+    f'(x) = e^{\sin x}\cos x \Rightarrow f'(0) = 1
+    $$
+
+    $$
+    f''(x) = e^{\sin x} \cos^2 x - e^{\sin x}\sin x \Rightarrow f''(0) = 1
+    $$
+
+    Hence, $g_2(x) = 1 + x + \cfrac{x^2}{2}$
+\end{enumerate}
+
+   \end{answerbox}
+
+
+\bigskip
+
+\bigskip
+
+
+{{\LARGE \textbf{Coding}}}
+
+\bigskip
+
+\bigskip
+
+
+
+\underline{Note:} You will need to provide all relevant MATLAB code in a zip file along with the PDF contain your solution/responses.
+
+\section{Geometric Progression (GP) and Convergence (10 Points)}
+
+Consider a GP with the first term as $a = 2.0$ and the common ratio as $r=\frac{1}{3}$. The formula for sum of a GP is 
+
+$$
+S_n = \frac{a(r^n - 1)}{(r - 1)}
+$$
+
+Write a MATLAB code to plot the sum $S_n$ as a function of $n$ to demonstrate that the sum indeed converge as $n$ approaches a very large value. You may choose $n$ upto $10000$. Label axes properly in your plot.
+
+
+\begin{answerbox}
+
+We may not need $n$ upto 10000 as convergence happens much faster. We will just choose $n$ upto 100.
+
+\begin{minted}[frame=lines,
+               framesep=2mm,
+               baselinestretch=1.2,
+               bgcolor=cpeyellow,
+               fontsize=\footnotesize]
+               {matlab}
+Sn = @(a, r, n) (a.*(r.^n - 1))./(r-1);
+a = 2.0;
+r = 1.0/3.0;
+% Varies n from 1 to 100 spaced by 1
+N = 1:1:100;
+SUM = zeros(1, length(N));
+for i = 1:length(N)
+    SUM(i) = Sn(a, r, N(i));
+    SUM(i)
+end
+f = figure;
+plot(N, SUM, 'LineWidth',2, 'Color','#432423');
+grid on;
+grid minor;
+set(gca, 'XColor', [0, 0, 0], 'YColor', [0, 0, 0], 'TickDir', 'out');
+xaxis = get(gca, 'XAxis');
+xaxis.TickLabelInterpreter = 'latex';
+yaxis = get(gca, 'YAxis');
+yaxis.TickLabelInterpreter = 'latex';
+set(gca, 'FontSize', 18);
+xlabel('n','Interpreter', 'latex');
+ylabel('$S_n$','Interpreter', 'latex');
+ylim([1.9, 3.1]);
+exportgraphics(f, 'figures/HW01_Geometric_Progression.pdf', 'BackgroundColor', 'none');
+
+\end{minted}
+
+
+\end{answerbox}
+
+
+\begin{figure}[htpb]
+\centering
+\includegraphics[width=0.6\linewidth, trim={0cm 0.0cm 0cm 0.0cm},clip]{../Code/figures/HW01_Geometric_Progression.pdf}
+\caption{Convergence of a Geometric Progression.}
+\label{fig:HW01_Geometric_Progression}
+\end{figure}
+
+
+\section{Discrete Derivative and Sampling Time (20 Points)}
+
+Consider a quadratic signal $f(t) = 3t^2 + 4t + 5$. You are required to compute the discrete derivate of $f(t)$. Compute discrete derivative using \textbf{Backward difference formula} as shown below:
+
+$$
+\Delta f(t_k) = \cfrac{f(t_k) - f(t_{k-1}) }{t_k - t_{k-1}}
+$$
+where $k$ is the index for $k$-th time-points. 
+
+Consider three scenarios:
+
+\begin{enumerate}
+   \item Compute discrete derivative with the above formula while consider uniformly sampling time of $\Delta t  = 1.0$ seconds.
+   \item Compute discrete derivative with the above formula while consider uniformly sampling time of $\Delta t  = 0.5$ seconds.
+   \item Compute discrete derivative with the above formula while consider uniformly sampling time of $\Delta t  = 0.05$ seconds.
+\end{enumerate}
+
+Assume the final time to be $t = 10$ seconds.
+
+Compare them with the analytically solved derivate $f'(t)$. Plot all four versions of derivatives. Label your axes properly, and choose appropriate DisplayName and legend for visualization.
+
+
+\begin{answerbox}
+
+We may not need $n$ upto 10000 as convergence happens much faster. We will just choose $n$ upto 100.
+
+\begin{minted}[frame=lines,
+               framesep=2mm,
+               baselinestretch=1.2,
+               bgcolor=cpeyellow,
+               fontsize=\footnotesize]
+               {matlab}
+%% Discrete Derivative and Sampling Time
+
+f = @(t) 3.*t.*t + 4.*t + 5;
+true_diff_f =  @(t) 6.*t + 4;
+t1 = 0:1:10;
+x1 = f(t1);
+t2 = 0:0.5:10;
+x2 = f(t2);
+t3 = 0:0.05:10;
+x3 = f(t3);
+y1 = delta_f(t1, x1);
+y2 = delta_f(t2, x2);
+y3 = delta_f(t3, x3);
+y_true = true_diff_f(t3);
+f = figure;
+plot(t1, y1, 'LineWidth',2, 'Color','#432423', 'DisplayName','\Delta t = 1');
+hold on;
+plot(t2, y2, 'LineWidth',2, 'Color','#A42368', 'DisplayName','\Delta t = 0.5');
+plot(t3, y3, 'LineWidth',2, 'Color','#989233', 'DisplayName','\Delta t = 0.05');
+plot(t3, y_true, 'LineWidth',2, 'Color','#F14056', ...
+    'LineStyle','--', 'DisplayName','True Derivative');
+grid on;
+grid minor;
+set(gca, 'XColor', [0, 0, 0], 'YColor', [0, 0, 0], 'TickDir', 'out');
+xaxis = get(gca, 'XAxis');
+xaxis.TickLabelInterpreter = 'latex';
+yaxis = get(gca, 'YAxis');
+yaxis.TickLabelInterpreter = 'latex';
+set(gca, 'FontSize', 18);
+xlabel('t','Interpreter', 'latex');
+ylabel('Derivative of f','Interpreter', 'latex');
+legend('Location', 'northwest');
+exportgraphics(f, 'figures/HW01_Discrete_Derivative_Sampling_Time.pdf', ...
+ 'BackgroundColor', 'none');
+function y = delta_f(t, x)
+    y = zeros(1, length(t));
+    y(1) = 0.0;
+    for i = 2:length(t)
+        y(i) = (x(i) - x(i-1))./(t(i) - t(i-1));
+    end
+end
+\end{minted}
+
+
+\end{answerbox}
+
+\begin{figure}[htpb]
+\centering
+\includegraphics[width=0.6\linewidth, trim={0cm 0.0cm 0cm 0.0cm},clip]{../Code/figures/HW01_Discrete_Derivative_Sampling_Time.pdf}
+\caption{Discrete Derivative and Sampling Time.}
+\label{fig:HW01_Discrete_Derivative_Sampling_Time}
+\end{figure}
+
+
+\section{Area Under Curve (10 Points)}
+
+
+Compute the integration of $f(t) = t^2$ as an area under the curve numerically. Consider the lower bound as $t = 0$ and upper bound as $t = 5$. For this part of the assignment, you will write your own function. Create time bins with different sampling time: (i) $0.1$ seconds; (ii) $0.5$ seconds; (iii) and $1$ second. Approximate area as sum of rectangles with height of each rectangle being the left timestamp value. Compute area under all three conditions. How much they differ from the true solution?
+
+
+
+\begin{answerbox}
+
+\textbf{Note to grader:} If students used some other final time to compute the integration, please give them full marks appropriately.
+
+
+Consider the initial time to be $t = 0.0$. Further, consider the final time to be $t =5$.
+
+In this case, the true area under the curve is 
+
+\begin{multiequation}
+\int_0^{10} t^2 dt = \frac{t^3}{3} \bigg|_{0}^{5} = \frac{5^3}{3} - 0 = \frac{125}{3} = 41.667
+\end{multiequation}
+
+
+\begin{minted}[frame=lines,
+               framesep=2mm,
+               baselinestretch=1.2,
+               bgcolor=cpeyellow,
+               fontsize=\footnotesize]
+               {matlab}
+%% Area Under Curve
+f = @(t) t.^2;
+t1 = 0:0.1:5;
+t2 = 0:0.5:5;
+t3 = 0:1:5;
+x1 = f(t1);
+x2 = f(t2);
+x3 = f(t3);
+area_1 = area_under_curve(t1, x1);
+area_2 = area_under_curve(t2, x2);
+area_3 = area_under_curve(t3, x3);
+true_area = 1000.0/3.0;
+fprintf("Considering time to be between 0 to 10,\n")
+fprintf("True area is %f\n", true_area)
+fprintf("Area with Delta t = 0.1 is %f\n", area_1)
+fprintf("Area with Delta t = 0.5 is %f\n", area_2)
+fprintf("Area with Delta t = 1.0 is %f\n", area_3)
+
+fprintf("Area Difference with Delta t = 0.1 is %f\n", true_area - area_1)
+fprintf("Area Difference with Delta t = 0.5 is %f\n", true_area- area_2)
+fprintf("Area Difference with Delta t = 1.0 is %f\n", true_area - area_3)
+
+function SUM = area_under_curve(t, x)
+    SUM = 0.0;
+    for i = 1:length(t)-1
+        sum = x(i).*( t(i+1) - t(i) );
+        SUM = SUM + sum;
+    end
+end
+\end{minted}
+
+
+\textbf{Output:}
+
+
+\begin{verbatim}
+Considering time to be between 0 to 5,
+True area is 41.666667
+Area with Delta t = 0.1 is 40.425000
+Area with Delta t = 0.5 is 35.625000
+Area with Delta t = 1.0 is 30.000000
+Area Difference with Delta t = 0.1 is 1.241667
+Area Difference with Delta t = 0.5 is 6.041667
+Area Difference with Delta t = 1.0 is 11.666667
+\end{verbatim}
+
+\end{answerbox}
+
+
+
+
+
+\begin{center}
+   \S - \S - \S
+\end{center}
+
+
+
+\end{document}
