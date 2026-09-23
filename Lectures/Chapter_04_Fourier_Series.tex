@@ -1,0 +1,913 @@
+%----------------------------------------------------------------------------------------
+%	PACKAGES AND THEMES
+%----------------------------------------------------------------------------------------
+\PassOptionsToPackage{table}{xcolor}
+\documentclass[aspectratio=169,xcolor=dvipsnames,svgnames,x11names,fleqn]{beamer}
+% \documentclass[aspectratio=169,xcolor=dvipsnames,fleqn]{beamer}
+
+\usetheme{RedVelvet}
+
+\usefonttheme[onlymath]{serif}
+
+
+
+\usepackage{xspace}
+\usepackage{amsmath}
+\usepackage{amssymb}
+\usepackage{amsfonts}
+\usepackage{color}
+\usepackage{physics}
+% \usepackage{mathbb}
+\usepackage{rahul_math}
+\usepackage{bigints}
+\usepackage{hyperref}
+
+\usepackage{graphicx} % Allows including images
+\usepackage{booktabs} % Allows the use of \toprule, \midrule and \bottomrule in tables
+\usepackage{tikz,pgfplots}
+\usepackage{subfigure}
+\usetikzlibrary{arrows}
+\usepackage{minted}
+\definecolor{LightGray}{gray}{0.9}
+\definecolor{cream}{rgb}{0.92, 0.9, 0.55}
+\definecolor{lightblue}{rgb}{0.68, 0.85, 0.9}
+
+
+\usepackage{xcolor-material}
+\usetikzlibrary{fit}
+\tikzset{%
+apple/.pic={
+  \fill [MaterialBrown] (-1/8,0)  arc (180:120:1 and 3/2) coordinate [pos=3/5] (@)-- ++(1/6,-1/7)  arc (120:180:5/4 and 3/2) -- cycle;
+  \fill [MaterialLightGreen500] (0,-9/10)  .. controls ++(180:1/8) and ++(  0:1/4) .. (-1/3,  -1) .. controls ++(180:1/3) and ++(270:1/2) .. (  -1,   0) .. controls ++( 90:1/3) and ++(180:1/3) .. (-1/2, 3/4) .. controls ++(  0:1/8) and ++(135:1/8) .. (   0, 4/7)
+}
+}
+
+\newcommand{\leftdoublequote}{\textcolor{blue}{\scalebox{3}{``}}}
+
+\newcommand{\rightdoublequote}{\textcolor{blue}{\scalebox{3}{''}}}
+
+
+\usepackage{textcomp}
+\usepackage{fontawesome}
+
+\usepackage{overpic}
+
+%----------------------------------------------------------------------------------------
+%	TITLE PAGE
+%----------------------------------------------------------------------------------------
+
+\usepackage{tikz-qtree,tikz-qtree-compat}
+\usetikzlibrary{calc}
+
+
+\title[CPE 381: Signals and Systems]{CPE 381: Fundamentals of Signals and Systems for Computer Engineers} % The short title appears at the bottom of every slide, the full title is only on the title page
+\subtitle{04 Fourier Series}
+
+\author[Rahul Bhadani] {{\Large \textbf{Rahul Bhadani}}}
+
+\institute[UAH] % Your institution as it will appear on the bottom of every slide, maybe shorthand to save space
+{
+    Electrical \& Computer Engineering,  The University of Alabama in Huntsville
+}
+\date
+
+% \titlegraphic{
+%    \includegraphics[width=0.4\linewidth]{figures/UAH_primary.png}
+% }
+
+\begin{document}
+
+%-------------------------------------------------
+\begin{frame}
+  \titlepage
+\end{frame}
+
+%-------------------------------------------------
+\begin{frame}{Outline}
+    \tableofcontents
+\end{frame}
+
+\begin{frame}{Frequency Representation of a Signal}
+
+\begin{columns}
+    \column{0.6\linewidth}
+    Normally we think signals as a function of time.
+
+\vspace{10pt}
+
+In the 19th century, Joseph Fourier, a French mathematician showed in his work about heat flow that represents a signal as a sum of sinusoids.
+
+\vspace{10pt}
+
+
+This idea gave rise to what is now known as the frequency domain, where we think of signals as a function of frequency.
+
+\vspace{10pt}
+
+  \column{0.4\linewidth}
+  \includegraphics[width=0.8\linewidth, trim={0cm 0.0cm 0cm 0.0cm},clip]{figures/joseph_fourier.jpeg}
+
+\end{columns}
+
+
+    
+\end{frame}
+
+\begin{frame}{Joseph Fourier as Imagined by Google AI Studio}
+  
+  \centering
+  \includegraphics[width=0.5\linewidth, trim={0cm 0.0cm 0cm 0.0cm},clip]{figures/JoesphFourierAI.jpeg}
+
+\end{frame}
+
+\begin{frame}{Spectrum of a Signal}
+\Large
+  \begin{center}
+      How the power or energy of a signal is distributed over different frequency components is called the \textbf{\textcolor{red}{S}\textcolor{orange}{p}\textcolor{yellow}{e}\textcolor{green}{c}\textcolor{blue}{t}\textcolor{Indigo}{r}\textcolor{violet}{u}\textcolor{red}{m}}
+  of the Signal.
+
+  \bigskip
+  
+  A periodic signal's spectrum is discrete.
+    
+  \bigskip
+
+  For an aperiodic signal, its spectrum is continuous.
+  \end{center}
+  \end{frame}
+
+
+  %-----------------------------------------
+
+\begin{frame}{}
+    \begin{center}
+    \Huge \bf \color{DarkBlue}
+    \faCoffee
+    
+   Complex Exponential Fourier Series
+
+
+\end{center}
+\end{frame}
+
+\begin{frame}{\small Fourier Series as a Representation of a Periodic Signal using Complex Exponentials}
+
+\begin{itemize}
+    \item Helps in spectral characterization
+\item Mathematically, the Fourier series is an expansion of periodic signals in terms of normalized orthogonal complex exponentials.
+
+\end{itemize}
+    
+\end{frame}
+
+\begin{frame}{Orthonormal Functions}
+
+    Consider a set of complex functions ${\psi_k(t)} $defined in an interval $[a,b]$, and such that for any pair of these functions, let us say $\psi_\ell(t)$ and $\psi_m(t)$,
+then the inner product of $\psi_\ell(t)$ and $\psi_m(t)$ is 
+
+$$
+\int_a^b \psi_\ell(t)\psi_m^*(t) dt = \begin{cases}
+    0 , \quad \ell \neq m\\
+    1, \quad \ell = m 
+\end{cases}
+$$
+
+\begin{center}
+    Such functions are called orthonormal (orthogonal + normalized).
+\end{center}
+
+\end{frame}
+
+\begin{frame}{A function x(t) can be approximated as sum of orthonormals}
+
+    $$
+\xhat = \sum_k \alpha_k \psi_k (t)    
+    $$
+
+    We minimize the total error as $\varepsilon(t) = x(t) - \xhat(t)$
+
+    $$
+    \int_a^b |\varepsilon(t)|^2 dt = \int_a^b \bigg | x(t)  - \sum_k \alpha_k \psi_k (t)  \bigg|^2 dt
+    $$
+\end{frame}
+
+
+\begin{frame}{Periodic Function’s Fourier Series}
+    We can see that one such orthonormal functions are exponentials.
+
+If we consider periodic functions with period $T_0$, such that $x(t) = x(t + T_0)$, then
+
+$$
+x(t) = \sum_{-\infty}^\infty X(k) e^{jk\Omega_0 t}, \quad \Omega_0 = 2\pi / T_0
+$$
+
+Fourier coefficients:
+
+$$
+X(k) = \cfrac{1}{T_0}\int_{t_0}^{t_0 + T_0}x(t)  e^{-jk\Omega_0 t}dt, \quad k = 0, \pm 1 , \pm 2, ...
+$$
+\end{frame}
+
+\begin{frame}{Fourier Functions are Orthonormal over a Period}
+
+\LARGE
+
+    $$
+    \cfrac{1}{T_0}\int_{t_0}^{t_0 + T_0}   e^{-jk\Omega_0 t} \times (e^{-j\ell \Omega_0 t})^* dt = \begin{cases}
+    0 , \quad \ell \neq k\\
+    1, \quad \ell = k
+\end{cases}
+    $$
+\end{frame}
+
+\begin{frame}{An Interesting Video on Fourier Series}
+
+\LARGE
+
+\begin{center}
+    \url{https://www.youtube.com/watch?v=ds0cmAV-Yek}
+\end{center}
+    
+\end{frame}
+
+
+\begin{frame}{Fourier Series to Represent Periodic Signal}
+
+\LARGE 
+    $$
+    x(t) = \sum_k X_k e^{jk\Omega_0 t }, \quad  \Omega_0 = 2\pi T_0
+    $$
+\end{frame}
+
+
+\begin{frame}{Example}
+    Find the exponential Fourier series of a raised cosine signal ($B \geq A$),
+$$
+x(t) = B + A\cos(\Omega_0 t + \theta)
+$$
+\end{frame}
+
+\begin{frame}{}
+\vspace*{-9\baselineskip}
+    \color{LightGray}{Blank space for calculation}
+\end{frame}
+
+\begin{frame}{}
+\vspace*{-9\baselineskip}
+    \color{LightGray}{Blank space for calculation}
+\end{frame}
+
+
+\begin{frame}{Power Distribution over Frequency}
+
+    \Large
+
+    \begin{center}
+
+The power spectrum provides information as to how the power of the signal is distributed over the different frequencies present in the signal.
+
+\vspace{10pt}
+
+Periodic signals are infinite energy signals, they have finite power.
+
+    \end{center}
+\end{frame}
+
+
+
+\begin{frame}{Parseval’s Theorem for Power
+}
+
+The power of a periodic signal $x(t)$ of fundamental period $T_0$ is given by
+
+$$
+P_x = \cfrac{1}{T_0} \int_{t_0}^{t_0 + T_0} |x(t)|^2 dt
+$$
+
+Replacing the Fourier series of x(t) in the power equation, we have:
+
+\begin{equation*}
+    \begin{aligned}
+        \cfrac{1}{T_0} \int_{t_0}^{t_0 + T_0} |x(t)|^2 dt & = \cfrac{1}{T_0} \int_{t_0}^{t_0 + T_0} \suminf{k} \suminf{m} X_k X_m^*  e^{j\Omega_0(k-m)t}dt\\
+        & = \suminf{k}\suminf{m} X_k X_m^* \cfrac{1}{T_0} \int_{t_0}^{t_0 + T_0} e^{j\Omega_0(k-m)t}dt = \suminf{k}|X_k|^2
+    \end{aligned}
+\end{equation*}
+
+\end{frame}
+
+\begin{frame}{Harmonics}
+
+\begin{custombox}{Definition}{violet}{orange}
+    Harmonics with respect to Fourier series and analysis means the sine and cosine components that constitute a function, or to put more simply, the simplest functions that a given function can be broken down into.
+\end{custombox}
+
+\begin{center}
+    \includegraphics[width=0.55\linewidth, trim={0cm 0.0cm 0cm 0.0cm},clip]{figures/sine_wave_with_harmonics.pdf}
+    \tiny
+    \url{https://github.com/rahulbhadani/CPE381_FA26/blob/main/Code/Ch04_harmonics.m}
+\end{center}
+
+\end{frame}
+
+\begin{frame}{Signals as Sum of Harmonics}
+
+    $$
+    x(t) = \suminf{k} X_ke^{jk\Omega_0t}
+    $$
+    where $x_k (t) = X_ke^{jk\Omega_0t}$
+
+The power of each of these components $x_k (t)$ is given by
+
+$$
+\cfrac{1}{T_0} \int_{t_0}^{t_0 + T_0} |x_k (t)|^2 dt = \cfrac{1}{T_0} \int_{t_0}^{t_0 + T_0}  | X_ke^{jk\Omega_0t} | ^2 dt  =  \cfrac{1}{T_0} \int_{t_0}^{t_0 + T_0}  | X_k|^2   = | X_k|^2  
+$$
+
+\large
+\textbf{\color{blue} The plot of $ | X_k|^2$ versus the harmonics displays how the power of the signal is distributed over the harmonics.}
+
+\end{frame}
+
+\begin{frame}{Line Spectra}
+    
+Line spectra refer to a graphical representation of the frequency content of a signal, where the frequency axis is discrete and the amplitude axis represents the magnitude of the signal at each frequency.
+
+\textbf{Line Spectra are Symmetrical}
+
+\begin{itemize}
+    \item $|X_k| = |X_{-k}|$: magnitude  $|X_k|$ is an even function of $k\Omega_0$.
+    \item $\angle X_k = - \angle X_{-k}$: phase  $\angle X_k$ is an odd function of $k\Omega_0$.
+\end{itemize}
+
+\end{frame}
+
+\begin{frame}{Trigonometric Fourier Series: Fourier Series using Sinusoids}
+
+For orthogonality in terms of sinusoids:
+
+\begin{equation*}
+    \begin{aligned}
+    & \cfrac{1}{T_0}\int_{-T_0/2}^{T_0/2}   e^{-jk\Omega_0 t} \times (e^{-j\ell \Omega_0 t})^* dt = 0\\
+    & \Rightarrow \cfrac{1}{T_0}\int_{-T_0/2}^{T_0/2}   \cos ((k-\ell)\Omega_0 t )dt + j \cfrac{1}{T_0}\int_{-T_0/2}^{T_0/2}   \sin ((k-\ell)\Omega_0 t )dt = 0
+\end{aligned}
+\end{equation*}
+
+We can use Trigonometric Identities to expand the above:
+$$
+\sin(\alpha)\sin(\beta) = 0.5 [ \cos(\alpha-\beta) - \cos(\alpha+\beta)],\quad
+\cos(\alpha)\cos(\beta) = 0.5 [ \cos(\alpha+\beta) + \cos(\alpha-\beta)]
+$$
+It shows that cosine and sine functions are orthogonal when $k$ and $\ell$ are not equal to each other.
+\end{frame}
+
+
+\begin{frame}{Fourier Coefficients and their Complex Conjugate}
+\framesubtitle{For real-valued signals}
+
+\small
+
+\begin{itemize}
+    \item \textbf{Taking the Complex Conjugate of Fourier Coefficients}
+    
+    Since $ x(t) $ is real-valued, $ x(t)^* = x(t) $. Taking the complex conjugate of \( X_k \):
+    \begin{multiequation}
+    X_k^* = \left( \frac{1}{T} \int_0^T x(t) e^{-j k \Omega_0 t}  dt \right)^* = \frac{1}{T} \int_0^T x(t)^* e^{j k \Omega_0 t}  dt = \frac{1}{T} \int_0^T x(t) e^{j k \Omega_0 t}  dt
+    \end{multiequation}
+    
+    \item \textbf{Relate to Negative Frequency Coefficient}
+    
+    The expression above matches the definition of $ X_{-k} $:
+    \begin{multiequation}
+    X_{-k} = \frac{1}{T} \int_0^T x(t) e^{j k \Omega_0 t}  dt
+    \end{multiequation}
+    Thus, we conclude:
+    \begin{multiequation}
+    X_k^* = X_{-k}
+    \end{multiequation}
+    This is called \textbf{Conjugate Symmetry}.
+\end{itemize}
+
+
+\end{frame}
+
+\begin{frame}{Conjugate Symmetry and Implications on Magnitude and Phase}
+\framesubtitle{Key properties for real-valued signals}
+
+\begin{itemize}
+    \item \textbf{Complex Representation:}
+    $$X_k = |X_k| e^{j \angle X_k}$$
+    
+    \item \textbf{Conjugate Symmetry (for real $x(t)$):}
+    $$X_{-k} = X_k^* = |X_k| e^{-j \angle X_k}$$
+    
+    \item \textbf{Magnitude Property:}
+    $$|X_{-k}| = |X_k| \quad \Rightarrow \quad |X_k| = |X_{-k}|$$
+    Magnitude $|X_k|$ is an \textbf{even function} of $k\Omega_0$
+    
+    \item \textbf{Phase Property:}
+    $$\angle X_{-k} = -\angle X_k$$
+    Phase $\angle X_k$ is an \textbf{odd function} of $k\Omega_0$
+\end{itemize}
+
+\end{frame}
+
+
+\begin{frame}{Back to Exponentials}
+    $$
+    x(t) = \suminf{k} X_ke^{jk\Omega_0t}
+    $$
+    \begin{itemize}
+    \item $|X_k| = |X_{-k}|$: magnitude  $|X_k|$ is an even function of $k\Omega_0$.
+    \item $\angle X_k = - \angle X_{-k}$: phase  $\angle X_k$ is an odd function of $k\Omega_0$.
+\end{itemize}
+Then, we separate them out:
+\begin{equation*}
+    \begin{aligned}
+x(t) & = X_0 + \sum_{k=1}^\infty [ X_k e^{jk\Omega_0t} + X_{-k}e^{-jk\Omega_0t} ]\\
+& = X_0 + \sum_{k=1}^\infty \bigg[ |X_k| e^{j(k\Omega_0t + \theta_k)} + |X_{-k}|e^{-j(k\Omega_0t + \theta_k)}  \bigg] = X_0 + 2 \sum_{k=1}^\infty  |X_k| \cos (k\Omega_0 t  + \theta_k)
+\end{aligned}
+\end{equation*}
+
+\end{frame}
+
+\begin{frame}{Alternative Formula}
+    \begin{columns}
+        \column{0.7\linewidth}
+        \begin{equation*}
+    \begin{aligned}
+        X_k & = X_{-k}^*\\
+        z & = a + jb\\
+        z + z^*  & = (a  + jb) + (a - j b) = 2\Re(z)
+        \end{aligned}
+\end{equation*}
+        \begin{equation*}
+    \begin{aligned}
+x(t)  & = X_0 + \sum_{k=1}^\infty 2\Re[ X_k e^{jk\Omega_0t + \theta_k}]\\
+& =  X_0  + \sum_{k=1}^\infty  2 \Re[X_k]\cos(k\Omega_0 t) - 2\Im[X_k]\sin(k\Omega_0 t)\\
+&  = X_0 + 2\sum_{k=1}^\infty  ( c_k \cos(k\Omega_0 t)  + d_k \sin(k\Omega_0 t))
+            \end{aligned}
+\end{equation*}
+
+\column{0.3\linewidth}
+          \begin{equation*}
+    \begin{aligned}
+|X_k| & = \sqrt{c_k^2  + d_k^2}\\
+\theta_k & = -\tan^{-1}\cfrac{d_k}{c_k}
+    \end{aligned}
+\end{equation*}
+    \end{columns}
+\end{frame}
+
+\begin{frame}{Finding Fourier Coefficients}
+
+For a periodic signal with period $T_0$:
+\begin{gradred}
+    \begin{multiequation}
+        X_k = \cfrac{1}{T_0} \int_{t_0}^{t_0 + T_0} x(t) e^{-jk\Omega_0 t} dt
+    \end{multiequation}
+
+    for any time $t_0$.
+\end{gradred}
+    
+\end{frame}
+
+
+% \begin{frame}{Fourier Coefficients using Laplace Transform}
+%     If we can calculate the Laplace transform for one period of a $x(t)$, we can easily calculate the Fourier coefficients.
+
+% The equation for one period:
+
+% $$
+% x_1(t) = x(t)[ u(t-t_0)  - u(t- t_0 - T_0)], \quad \text{for any~~} t_0
+% $$
+
+% $s = jk\Omega_0$
+
+%  \begin{multiequation}
+%         X_k = \cfrac{1}{T_0} \int_{t_0}^{t_0 + T_0} x_1(t) e^{-st} dt \Rightarrow X_k = \cfrac{1}{T_0}\Lcal[ x_1(t)]\bigg|_{s =j k\Omega_0 }
+%     \end{multiequation}
+% $\Omega_0 = \cfrac{2\pi}{T_0}$ is \textbf{the fundamental frequency.}
+
+% \end{frame}
+
+
+\begin{frame}{Fourier Series of Reflected Signal}
+
+\begin{gradblue}
+    \begin{multiequation}
+        x(-t) = \sum_{m}X_m e^{-j m \Omega_0 t} =  \sum_{k}X_{-k} e^{j k \Omega_0 t} 
+    \end{multiequation}
+\end{gradblue}
+\end{frame}
+
+
+\begin{frame}{Even Signals}
+
+    For even signal, we have $x(t) = x(-t)$ such that $X_k= X_{-k}$.
+
+    Also, we saw in a previous slide, in general: $ X_k = X_{-k}^* = X_{-k}$ which basically means that coefficients are real-valued for even signals.
+
+    \begin{gradgreen}
+Hence, writing down the DC term separately, and the negative and positive indices terms separately:
+\begin{multiequation}
+    x(t) & = X_0 + \sum_{-\infty}^{-1} X_k e^{jk\Omega_0 t} + \sum_{-\infty}^{-1} X_k e^{jk\Omega_0 t}  +  \sum_{k=1}^{\infty} X_k e^{jk\Omega_0 t}  \\&= X_0 + \sum_{1}^\infty X_k [ e^{jk\Omega_0 t}  + e^{-jk\Omega_0 t} ] = X_0 + 2 \sum_{1}^\infty X_k \cos(k\Omega_0 t)
+\end{multiequation}
+    \end{gradgreen}
+\end{frame}
+
+\begin{frame}{Odd Signals}
+    Similarly, for odd signals, $x(t) = -x(-t)$, and $X_k = -X_{-k}$
+
+    which results in 
+
+      \begin{gradgreen}
+\begin{multiequation}
+    x(t) & =  2 \sum_{1}^\infty jX_k \sin(k\Omega_0 t)
+\end{multiequation}
+    \end{gradgreen}
+\end{frame}
+
+\begin{frame}{Even and Odd Signals}
+
+
+From our previous discussion, and knowing that any signal can be broken down into even and odd signals, $x(t) = x_e(t) + x_o(t)$, 
+
+following holds, and we derived that differently earlier:
+\begin{multiequation}
+x(t) = \suminf{k} X_k e^{jk\Omega_0 t} = X_0 + 2\sum_{k=1}^\infty  ( c_k \cos(k \Omega_0 t) + d_k \sin (k \Omega_0 t) )
+\end{multiequation}
+
+As, cosine is even and sine is odd, effectively we can write the signal as the sum of odd and even signals.
+
+
+\begin{multiequation}
+    X_k & = X_{ek} + X_{ok}\\
+    X_{ek} & = 0.5[ X_k  + X_{-k}]\\
+    X_{ok} & = 0.5[X_k - X_{-k}]
+\end{multiequation}
+
+\end{frame}
+
+\begin{frame}{Example}
+\begin{gradred}
+    Find the Fourier Series of Period Pulse Train with $T_0 = 1$.
+    \begin{center}
+      \includegraphics[width=0.6\linewidth, trim={0cm 0.0cm 0cm 0.0cm},clip]{figures/square_wave_pulse_train.png}
+       
+\end{center}
+
+\end{gradred}
+    Start with calculating the fundamental frequency.
+\end{frame}
+
+\begin{frame}{}
+\vspace*{-9\baselineskip}
+    \color{LightGray}{Blank space for calculation}
+\end{frame}
+
+\begin{frame}{}
+\vspace*{-9\baselineskip}
+    \color{LightGray}{Blank space for calculation}
+\end{frame}
+
+\begin{frame}{}
+\vspace*{-9\baselineskip}
+    \color{LightGray}{Blank space for calculation}
+\end{frame}
+
+\begin{frame}{Convergence of Fourier Series}
+    For the Fourier series to converge to the periodic signal $x(t)$, the signal should satisfy the following sufficient (not necessary) conditions over a period: 
+
+
+    \begin{itemize}
+        \item be absolutely integrable
+        \item has a finite number of maxima, minima and discontinuities
+    \end{itemize}
+    
+\end{frame}
+
+\begin{frame}{Gibb’s Phenomenon.}
+Although the Fourier series converges to the arithmetic average at discontinuities, it can be observed that there is some ringing before and after the discontinuity points. This is called the Gibb’s phenomenon.   
+
+\begin{center}
+    \includegraphics[width=0.75\linewidth, trim={0cm 0.0cm 0cm 0.0cm},clip]{figures/gibbs_phenomenon.pdf}
+
+    \tiny
+    Code: \url{https://github.com/rahulbhadani/CPE381_FA26/blob/main/Code/Ch04_Gibbs_Phenomenon.m}
+\end{center}
+\end{frame}
+
+\begin{frame}{Time and Frequency Shifting}
+    If $X_k$ are the Fourier coefficients of $x(t)$, then for $x(t - t_0)$, $x(t)$ delayed $t_0$ seconds, its Fourier series coefficients can be determined as follows:
+
+    \begin{itemize}
+        \item Fundamental frequency is $\Omega_0$.
+    \end{itemize}
+    \begin{multiequation}
+        x(t) & = \sum_{k} X_k e ^{jk\Omega_0 t}\\
+        x(t - t_0) & = \sum_{k} X_k e ^{jk\Omega_0 (t-t_0)} = \sum_{k}[X_k e ^{-jk\Omega_0 t_0} ] e^{jk\Omega_0 t}\\
+         x(t + t_0) & = \sum_{k} X_k e ^{jk\Omega_0 (t-t_0)} = \sum_{k}[X_k e ^{jk\Omega_0 t_0} ] e^{jk\Omega_0 t}\\
+    \end{multiequation}
+
+    We see that only a change in phase is caused by the time shift; the magnitude spectrum remains the same.
+
+\end{frame}
+
+\begin{frame}{Centering around $\pm \Omega_1$}
+    We multiply the original signal by a cosine signal to make it real-valued and centered around  $\pm \Omega_1$.
+
+    $$
+    y_1(t) = x(t) \cos(\Omega_1 t) = \sum_{k}0.5 X_k[ e^{j(k\Omega_0 + \Omega_1)t }  + e^{j(k\Omega_0 - \Omega_1)t } ]
+    $$
+    
+\end{frame}
+
+\begin{frame}{Frequency Response $H(jk\Omega_0)$}
+\small
+
+\begin{columns}[T]
+\begin{column}{0.48\textwidth}
+\begin{itemize}
+    \item \textbf{Frequency Response}
+    $$H(jk\Omega_0) = \int_{-\infty}^{\infty} h(\tau)e^{-jk\Omega_0\tau}d\tau$$
+    
+    \item \textbf{Physical Meaning:}
+    \begin{itemize}
+        \item Input: $e^{jk\Omega_0 t}$
+        \item Output: $H(jk\Omega_0)e^{jk\Omega_0 t}$
+        \item $|H|$: Amplification/attenuation
+        \item $\angle H$: Phase shift
+    \end{itemize}
+\end{itemize}
+\end{column}
+
+\begin{column}{0.48\textwidth}
+\begin{itemize}
+    
+    \item \textbf{Steady-State Response:}
+    \begin{itemize}
+        \item Steady-State Response is a long-term behavior (eventually!) of a system.
+        \item System treats each frequency independently
+        \item No inter-frequency interference
+        \item Simple scaling and phase shifting
+    \end{itemize}
+\end{itemize}
+\end{column}
+\end{columns}
+
+\vspace{0.3cm}
+\textcolor{blue}{The frequency response completely characterizes how an LTI system processes periodic signals!}
+
+\end{frame}
+
+\begin{frame}{Response of LTI Systems to Periodic Signal}
+    \begin{multiequation}
+        x(t) & = \sum_{k} X_k e ^{jk\Omega_0 t}, \quad \Omega_0 = \cfrac{2\pi}{T_0}
+        \end{multiequation}
+The output in the steady state, if the impulse response is $h(t)$: 
+\begin{multiequation}
+    y(t) & = \suminf{k} [X_k H(jk\Omega_0)] e ^{jk\Omega_0 t}
+\end{multiequation}
+Fourier Coefficients of $y(t)$ is $Y_k = X_k H_k(jk\Omega_0)$.
+As we write $x(t) = \sum_{k} X_k e ^{jk\Omega_0 t} = X_0 + \sum_{k=1}^\infty 2 |X_k| \cos (k\Omega_0 t + \angle X_k)$, we can write the steady-state output $y(t)$ as 
+$y(t) = X_0 | H(j0)| + 2\sum_{k=1}^\infty 2 |X_k| |H(jk\Omega_0)| \cos(k\Omega_0 t  + \angle X_k + \angle H(jk\Omega_0)) $
+\end{frame}
+
+\begin{frame}{Filtering of Periodic Signals}
+    \begin{custombox}{What is Filter?}{Green}{Orange}
+        A filter is an LTI system that allows us to retain, get rid of, or attenuate frequency components of the input, i.e., to ``filter" the input.
+        
+        $y(t) = X_0 | H(j0) + 2\sum_{k=1}^\infty  |X_k| |H(jk\Omega_0)| \cos(k\Omega_0 t  + \angle X_k + \angle H(jk\Omega_0)) $
+        
+    \end{custombox}
+    \begin{itemize}
+        \item Keeping a certain frequency: $|H (j\ell \Omega_0)| = 1$
+        \item Removing a certain frequency: $|H (j\ell \Omega_0)| = 0$
+
+    \end{itemize}
+\end{frame}
+
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\section{Operations using Fourier Series}
+
+%-----------------------------------------
+
+\begin{frame}{}
+    \begin{center}
+    \Huge \bf \color{DarkBlue}
+    \faEmpire
+    
+   Operations using Fourier Series
+
+
+
+\end{center}
+\end{frame}
+
+
+\begin{frame}{Addition}
+
+If
+$$
+z(t) = \alpha x(t) + \beta y(t)
+$$
+for constants $\alpha$ and $\beta$, then, 
+
+$$
+Z_k = \alpha X_k + \beta Y_k
+$$
+    
+\end{frame}
+
+\begin{frame}{Case of Different Fundamental Frequencies}
+    If $x(t)$ is periodic with fundamental period of $T_1$, and $y(t)$ has fundamental period of $T_2$ such that $T_2/T_1 = N/M$ for non-divisible integer $N$, and $M$, then $z(t) = \alpha x(t) + \beta y(t)$ is periodic with fundamental period $T_0 = MT_2 = NT_1$, and its Fourier coefficients are 
+
+    $$
+    Z_k = \alpha X_{k/N} + \beta Y_{k/M}
+    $$
+    for $k=0, \pm 1, \pm 2, ...$ such that $k/N$, and $k/M$ are integers, 
+
+    where $X_k$, and $Y_k$ are the Fourier coefficients of $x(t)$, and $y(t)$.
+    
+\end{frame}
+
+\begin{frame}{Multiplication}
+    $$
+    z(t) = x(t)y(t)
+    $$
+    Fourier coefficients are the convolution sum of the Fourier coefficients of $x(t)$ and $y(t)$:
+    $$
+    Z_k = \sum_{m} X_m Y_{k-m}
+    $$
+\begin{gradgreen}
+        \begin{multiequation}
+        x(t)y(t) & = z(t) = \sum_{m} X_m e^{jm\Omega_0 t} \sum_{\ell} Y_\ell e^{j\ell\Omega_0 t} = \sum_{m}\sum_{\ell} X_m Y_\ell e ^{(m + \ell)\Omega_0 t} \\
+        & = \sum_{k}\bigg[ \sum_m X_m Y_{k-m} \bigg]  e ^{jk\Omega_0 t} 
+    \end{multiequation}
+\end{gradgreen}
+
+    
+\end{frame}
+
+
+\begin{frame}{Derivatives}
+
+Fourier Coefficients of $\cfrac{dx(t)}{dt}$ is $jk\Omega_0 X_k$.
+
+$$
+x(t) = \sum_k X_k e^{jk\Omega_0 t},
+$$ then
+
+$$
+\cfrac{dx(t)}{dt} = \sum_k X_k \cfrac{d e^{jk\Omega_0 t}}{dt} = \sum_k [ jk \Omega_0 X_k ]e^{jk\Omega_0 t}
+$$
+
+\end{frame}
+
+
+\begin{frame}{Integral}
+\small
+    For a zero-mean, periodic signal $y(t)$, let $z(t) = \int_{-\infty}^t y(\tau)d\tau$, we have Fourier coefficients as $Z_k = \cfrac{Y_k}{jk\Omega_0}$, $k \neq 0$, $Z_0 = -\sum_{m\neq 0} Y_m \cfrac{1}{jm\Omega_0}$. Derivation:
+\footnotesize
+\begin{gradred}
+\begin{multiequation}
+    z(t) = \int_{-\infty}^t y(\tau)d\tau = \int_{-\infty}^{MT_0}y(\tau)d\tau + \int_{M T_0}^t y(\tau) d\tau & = 0 + \int_{M T_0}^t y(\tau) d\tau
+\end{multiequation}
+Replacing $y(t)$ by its Fourier series gives
+\begin{multiequation}
+    z(t) & =  \int_{M T_0}^t \sum_{k\neq 0} Y_k e^{jk\Omega_0 \tau }d\tau  = \sum_{k\neq 0}  \int_{M T_0}^t e^{jk\Omega_0 \tau }d\tau \\ & =  \sum_{k\neq 0}  Y_k \cfrac{1}{jk\Omega_0}[ e^{jk \Omega_0  t} - 1] = -\sum_{k\neq 0} Y_k \cfrac{1}{jk\Omega_0} + \sum_{k\neq 0} Y_k\cfrac{1}{jk\Omega_0}  e^{jk \Omega_0  t}
+\end{multiequation}
+
+\end{gradred}
+\end{frame}
+
+\begin{frame}{Implications of Derivatives and Integrations}
+
+    \begin{enumerate}
+        \item The derivative of a periodic signal x(t) enhances its higher harmonics.
+\item The integration of a zero-mean periodic signal x(t)  smooths out the signal.
+
+    \end{enumerate}
+\end{frame}
+
+\begin{frame}{Amplitude and Time Scaling}
+$$
+x(t) = \sum_k X_k e^{jk\Omega_0 t},
+$$ 
+has period $T_0$.
+
+$$
+y(t) = Ax(\alpha t) = \suminf{k} (AX_k)  e^{jk \alpha \Omega_0  t}, \quad T_1 = 2\pi /\Omega_1 = T_0 /\alpha
+$$
+
+for amplitude $A$ and scaling factor $\alpha \neq 0$.
+
+\begin{enumerate}
+    \item If $\alpha > 1$, then $x(\alpha t)$ is compressed, and the fundamental frequencies are expanded.
+
+
+\item If only time scaling is done, i.e., $A = 1$, for $\alpha > 0$ the Fourier coefficients of the original signal and the time-scaled signal are identical, it is the fundamental frequencies that are changed by the scaling factor.
+
+\end{enumerate}
+\end{frame}
+
+\begin{frame}{Negative Scaling}
+    $$
+    y(t) = Ax(-|\alpha| t) = \suminf{k} (AX_k)  e^{jk -|\alpha| \Omega_0  t}= \suminf_{\ell} (AX_{-\ell})  e^{j |\ell|\alpha \Omega_0  t} = \suminf_{\ell} (AX^*_{\ell})  e^{j \ell\alpha \Omega_0  t}
+    $$
+    where $Y_\ell  =  (AX_{-\ell}) = (AX^*_{\ell})$
+
+    Time period is  $T_1 = 2\pi /\Omega_1 = T_0 /\alpha$
+
+    and we have new set of harmonics as $\ell \Omega_1 = \ell |\alpha| \Omega_0$.
+\end{frame}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\section{Applications of Fourier Series}
+
+%-----------------------------------------
+
+\begin{frame}{}
+    \begin{center}
+    \Huge \bf \color{DarkBlue}
+    \faTags
+    
+Applications of Fourier Series
+
+\end{center}
+\end{frame}
+
+
+\begin{frame}
+  \frametitle{Signal Processing}
+  \framesubtitle{Filtering and Modulation Analysis}
+  \begin{itemize}
+    \item Filtering: Fourier series are used to design filters that remove unwanted frequencies from signals.
+    \item Modulation Analysis: Fourier series help analyze and separate modulated signals in communication systems.
+  \end{itemize}
+  \vspace{1cm}
+  \textbf{Example:} Audio filtering - Fourier series are used in audio processing to remove noise and improve sound quality.
+\end{frame}
+
+\begin{frame}
+  \frametitle{Image Processing}
+  \framesubtitle{Image Compression and Reconstruction}
+  \begin{itemize}
+    \item Image Compression: Fourier series are used in image compression algorithms like JPEG to reduce image size.
+    \item Image Reconstruction: Fourier series help reconstruct images from compressed data.
+  \end{itemize}
+  \vspace{1cm}
+  \textbf{Example:} Medical Imaging - Fourier series are used in medical imaging techniques like MRI and CT scans to reconstruct images of the body.
+\end{frame}
+
+\begin{frame}
+  \frametitle{Power Systems}
+  \framesubtitle{Power Quality Analysis}
+  \begin{itemize}
+    \item Power Quality Analysis: Fourier series are used to analyze and monitor power quality in electrical power systems.
+    \item Harmonic Analysis: Fourier series help identify and mitigate harmonic distortions in power systems.
+  \end{itemize}
+  \vspace{1cm}
+  \textbf{Example:} Power Grid Management - Fourier series are used in power grid management to monitor and control power flow.
+\end{frame}
+
+\begin{frame}
+  \frametitle{Vibration Analysis}
+  \framesubtitle{Mechanical Systems}
+  \begin{itemize}
+    \item Vibration Analysis: Fourier series are used to analyze and predict vibrations in mechanical systems.
+    \item Condition Monitoring: Fourier series help monitor the condition of mechanical systems and predict maintenance needs.
+  \end{itemize}
+  \vspace{1cm}
+  \textbf{Example:} Predictive Maintenance - Fourier series are used in predictive maintenance to detect anomalies in mechanical systems.
+\end{frame}
+
+\begin{frame}{Video on Fourier Series}
+    \LARGE 
+
+    \begin{center}
+        \url{https://youtu.be/r6sGWTCMz2k}
+    \end{center}
+\end{frame}
+
+\begin{frame}{Additional Resources}
+    \begin{itemize}
+        \item Drawing everything with Fourier Transform:
+\item \url{https://www.youtube.com/watch?v=MY4luNgGfms}
+\item 
+\url{https://olgaritme.com/posts/drawing-with-the-fourier-series/index.html}
+\item \url{https://dsp.stackexchange.com/questions/59068/how-to-get-fourier-coefficients-to-draw-any-shape-using-dft}
+\item \url{https://www.reddit.com/r/3Blue1Brown/comments/cvpdn7/make_your_own_fourier_circle_drawings/}
+\item \url{https://contra.medium.com/drawing-anything-with-fourier-series-using-blender-and-python-c0881e1b738c}
+\item \url{https://www.fourierart.com/}
+
+    \end{itemize}
+\end{frame}
+
+
+\begin{frame}{Upnext}
+    Fourier Transform
+\end{frame}
+
+
+\end{document}
