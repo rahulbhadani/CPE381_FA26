@@ -183,8 +183,16 @@
     }
     ]
 
-    \vspace{15.0cm}
-    ~
+    
+    \begin{align*}
+    E =&  \int_{-\infty}^\infty |x(t)|^2 dt = \int_{-\infty}^\infty | e^{-at}u(t)|^2dt = \int_{0}^\infty e^{-2at} dt  \\
+    & = -\frac{1}{2a} \bigg[e^{-2at}\bigg]_{0}^\infty  = -\frac{1}{2a}[0 - 1] = \frac{1}{2a} < \infty
+    \end{align*}
+    
+   
+   Clearly, the signal has finite energy. Hence, the signal is an energy signal.
+
+    
     
 \end{tcolorbox}
 
@@ -214,8 +222,14 @@
     }
     ]
 
-    \vspace{5.0cm}
-    ~
+\textbf{Not additive.} 
+
+Check: $T[x_1(t) + x_2(t)] = (x_1(t) + x_2(t)) + 3$
+
+
+$T[x_1(t)] + T[x_2(t)] = (x_1(t) + 3) + (x_2(t) + 3) = x_1(t) + x_2(t) + 6$
+
+Since $3 \neq 6$, the property fails.
     
 \end{tcolorbox}
 
@@ -246,8 +260,13 @@
     }
     ]
 
-    \vspace{5.0cm}
-    ~
+\textbf{Not homogeneous.}
+
+Check: $T[\alpha x(t)] = \alpha x(t) + 3$ 
+
+$\alpha T[x(t)] = \alpha (x(t) + 3) = \alpha x(t) + 3\alpha$ 
+
+Since $3 \neq 3\alpha$ for $\alpha \neq 1$, the property fails.
     
 \end{tcolorbox}
 
