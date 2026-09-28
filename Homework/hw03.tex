@@ -1,0 +1,228 @@
+
+\documentclass[12pt,xcolor=dvipsnames,svgnames,x11names]{article}
+
+% ============================================================
+% Homework identity
+% ============================================================
+\newcommand{\hw}{Homework 3}
+\newcommand{\hwtopic}{Continuous Linear-Time Invariant Signals and Systems}
+\newcommand{\duedate}{October 05, 2026, 11:59 PM}
+\newcommand{\totalpoints}{150}
+\newcommand{\hwturnin}{hw03}
+
+
+% ============================================================
+% Shared course definitions and packages
+% ============================================================
+\input{common}
+
+\usepackage{design}
+
+\pagestyle{fancy}
+
+\lhead{\footnotesize{\coursenumber, \courseterm}}
+\chead{}
+\rhead{\footnotesize{\emph{\hw}}}
+\lfoot{\footnotesize{\instructorname}}
+\cfoot{\footnotesize{\thepage}}
+\rfoot{\footnotesize{\textit{Last Revised:~\today}}\\ \footnotesize{The University of Alabama in Huntsville}}
+\renewcommand{\headrulewidth}{0.1pt}
+\renewcommand{\footrulewidth}{0.1pt}
+
+\renewcommand{\thefootnote}{\fnsymbol{footnote}}
+
+
+\renewcommand{\headrulewidth}{0.1pt}
+\renewcommand{\footrulewidth}{0.1pt}
+
+\renewcommand{\thefootnote}{\fnsymbol{footnote}}
+
+\newcommand{\showanswers}{no}
+
+\begin{document}
+
+
+\date{Due: \duedate}
+
+\maketitle
+
+\setlength{\unitlength}{1in}
+You are allowed to use a generative model-based AI tool for your assignment. However, you must submit an accompanying reflection report detailing how you used the AI tool, the specific query you made, and how it improved your understanding of the subject. You are also required to submit screenshots of your conversation with any large language model (LLM) or equivalent conversational AI, clearly showing the prompts and your login avatar. Some conversational AIs provide a way to share a conversation link, and such a link is desirable for authenticity. Failure to do so may result in actions taken in compliance with the plagiarism policy.
+
+Additionally, you must include your thoughts on how you would approach the assignment if such a tool were not available. Failure to provide a reflection report for every assignment where an AI tool is used may result in a penalty, and subsequent actions will be taken in line with the plagiarism policy.
+
+\subsection*{Submission instruction:}
+Upload a .pdf on Canvas with the format  \texttt{CPE381-LastFirst-HW-XX}. For example, if your name is Sam Wells, your file name should be \texttt{CPE381-WellsSam-HW-XX.pdf}.  If there is a programming assignment, then you should include your source code along with your PDF files in a zip file \texttt{CPE381-LastFirst-HW-XX.zip}. 
+Your submission must contain your name and UAH Charger ID or your UAH email address.  Please number your pages as well.
+\vskip 1em
+\hrule
+
+
+
+{{\LARGE \textbf{Theory}}}
+
+\section{Impulse Function (5 Points)}
+The voltage across a capacitor with capacitance $C$ is given by 
+
+\begin{multiequation}
+v_c(t) = \frac{1}{C} \int_{-\infty}^t i(t) dt
+\end{multiequation}
+
+If a current impulse $i(t) = 5\delta(t)$ is forced through the capacitor, what is the voltage $v_c(t)$ across the capacitor?
+
+\section{Magic of Impulse Function (10 Points)}
+
+Evaluate the expressions below:
+
+\begin{enumerate}
+\item $\int_{-5}^6 e^{-2t} \delta(t-1) dt $
+
+\item $\int_{-\infty}^\infty \delta(t) \cos\bigg(\cfrac{3t}{2}\bigg) dt$
+\end{enumerate}
+
+
+\section{Additivity (5 Points)}
+Consider a signal $f(t) = t^2  - 2$. Does it satisfy additivity?
+
+
+\section{Homogeneity (5 Points)}
+Consider a signal $f(t) = 6t^3 + 8$. Does it satisfy homogeneity?
+
+\section{Linearity of a Sytem (15 Points)}
+
+Consider a system $\mathcal{S}$ whose output is $y(t)$ and input is $x(t)$, such that $y(t) = \mathcal{S}[x(t)]$.
+
+For each of the following check if the system is linear:
+
+\begin{enumerate}
+\item $y(t) = |x(t)|$.
+\item $y(t) = 5 \frac{dx(t)}{dt}$ (A differentiator system with gain).
+\item $y(t) = \int_{-\infty}^{t} x(\tau) d\tau$ (A integrator system).
+\end{enumerate}
+
+
+\section{Time-invariance (15 Points)}
+
+Consider a system $\mathcal{S}$ whose output is $y(t)$ and input is $x(t)$, such that $y(t) = \mathcal{S}[x(t)]$.
+
+For each of the following check if the system is time-invariant:
+
+\begin{enumerate}
+\item $y(t) = x(2t)$ (A compressor system).
+\item $y(t) = \int_{t-1}^{t} x(\tau) d\tau$ (A moving window integrator system)
+\end{enumerate}
+
+\section{Causality (15 Points)}
+
+\begin{enumerate}
+\item Define BIBO stability for a continuous-time system. \textbf{(5 Points)}
+
+\item What is the relationship between causality and the impulse response $h(t)$ of an LTI system? \textbf{(5 Points)}
+
+\item Can a system be BIBO stable but not causal? Explain with an example. \textbf{(5 Points)}
+
+
+\end{enumerate}
+
+
+\section{Causality Assessment  (15 Points)}
+
+For each system described by the input-output relationship, determine if it is causal.
+
+\begin{enumerate}
+\item $y(t) = x(t-2)$.
+
+\item $y(t)=x(t)cos(t+1)$.
+
+\item $y(t) = \frac{dx(t)}{dt}$.
+
+\end{enumerate}
+
+\section{Determining BIBO Stability (15 Points)}
+
+For each system, determine if it is BIBO stable. For LTI systems described by 
+$h(t)$, use the absolute integrability criterion. For other systems, apply the BIBO definition directly.
+
+\begin{enumerate}
+\item $h(t) = e^{-3t}u(t)$.
+\item $h(t) = \delta
+(t-5)$.
+\item $y(t) = \int_{t-1}^t x(\tau)d\tau$.
+\end{enumerate}
+
+
+\section{Fundamental Period (10 Points)}
+
+The fundamental time period of a sum of periodic signals is the least common multiple (LCM) of the individual periods, provided the signals are commensurable (i.e., the ratio of any two periods is rational). If the signals are not commensurable, the sum is not periodic.
+
+You can use the following logic to determine the fundamental period of a sum of the signal:
+
+\begin{enumerate}
+\item Compute the fundamental period of each individual signals.
+
+\item Check if the periods are commensurable, i..e the ratio of any two are rational (E.g. $\sqrt{2}$ is irrational).
+
+\item If commensurable, find the LCM of the periods by first expressing each period as a fraction. Then, you find the LCM of the numerators and the GCD of the denominator.  The LCM of the periods is LCM(numerators) / GCD(denominators).
+
+\item If the ratio is irrational, the sum is not periodic.
+\end{enumerate}
+
+Find the fundamental period of the following signals:
+
+\begin{enumerate}
+
+\item $x(t) = \sin(2\pi t) + \cos(3\pi t)$.
+\item $x(t) = \sin(\sqrt{2} \pi t) + \cos(2\pi t)$.
+
+\end{enumerate}
+
+\section{Convolutional Integral (10 Points)}
+
+Convolve the signals $x(t) = e^{-t}u(t)$ and $h(t) = u(t)$.
+
+\bigskip
+
+\bigskip
+
+{{\LARGE \textbf{Practice}}}
+
+\section{Multiple Frequency in a Signal (5 Points)}
+
+Write a MATLAB script to create a signal $y(t) = 3\cos(4\pi t) + 2\cos(10\pi t) + \cos(20\pi t)$.
+
+Plot for $t = 0 to 2$ second with time granularity of $0.01$ seconds. Discuss what you observe about the signal's behavior.
+
+\section{Analog Averager (25 Points)}
+
+Consider an analog average system given by 
+
+\begin{multiequation}
+y(t) = \frac{1}{T} \int_{t - T}^t x(\tau) d\tau
+\end{multiequation}
+
+
+\begin{enumerate}
+\item Write a MATLAB function \texttt{analog\_averager} that takes time vector and the signal vector as input, along with the parameter $T$ and compute $y(t)$ and returns the output vector $y$. \textbf{(10 Points)}
+
+\item Download the ERCOT zone 1 data from \url{https://github.com/rahulbhadani/CPE381_FA26/blob/main/Data/week_data_ERCOT_zone_1_.csv}. Read  the data as table using \texttt{readtable} function, convert the time column to POSIX format and subtract the all the time points from first time point so that the first time point starts at 
+$t=0$. 
+
+Compute the analog averager of the wind power from the given data table using \texttt{analog\_averager} function. Use the value of $ T = 600$.
+
+Plot the original wind power and averaged wind power as a function of time on the same graph.
+
+\textbf{(12 Points)}
+
+\item Explain what do you observe from the plot.
+
+\textbf{(3 Points)}
+
+You are expected to include two .m file in your submission for this part of the assignment: one file should contain only the function \texttt{analog\_averager} and another file should contain its use for ERCOT zone 1 data.
+\end{enumerate}
+
+
+\begin{center}
+   \S - \S - \S
+\end{center}
+
+\end{document}
