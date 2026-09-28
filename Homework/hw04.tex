@@ -1,0 +1,198 @@
+\documentclass[12pt, xcolor=dvipsnames,svgnames,x11names]{article}
+
+% ============================================================
+% Homework identity
+% ============================================================
+\newcommand{\hw}{Homework 4}
+\newcommand{\hwtopic}{Fourier Series}
+\newcommand{\duedate}{October 12, 2026, 11:59 PM}
+\newcommand{\totalpoints}{125}
+\newcommand{\hwturnin}{hw04}
+
+\input{common}
+
+\usepackage{design}
+
+\pagestyle{fancy}
+
+\lhead{\footnotesize{\coursenumber, \courseterm}}
+\chead{}
+\rhead{\footnotesize{\emph{\hw}}}
+\lfoot{\footnotesize{\instructorname}}
+\cfoot{\footnotesize{\thepage}}
+\rfoot{\footnotesize{\textit{Last Revised:~\today}}\\ \footnotesize{The University of Alabama in Huntsville}}
+\renewcommand{\headrulewidth}{0.1pt}
+\renewcommand{\footrulewidth}{0.1pt}
+
+\renewcommand{\thefootnote}{\fnsymbol{footnote}}
+
+
+\renewcommand{\headrulewidth}{0.1pt}
+\renewcommand{\footrulewidth}{0.1pt}
+
+\renewcommand{\thefootnote}{\fnsymbol{footnote}}
+
+\newcommand{\showanswers}{no}
+
+\begin{document}
+
+
+\date{Due: \duedate}
+
+\maketitle
+
+\setlength{\unitlength}{1in}
+You are allowed to use a generative model-based AI tool for your assignment. However, you must submit an accompanying reflection report detailing how you used the AI tool, the specific query you made, and how it improved your understanding of the subject. You are also required to submit screenshots of your conversation with any large language model (LLM) or equivalent conversational AI, clearly showing the prompts and your login avatar. Some conversational AIs provide a way to share a conversation link, and such a link is desirable for authenticity. Failure to do so may result in actions taken in compliance with the plagiarism policy.
+
+Additionally, you must include your thoughts on how you would approach the assignment if such a tool were not available. Failure to provide a reflection report for every assignment where an AI tool is used may result in a penalty, and subsequent actions will be taken in line with the plagiarism policy.
+
+\subsection*{Submission instruction:}
+Upload a .pdf on Canvas with the format  \texttt{CPE381-LastFirst-HW-XX}. For example, if your name is Sam Wells, your file name should be \texttt{CPE381-WellsSam-HW-XX.pdf}.  If there is a programming assignment, then you should include your source code along with your PDF files in a zip file \texttt{CPE381-LastFirst-HW-XX.zip}. 
+Your submission must contain your name and UAH Charger ID or your UAH email address.  Please number your pages as well.
+\vskip 1em
+\hrule
+\vskip 1em
+
+
+{{\LARGE \textbf{Theory}}}
+
+\section{Expand \textbf{(10 points)}}
+
+% Signals Systems and Transforms Q4.2
+Find the Fourier coefficients for the given signal using definition of Complex Exponential Fourier Series: $x(t) = \cos(2\pi t) + \cos(3\pi t)$. Hint: find the fundamental period of $x(t)$ first. Show your work.
+
+\section{Half-wave Rectified Signal (15 Points)}
+
+Consider a portion of half-wave rectified signal $x(t)$ shown in Figure~\ref{fig:Ch04_HalfWave_Rectified_Signal}.
+
+\begin{figure}[h]
+\centering
+\includegraphics[width=1.0\linewidth, trim={0cm 0.0cm 0cm 0.0cm},clip]{figures/Ch04_HalfWave_Rectified_Signal.pdf}
+\caption{Half-wave Rectified Signal $x(t)$}
+\label{fig:Ch04_HalfWave_Rectified_Signal}
+\end{figure}
+
+Its one period $x_1(t)$ can be written as
+
+\begin{multiequation}
+x_1(t) = \begin{cases}
+\sin(2\pi t), & \quad  0 \leq t \leq 0.5\\
+0, & \quad 0.5< t\leq 1
+\end{cases}
+\end{multiequation}
+
+\begin{enumerate}
+\item What is the fundamental period $T_0$ of the signal shown in the figure. \hfill \textbf{(2 Points)}
+
+\item Compute the complex exponential fourier series coefficient $X_k$ using the integral definition of Fourier series coefficient. \hfill \textbf{(10 Points)}
+
+\item Pay special attention to $X_0$ and $X_1$ and write their values separately. \hfill \textbf{(3 Points)}
+
+
+\end{enumerate}
+
+
+
+\section{Graph Detective (20 points))}
+\begin{figure}[h]
+\centering
+\includegraphics[width=1.0\linewidth, trim={0cm 0.0cm 0cm 0.0cm},clip]{figures/Ch04_squarewave.pdf}
+\caption{Square Wave $x(t)$}
+\label{fig:squarewave}
+\end{figure}
+
+
+For the square wave given in Figure~\ref{fig:squarewave}, 
+
+\begin{enumerate}
+    \item What is the Time period of the square wave? What is the Amplitude? \hfill \textbf{(5 points)}
+    \item Compute the Fourier series coefficients for the complex exponential Fourier series as well as trigonometric Fourier series representation using the integral method. Refer to page 255 of the textbook. Remember each term in the Fourier series represents a harmonic.
+
+Write down the expression for $X_k$, $c_k$, and $d_k$. \hfill \textbf{(15 points)}.
+ 
+\end{enumerate}
+
+
+
+\section{Fourier Series of a Pulse Training (10 Points)}
+Consider a periodic impulse train $\delta_{T_0}(t)$ as defined below:
+
+$$
+\delta_{T_0}(t)  =\sum_{-\infty}^\infty \delta(t -k T_0)
+$$
+
+\begin{enumerate}
+\item Sketch the impulse train. \hfill \textbf{(2 Points)}
+
+\item Determine the complex exponential Fourier series of $\delta_{T_0}(t) $. \textbf{(3 Points)}
+
+\item Determine the trigonometric Fourier series of $\delta_{T_0}(t) $.
+\end{enumerate}
+
+
+\bigskip
+
+\bigskip
+
+{{\LARGE \textbf{Practice}}}
+
+
+\section{Harmonics in MATLAB (40 points)}
+\begin{enumerate}
+    \item Write a MATLAB script with the file name \texttt{harmonics\_square\_wave.m} to reproduce the square wave shown in Figure~\ref{fig:squarewave}. If you make submission with any other file name, no points will be awarded. If you decided provide your implementation using functions, be sure put the all the functions at the end in your MATLAB script. \hfill    \textbf{(10 points)}
+    \item From the previous question, you will obtain the formula for $X_k$. As you see other than the DC term $X_0$, $k$ varies from $-\infty$ to $\infty$.
+
+    Using your MATLAB program, approximate the square wave $x(t)$ using the first 11 terms from your trigonometric Fourier series which would be from $k= -5$ to $k=5$.  \textbf{(10 points)}.
+
+    \item Now add 21 terms (consider negative k and positive k equally), and then 51 terms (consider negative k and positive k equally). What do you observe? Explain.\hfill  \textbf{(10 points)}.
+
+    \item Plot the magnitude spectrum, i.e. $|X_k|$ vs the index $k$ \hfill \textbf{( 5 points)}.
+    \item Plot the phase spectrum, i.e. $\angle X_k$ vs the index $k$ \hfill \textbf{( 5 points)}.
+    
+\end{enumerate}
+
+
+
+\section{Signal Smoothing Using Fourier Series (30 Points)}
+
+\subsection{Part 1 (5 Points)}
+
+Consider the MATLAB code provided in \url{https://github.com/rahulbhadani/CPE381_FA26/blob/main/Code/Ch04_Synthetic_Power_Data_With_Distorted_Harmonics.m}.
+
+In this code, we see that odd number of harmonics (3, 5, 7, 11, 13) with small percentage of amplitude is added to the original voltage signal to create distorted harmonics along with some random noise.
+
+Modify the code to add 15th harmonic with 8\% amplitude distortion (i.e. 0.08) to the original voltage signal. Compute reconstruction error (opposite of the reconstruction quality) when approximating the noisy voltage using 12 harmonics. Report the answer. Also report the total harmonic distortion THD value.
+
+Please include the code with the same file as originally provided in the course GitHub codebase. \hfill \textbf{(5 Points)}
+
+\subsection{Part 2}
+
+Download a datset provided in \url{https://github.com/rahulbhadani/CPE381_FA26/blob/main/Data/main_power_subset.csv}. The dataset contain time and amplitude column. 
+
+For those who are interested in the background, the data was obtained from Oak Ridge National Lab's repository (\url{https://doi.ccs.ornl.gov/dataset/13e3dc9a-b06f-5752-93cf-f25a8669d87f}). Only a subset of this large dataset has been used for this part of the assignment. 
+
+The given CSV file contains apparent voltage value from a 480 Volt power line enterin Oak Ridge National Lab's one of the buildings measured with a Rogowski coil.
+
+
+You are required to submit a MATLAB script with the exact name \texttt{harmonics\_oak\_ridge.m} where you will read the CSV file as a table and perform the following task using the data provided in the file:
+
+\begin{enumerate}
+
+\item Plot the amplitude from the csv file as a function of time. Include the necessary code and the generated plot as a part of your submission. \hfill \textbf{(2 Points)}
+
+\item Consider that the fundamental frequency of the signal is $60~Hz$ as is the case with the power grid in the United States, compute the trigonometric fourier coefficients $a_n$ corresponding to cosine part of the trigonometric Fourier series, and $b_n$ corresponding to the sine part of the trigonometric Fourier series. Report the DC term separately. \hfill \textbf{(9 +1 Points)}
+
+\item Report the total harmonic distortion based on the formula provided in the code mentioned in Part 1. \hfill \textbf{(2 Points)}
+
+\item Create a bar plot for harmonic amplitude $A = \sqrt{\tfrac{1}{2}(a_k^2 + b_k^2)}$, as a function of harmonic number $k$. Harmonic amplitude is the root mean square of $|X_k|$ provided in Page 255 of the textbook. Include the bar plot figure as a part of your submission. \hfill \textbf{(5 Points)}
+
+\item Next, reconstruct the signal by using only 3 harmonics, and then 5, 15, and 20 harmonics. Then create four plot showing original signal overlaid with reconstructed signal for all four cases. Choose colors appropriately for clarity. Include all the figures in your submission. Compute the root mean square (RMS) error for each four cases when compared with the original signal and report them as a part of your submission. Report all RMS error as a part of your submission.  \hfill \textbf{(6 Points)}
+
+
+\end{enumerate}
+
+\begin{center}
+   \S - \S - \S
+\end{center}
+
+\end{document}
