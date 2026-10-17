@@ -1,0 +1,661 @@
+
+\documentclass[12pt,xcolor=dvipsnames,svgnames,x11names]{article}
+
+% ============================================================
+% Homework identity
+% ============================================================
+\newcommand{\hw}{Homework 3}
+\newcommand{\hwtopic}{Continuous Linear-Time Invariant Signals and Systems}
+\newcommand{\duedate}{October 05, 2026, 11:59 PM}
+\newcommand{\totalpoints}{150}
+\newcommand{\hwturnin}{hw03}
+
+
+% ============================================================
+% Shared course definitions and packages
+% ============================================================
+\input{common}
+
+\usepackage{design}
+
+\pagestyle{fancy}
+
+\lhead{\footnotesize{\coursenumber, \courseterm}}
+\chead{}
+\rhead{\footnotesize{\emph{\hw}}}
+\lfoot{\footnotesize{\instructorname}}
+\cfoot{\footnotesize{\thepage}}
+\rfoot{\footnotesize{\textit{Last Revised:~\today}}\\ \footnotesize{The University of Alabama in Huntsville}}
+\renewcommand{\headrulewidth}{0.1pt}
+\renewcommand{\footrulewidth}{0.1pt}
+
+\renewcommand{\thefootnote}{\fnsymbol{footnote}}
+
+
+\renewcommand{\headrulewidth}{0.1pt}
+\renewcommand{\footrulewidth}{0.1pt}
+
+\renewcommand{\thefootnote}{\fnsymbol{footnote}}
+
+\newcommand{\showanswers}{no}
+
+\newtcolorbox{answerbox}{
+  enhanced,
+  breakable,
+  sharp corners=northwest,
+  sharp corners=southeast,
+  colback=white,
+  colframe=red!75!black,
+  halign=left, 
+  boxrule=2pt, 
+  left=1em, 
+  right=1em, 
+  top=0.5em, 
+  bottom=0.5em, 
+  drop shadow=coolGray,
+  title=Answer
+}
+
+
+\begin{document}
+
+
+\date{Due: \duedate}
+
+\maketitle
+
+\setlength{\unitlength}{1in}
+You are allowed to use a generative model-based AI tool for your assignment. However, you must submit an accompanying reflection report detailing how you used the AI tool, the specific query you made, and how it improved your understanding of the subject. You are also required to submit screenshots of your conversation with any large language model (LLM) or equivalent conversational AI, clearly showing the prompts and your login avatar. Some conversational AIs provide a way to share a conversation link, and such a link is desirable for authenticity. Failure to do so may result in actions taken in compliance with the plagiarism policy.
+
+Additionally, you must include your thoughts on how you would approach the assignment if such a tool were not available. Failure to provide a reflection report for every assignment where an AI tool is used may result in a penalty, and subsequent actions will be taken in line with the plagiarism policy.
+
+\subsection*{Submission instruction:}
+Upload a .pdf on Canvas with the format  \texttt{CPE381-LastFirst-HW-XX}. For example, if your name is Sam Wells, your file name should be \texttt{CPE381-WellsSam-HW-XX.pdf}.  If there is a programming assignment, then you should include your source code along with your PDF files in a zip file \texttt{CPE381-LastFirst-HW-XX.zip}. 
+Your submission must contain your name and UAH Charger ID or your UAH email address.  Please number your pages as well.
+\vskip 1em
+\hrule
+
+
+
+{{\LARGE \textbf{Theory}}}
+
+\section{Impulse Function (5 Points)}
+The voltage across a capacitor with capacitance $C$ is given by 
+
+\begin{multiequation}
+v_c(t) = \frac{1}{C} \int_{-\infty}^t i(t) dt
+\end{multiequation}
+
+If a current impulse $i(t) = 5\delta(t)$ is forced through the capacitor, what is the voltage $v_c(t)$ across the capacitor?
+
+\begin{answerbox}
+\begin{multiequation}
+v_c(t) = \frac{1}{C} \int_{-\infty}^t 5\delta(t) dt = \cfrac{1}{C}5 u(t), \quad \text{As, ~~~} \delta(t) = \frac{d}{dt}u(t)
+\end{multiequation}
+
+\end{answerbox}
+
+\section{Magic of Impulse Function (10 Points)}
+
+Evaluate the expressions below:
+
+\begin{enumerate}
+\item $\int_{-5}^6 e^{-2t} \delta(t-1) dt $
+
+\item $\int_{-\infty}^\infty \delta(t) \cos\bigg(\cfrac{3t}{2}\bigg) dt$
+\end{enumerate}
+
+\begin{answerbox}
+
+\begin{enumerate}
+\item 
+
+\begin{multiequation}
+\int_{-5}^6 e^{-2t} \delta(t-1) dt  = e^{-2t} \bigg|_{t = 1} = e^{-2\cdot 1} = e^{-2}
+\end{multiequation}
+
+\item 
+
+\begin{multiequation}
+\int_{-\infty}^\infty \delta(t) \cos\bigg(\cfrac{3t}{2}\bigg) dt - \cos\bigg(\cfrac{3\cdot 0}{2}\bigg) = 1
+\end{multiequation}
+
+\end{enumerate}
+\end{answerbox}
+
+\section{Additivity (5 Points)}
+Consider a signal $f(t) = t^2  - 2$. Does it satisfy additivity?
+
+\begin{answerbox}
+
+\begin{multiequation}
+f(t_1 + t_2) &  = (t_1 + t_2)^2  - 2 = t_1^2 + t_2^2 + 2t_1 t_2 - 2\\
+f(t_1) + f(t_2) & = t_1^2 - 2 + t_2^2 - 2 = t_1^2 + t_2^2 - 4
+\end{multiequation}
+
+Clearly $f(t_1 + t_2)$ and $f(t_1) + f(t_2)$ are not the same. Hence the signal is not additive.
+
+\end{answerbox}
+
+
+
+\section{Homogeneity (5 Points)}
+Consider a signal $f(t) = 6t^3 + 8$. Does it satisfy homogeneity?
+
+\begin{answerbox}
+
+\begin{multiequation}
+f(a\cdot t) & = 6(a\cdot t)^3 + 8 = 6 a^3 t^3  + 8\\
+a\cdot f(t) & = a\cdot ( 6 t^3 + 8) = 6at^3  + 8a
+\end{multiequation}
+Clearly, $f(a\cdot t) \neq a\cdot f(t)$. Hence, the signal does not satisfy homogeneity.
+\end{answerbox}
+
+\section{Linearity of a Sytem (15 Points)}
+
+Consider a system $\mathcal{S}$ whose output is $y(t)$ and input is $x(t)$, such that $y(t) = \mathcal{S}[x(t)]$.
+
+For each of the following check if the system is linear:
+
+\begin{enumerate}
+\item $y(t) = |x(t)|$.
+\item $y(t) = 5 \frac{dx(t)}{dt}$ (A differentiator system with gain).
+\item $y(t) = \int_{-\infty}^{t} x(\tau) d\tau$ (A integrator system).
+\end{enumerate}
+
+
+\begin{answerbox}
+
+
+\begin{enumerate}
+
+\item 
+
+\begin{multiequation}
+\mathcal{S}[\alpha x_1(t) + \beta x_2(t)] & = |\alpha x_1(t) + \beta x_2(t)|\\
+\alpha \mathcal{S}[x_1(t)] + \beta \mathcal{S}[x_2(t)] & = \alpha |x_1(t)| + \beta |x_2(t)|
+\end{multiequation}
+
+
+They are not equal Hence, the system is not linear.
+
+Alternatively,
+
+It fails homogeneity for negative $\alpha$. Let $\alpha = -1$. \\
+$\mathcal{S}[-x(t)] = |-x(t)| = |x(t)|$ \\
+$-1 \cdot \mathcal{S}[x(t)] = -|x(t)|$ \\
+Since $|x(t)| \neq -|x(t)|$ for all $x(t) \neq 0$, the system is not linear.
+
+\item 
+
+\begin{multiequation}
+\mathcal{S}[\alpha x_1(t) + \beta x_2(t)] & = 5 \frac{d}{dt}(\alpha x_1(t) + \beta x_2(t)) = 5\alpha \frac{dx_1(t)}{dt} + 5\beta \frac{dx_2(t)}{dt} \\
+\alpha \mathcal{S}[x_1(t)] + \beta \mathcal{S}[x_2(t)] & = \alpha (5 \frac{dx_1(t)}{dt}) + \beta (5 \frac{dx_2(t)}{dt}) = 5\alpha \frac{dx_1(t)}{dt} + 5\beta \frac{dx_2(t)}{dt}
+\end{multiequation}
+They are equal. The system is linear.
+
+
+\item 
+
+{\small
+\begin{multiequation}
+\mathcal{S}[\alpha x_1(t) + \beta x_2(t)] & = \int_{-\infty}^{t} (\alpha x_1(\tau) + \beta x_2(\tau)) d\tau = \alpha\int_{-\infty}^{t} x_1(\tau) d\tau + \beta\int_{-\infty}^{t} x_2(\tau) d\tau\\
+\alpha \mathcal{S}[x_1(t)] + \beta \mathcal{S}[x_2(t)] & = \alpha \int_{-\infty}^{t} x_1(\tau) d\tau + \beta \int_{-\infty}^{t} x_2(\tau) d\tau
+\end{multiequation}
+}
+They are equal. The system is linear.
+
+\end{enumerate}
+
+
+
+\end{answerbox}
+
+\section{Time-invariance (15 Points)}
+
+Consider a system $\mathcal{S}$ whose output is $y(t)$ and input is $x(t)$, such that $y(t) = \mathcal{S}[x(t)]$.
+
+For each of the following check if the system is time-invariant:
+
+\begin{enumerate}
+\item $y(t) = x(2t)$ (A compressor system).
+\item $y(t) = \int_{t-1}^{t} x(\tau) d\tau$ (A moving window integrator system)
+\end{enumerate}
+
+\begin{answerbox}
+
+\begin{enumerate}
+\item Let input $x_d(t) = x(t - t_0)$.
+
+The output is 
+
+
+\begin{multiequation}
+\mathcal{S}[x_d(t)] = x_d(2t) = x(2t - t_0)
+\end{multiequation}
+
+The shifted output is 
+
+\begin{multiequation}
+y(t - t_0) = x(2(t - t_0)) = x(2t - 2t_0)
+\end{multiequation}
+
+Since $x(2t - t_0) \neq x(2t - 2t_0)$ for all $t_0 \neq 0$, the system is time-varying.
+
+
+\item 
+
+Let input be $x_d(t) = x(t - t_0)$.
+
+The output is 
+
+\begin{multiequation}
+\mathcal{S}[x_d(t)] = \int_{t-1}^{t} x_d(\tau) d\tau = \int_{t-1}^{t} x(\tau - t_0) d\tau
+\end{multiequation}
+
+
+Use change of variable $u = \tau - t_0$: $= \int_{(t-t_0)-1}^{(t-t_0)} x(u) du$.
+
+
+The shifted output is 
+
+\begin{multiequation}
+y(t - t_0) = \int_{(t-t_0)-1}^{(t-t_0)} x(\tau) d\tau
+\end{multiequation}
+
+
+They are equal, so the system is time-invariant.
+
+\end{enumerate}
+
+\end{answerbox}
+
+\section{Causality (15 Points)}
+
+\begin{enumerate}
+\item Define BIBO stability for a continuous-time system. \textbf{(5 Points)}
+
+\item What is the relationship between causality and the impulse response $h(t)$ of an LTI system? \textbf{(5 Points)}
+
+\item Can a system be BIBO stable but not causal? Explain with an example. \textbf{(5 Points)}
+
+
+\end{enumerate}
+
+\begin{answerbox}
+
+\begin{enumerate}
+
+\item A system is Bounded-Input Bounded-Output (BIBO) stable if every bounded input signal results in a bounded output signal. Mathematically, if there exists a finite number $ M_x $ such that $ |x(t)| \leq M_x < \infty $ for all $ t $, then there must exist a finite number $ M_y $ such that $ |y(t)| \leq M_y < \infty $ for all $ t $.
+
+\item An LTI system is causal if and only if its impulse response $ h(t) = 0 $ for all $ t < 0 $. This ensures the output $ y(t) = \int_{-\infty}^{\infty} x(\tau)h(t-\tau)d\tau = \int_{-\infty}^{t} x(\tau)h(t-\tau)d\tau $ does not depend on future input values.
+
+\item Yes. Stability (bounded output) and causality (no future dependence) are independent properties. \\
+\textbf{Example:} The system $ y(t) = x(t + 1) $ (a perfect predictor) is non-causal because its output at time $ t $ depends on the input at future time $ t+1 $. However, if $ |x(t)| \leq M_x $, then $ |y(t)| = |x(t+1)| \leq M_x $, so the output is bounded. Thus, it is BIBO stable but non-causal.
+\end{enumerate}
+
+\end{answerbox}
+
+\section{Causality Assessment  (15 Points)}
+
+For each system described by the input-output relationship, determine if it is causal.
+
+\begin{enumerate}
+\item $y(t) = x(t-2)$.
+
+\item $y(t)=x(t)cos(t+1)$.
+
+\item $y(t) = \frac{dx(t)}{dt}$.
+
+\end{enumerate}
+
+\begin{answerbox}
+
+\begin{enumerate}
+
+\item \textbf{Causal.}  The output at time $ t $ depends on the input at time $ t-2 $, which is in the past.
+
+\item \textbf{Causal.} The scaling factor $ \cos(t+1) $ is independent of the input $ x(t) $. The output only depends on the current value of the input $ x(t) $.
+
+\item \textbf{Causal.} The derivative at time $ t $ is defined as $ \lim_{\Delta t \to 0} \frac{x(t) - x(t - \Delta t)}{\Delta t} $, which depends on the present and an infinitesimally small past value of the input. It does not depend on the future.
+
+\end{enumerate}
+\end{answerbox}
+
+\section{Determining BIBO Stability (15 Points)}
+
+For each system, determine if it is BIBO stable. For LTI systems described by 
+$h(t)$, use the absolute integrability criterion. For other systems, apply the BIBO definition directly.
+
+\begin{enumerate}
+\item $h(t) = e^{-3t}u(t)$.
+\item $h(t) = \delta
+(t-5)$.
+\item $y(t) = \int_{t-1}^t x(\tau)d\tau$.
+\end{enumerate}
+
+\begin{answerbox}
+
+\begin{enumerate}
+
+\item Check absolute integrability :
+
+\begin{multiequation}
+\int_{-\infty}^\infty | h(\tau)d\tau = \int_{0}^\infty | e^{-3\tau}|d\tau  = \int_{0}^\infty e^{-3\tau} d\tau = -\frac{1}{3}e^{-3\tau}\bigg|_{0}^\infty = 0 - (-\tfrac{1}{3}) = \frac{1}{3} < \infty
+\end{multiequation}
+The integral is finite, so the system is BIBO stable.
+
+\item \textbf{Stable.}
+
+\begin{multiequation}
+\int_{-\infty}^{\infty} |\delta(\tau - 5)|  d\tau = \int_{-\infty}^{\infty} \delta(\tau - 5)  d\tau = 1 < \infty
+\end{multiequation}
+
+\item 
+Assume a bounded input: $ |x(t)| \leq M_x $.
+\begin{multiequation}
+|y(t)| = \left| \int_{t-1}^{t} x(\tau)  d\tau \right| \leq \int_{t-1}^{t} |x(\tau)|  d\tau \leq \int_{t-1}^{t} M_x  d\tau = M_x \cdot (1) = M_x
+\end{multiequation}
+The output is bounded by $ M_x $, so the system is BIBO stable.
+
+\end{enumerate}
+
+\end{answerbox}
+
+\section{Fundamental Period (10 Points)}
+
+The fundamental time period of a sum of periodic signals is the least common multiple (LCM) of the individual periods, provided the signals are commensurable (i.e., the ratio of any two periods is rational). If the signals are not commensurable, the sum is not periodic.
+
+You can use the following logic to determine the fundamental period of a sum of the signal:
+
+\begin{enumerate}
+\item Compute the fundamental period of each individual signals.
+
+\item Check if the periods are commensurable, i..e the ratio of any two are rational (E.g. $\sqrt{2}$ is irrational).
+
+\item If commensurable, find the LCM of the periods by first expressing each period as a fraction. Then, you find the LCM of the numerators and the GCD of the denominator.  The LCM of the periods is LCM(numerators) / GCD(denominators).
+
+\item If the ratio is irrational, the sum is not periodic.
+\end{enumerate}
+
+Find the fundamental period of the following signals:
+
+\begin{enumerate}
+
+\item $x(t) = \sin(2\pi t) + \cos(3\pi t)$.
+\item $x(t) = \sin(\sqrt{2} \pi t) + \cos(2\pi t)$.
+
+\end{enumerate}
+
+\begin{answerbox}
+
+\begin{enumerate}
+\item 
+
+The fundamental period of the signal \( x(t) = \sin(2\pi t) + \cos(3\pi t) \) is determined as follows:
+
+
+\begin{multiequation}
+\text{For } \sin(2\pi t): &\quad T_1 = \frac{2\pi}{2\pi} = 1 \text{ second} \\
+\text{For } \cos(3\pi t): &\quad T_2 = \frac{2\pi}{3\pi} = \frac{2}{3} \text{ seconds}
+\end{multiequation}
+
+Check if the periods are commensurable:
+\begin{multiequation}
+\frac{T_1}{T_2} = \frac{1}{2/3} = \frac{3}{2} \quad \text{(rational number)}
+\end{multiequation}
+
+Since the ratio is rational, the signals are commensurable and their sum is periodic.
+
+To find the fundamental period:
+\begin{multiequation}
+T &= \text{LCM}(T_1, T_2) = \text{LCM}\left(1, \frac{2}{3}\right) \\
+&= \frac{\text{LCM}(1, 2)}{\text{GCD}(1, 3)} = \frac{2}{1} = 2 \text{ seconds}
+\end{multiequation}
+
+\item 
+
+\begin{itemize}
+    \item \( T_1 = 2\pi / (\sqrt{2} \pi) = \sqrt{2} \) s (for \(\sin(\sqrt{2} \pi t)\))
+    \item \( T_2 = 1 \) s (for \(\cos(2\pi t)\))
+    \item \( T_1 / T_2 = \sqrt{2} / 1 = \sqrt{2} \), irrational, hence not commensurable
+    \item \textbf{Not periodic}
+\end{itemize}
+
+\end{enumerate}
+
+
+
+\end{answerbox}
+
+\section{Convolutional Integral (10 Points)}
+
+Convolve the signals $x(t) = e^{-t}u(t)$ and $h(t) = u(t)$.
+
+\begin{answerbox}
+
+
+\begin{multiequation}
+y(t) = \int^\infty_{-\infty} x(\tau) h(t-\tau)d\tau
+\end{multiequation}
+
+
+\begin{multiequation}
+y(t) = \int^\infty_{-\infty} e^{-\tau}u(\tau) \cdot u(t-\tau)  d\tau
+\end{multiequation}
+
+We need to determine the region of support (or limits of integration). 
+
+We note that $u(\tau) = 1$ for $\tau \geq 0 $.
+
+Further, $u(t-\tau) = 1 $ for $\tau \leq t$.
+
+Hence, 
+
+\begin{multiequation}
+y(t) = \int^t{0} e^{-\tau} d\tau, \quad t \geq 0
+\end{multiequation}
+
+For $t < 0$, the integration region is empty, hence $y(t) = 0$ for $t < 0$.
+
+Thus, 
+
+\begin{multiequation}
+y(t) = \int^t{0} e^{-\tau} d\tau = -e^{-\tau}\bigg|_{0}^t = 1 - e^{-t}, \quad t\geq 0
+\end{multiequation}
+
+Thus, $y(t) = (1 - e^{-t})$ for $t\geq 0$, or $y(t) = (1 - e^{-t}) u(t)$.
+
+\end{answerbox}
+
+\bigskip
+
+\bigskip
+
+{{\LARGE \textbf{Practice}}}
+
+\section{Multiple Frequency in a Signal (5 Points)}
+
+Write a MATLAB script to create a signal $y(t) = 3\cos(4\pi t) + 2\cos(10\pi t) + \cos(20\pi t)$.
+
+Plot for $t = 0 to 2$ second with time granularity of $0.01$ seconds. Discuss what you observe about the signal's behavior.
+
+\textbf{Solution:}
+
+Code also available at \url{https://github.com/rahulbhadani/CPE381_FA26/blob/main/Code/HW03_signal_sums.m}
+
+
+\begin{minted}
+[
+frame=lines,
+framesep=2mm,
+baselinestretch=1.2,
+bgcolor=LightGray,
+fontsize=\footnotesize
+]
+{matlab}
+
+%
+t = 0:0.01:2;
+y = 3.*cos(4.*pi.*t) + 2.*cos(10.*pi.*t) + cos(20.*pi.*t);
+f = figure;
+f.Position(3:4) = [1200, 400];
+plot(t, y, 'b', 'LineWidth',2);
+hold on;
+set(gca, 'XColor', [0, 0, 0], 'YColor', [0, 0, 0], 'TickDir', 'out');
+xaxis = get(gca, 'XAxis');
+xaxis.TickLabelInterpreter = 'latex';
+yaxis = get(gca, 'YAxis');
+yaxis.TickLabelInterpreter = 'latex';
+xlabel('Time','Interpreter', 'latex');
+set(gca, 'FontSize', 18);
+grid on;
+grid minor;
+\end{minted}
+
+From the plot, we observe that the signal is periodic with the funamental period of 1 unit.
+
+
+\section{Analog Averager (25 Points)}
+
+Consider an analog average system given by 
+
+\begin{multiequation}
+y(t) = \frac{1}{T} \int_{t - T}^t x(\tau) d\tau
+\end{multiequation}
+
+
+\begin{enumerate}
+\item Write a MATLAB function \texttt{analog\_averager} that takes time vector and the signal vector as input, along with the parameter $T$ and compute $y(t)$ and returns the output vector $y$. \textbf{(10 Points)}
+
+\item Download the ERCOT zone 1 data from \url{https://github.com/rahulbhadani/CPE381_FA26/blob/main/Data/week_data_ERCOT_zone_1_.csv}. Read  the data as table using \texttt{readtable} function, convert the time column to POSIX format and subtract the all the time points from first time point so that the first time point starts at 
+$t=0$. 
+
+Compute the analog averager of the wind power from the given data table using \texttt{analog\_averager} function. Use the value of $ T = 600$.
+
+Plot the original wind power and averaged wind power as a function of time on the same graph.
+
+\textbf{(12 Points)}
+
+\item Explain what do you observe from the plot.
+
+\textbf{(3 Points)}
+
+You are expected to include two .m file in your submission for this part of the assignment: one file should contain only the function \texttt{analog\_averager} and another file should contain its use for ERCOT zone 1 data.
+\end{enumerate}
+
+\textbf{Solution:}
+
+\textbf{Part 1:}
+
+Code also provided at \url{https://github.com/rahulbhadani/CPE381_FA26/blob/main/Code/analog_averager.m}
+
+\begin{minted}
+[
+frame=lines,
+framesep=2mm,
+baselinestretch=1.2,
+bgcolor=LightGray,
+fontsize=\footnotesize
+]
+{matlab}
+function y = analog_averager(t, x, T)
+    % ANALOG_AVERAGER Computes analog moving average of a signal
+    %
+    % Inputs:
+    %   t - time vector (column or row vector)
+    %   x - signal vector (same size as t)
+    %   T - averaging window duration
+    %
+    % Output:
+    %   y - averaged signal vector (same size as x)
+    %
+    % The function computes: y(t) = (1/T) * integral from (t-T) to t of x(tau) dtau
+    
+    % Ensure inputs are column vectors
+    t = t(:);
+    x = x(:);
+    
+    % Initialize output vector
+    y = zeros(size(x));
+    
+    % For each time point, compute the integral over the window [t-T, t]
+    for i = 1:length(t)
+        current_time = t(i);
+        
+        % Find indices where time is in the integration window [current_time-T, current_time]
+        window_indices = find(t >= (current_time - T) & t <= current_time);
+        
+        if length(window_indices) < 2
+            % If we don't have enough points in the window, use available data
+            y(i) = mean(x(window_indices));
+        else
+            % Extract time and signal values in the window
+            t_window = t(window_indices);
+            x_window = x(window_indices);
+            
+            % Perform numerical integration using trapezoidal rule
+            % integral = trapz(t_window, x_window)
+            integral_value = trapz(t_window, x_window);
+            
+            % Compute average: (1/T) * integral
+            actual_window_duration = t_window(end) - t_window(1);
+            if actual_window_duration > 0
+                y(i) = integral_value / T;
+            else
+                y(i) = x_window(1); % Single point case
+            end
+        end
+    end
+end
+\end{minted}
+
+\textbf{Part 2:}
+
+Code also availabl at \url{https://github.com/rahulbhadani/CPE381_FA26/blob/main/Code/HW03_analog_average_use.m}
+
+\begin{minted}
+[
+frame=lines,
+framesep=2mm,
+baselinestretch=1.2,
+bgcolor=LightGray,
+fontsize=\footnotesize
+]
+{matlab}
+%%
+clear; clc;close all;
+csv_file = '../Data/week_data_ERCOT_zone_1_.csv';
+week_data = readtable(csv_file);
+px_time = posixtime(week_data.time);
+px_time = px_time - px_time(1);
+
+y = analog_averager(px_time, week_data.wind_power, 600);
+
+f = figure;
+f.Position(3:4) = [1200, 400];
+plot(px_time, week_data.wind_power, 'b', 'LineWidth',2, 'DisplayName', 'Original Wind Power Data');
+hold on;
+plot(px_time, y, 'r', 'LineWidth',2, 'LineStyle','--','DisplayName', 'Smoothed Out Wind Power Data');
+title('Load Power as function of time','Interpreter', 'latex');
+set(gca, 'XColor', [0, 0, 0], 'YColor', [0, 0, 0], 'TickDir', 'out');
+xaxis = get(gca, 'XAxis');
+xaxis.TickLabelInterpreter = 'latex';
+yaxis = get(gca, 'YAxis');
+yaxis.TickLabelInterpreter = 'latex';
+xlabel('Time','Interpreter', 'latex');
+set(gca, 'FontSize', 18);
+grid on;
+grid minor;
+legend;
+\end{minted}
+
+
+\textbf{Part 3:}
+From the plot, we see that analog average smoothens out the wind power data.
+
+\begin{center}
+   \S - \S - \S
+\end{center}
+
+\end{document}
