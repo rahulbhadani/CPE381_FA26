@@ -1,0 +1,264 @@
+\documentclass[12pt, xcolor=dvipsnames,svgnames,x11names]{article}
+
+% ============================================================
+% Homework identity
+% ============================================================
+\newcommand{\hw}{Homework 5}
+\newcommand{\hwtopic}{Fourier Transform}
+\newcommand{\duedate}{October 26, 2026, 11:59 PM}
+\newcommand{\totalpoints}{125}
+\newcommand{\hwturnin}{hw05}
+
+\input{common}
+
+\usepackage{design}
+
+\pagestyle{fancy}
+
+\lhead{\footnotesize{\coursenumber, \courseterm}}
+\chead{}
+\rhead{\footnotesize{\emph{\hw}}}
+\lfoot{\footnotesize{\instructorname}}
+\cfoot{\footnotesize{\thepage}}
+\rfoot{\footnotesize{\textit{Last Revised:~\today}}\\ \footnotesize{The University of Alabama in Huntsville}}
+\renewcommand{\headrulewidth}{0.1pt}
+\renewcommand{\footrulewidth}{0.1pt}
+
+\renewcommand{\thefootnote}{\fnsymbol{footnote}}
+
+
+\renewcommand{\headrulewidth}{0.1pt}
+\renewcommand{\footrulewidth}{0.1pt}
+
+\renewcommand{\thefootnote}{\fnsymbol{footnote}}
+
+\newcommand{\showanswers}{no}
+
+\begin{document}
+
+
+\date{Due: \duedate}
+
+\maketitle
+
+\setlength{\unitlength}{1in}
+You are allowed to use a generative model-based AI tool for your assignment. However, you must submit an accompanying reflection report detailing how you used the AI tool, the specific query you made, and how it improved your understanding of the subject. You are also required to submit screenshots of your conversation with any large language model (LLM) or equivalent conversational AI, clearly showing the prompts and your login avatar. Some conversational AIs provide a way to share a conversation link, and such a link is desirable for authenticity. Failure to do so may result in actions taken in compliance with the plagiarism policy.
+
+Additionally, you must include your thoughts on how you would approach the assignment if such a tool were not available. Failure to provide a reflection report for every assignment where an AI tool is used may result in a penalty, and subsequent actions will be taken in line with the plagiarism policy.
+
+\subsection*{Submission instruction:}
+Upload a .pdf on Canvas with the format  \texttt{CPE381-LastFirst-HW-XX}. For example, if your name is Sam Wells, your file name should be \texttt{CPE381-WellsSam-HW-XX.pdf}.  If there is a programming assignment, then you should include your source code along with your PDF files in a zip file \texttt{CPE381-LastFirst-HW-XX.zip}. 
+Your submission must contain your name and UAH Charger ID or your UAH email address.  Please number your pages as well.
+\vskip 1em
+\hrule
+\vskip 1em
+
+
+{{\LARGE \textbf{Theory}}}
+
+
+\section{Duality (10 points)}
+Use the duality property to find the Fourier transform of the sinc signal:
+
+$$
+x(t) = 20\cfrac{\sin(0.5 t)}{0.5t}  = 20\textrm{sinc}(0.5 t), \quad -\infty < t < \infty.
+$$
+
+%\section{Fourier Series of Staircase Function (20 Points)}
+%
+%Consider a signal $x(t)$ whose one period $x_1(t)$ is given by the piecewise function:
+%
+%\begin{multiequation}
+%x_1(t) = \begin{cases}
+%4, \quad 0 \leq t \leq 1\\
+%3, \quad 1 \leq t \leq 2\\
+%2, \quad 2 \leq t \leq 3\\
+%1, \quad 3 \leq t \leq 4\\
+%\end{cases}
+%\end{multiequation}
+%
+%\begin{enumerate}
+%
+%\item Sketch the periodic signal $x(t)$. \hfill \textbf{(3 Points)}
+%
+%\item What is its fundamental period $T_0$? \hfill \textbf{(2 Points)}
+%
+%\item Determine the complex exponential Fourier series coefficient $X_k$ of $x(t)$. Separately consider the case of $X_0$. \hfill \textbf{(15 Points)}.
+%
+%\item \textbf{BONUS:} Simplify $X_k$ to the maximum extent. \hfill \textbf{(5 Points)}
+%\end{enumerate}
+
+
+
+\section{Fourier Transform from The Graph (20 Points)}
+
+\label{sec:doubletriangle2}
+
+\begin{enumerate}
+
+\item Compute the Fourier transform $X(\Omega)$ of the signal $x(t)$ from its integral formula. \hfill \textbf{(10 Points)}
+
+\begin{figure}[H]
+\centering
+\includegraphics[width=0.7\linewidth, trim={0cm 0.0cm 0cm 0.0cm},clip]{figures/Ch04_MiniStaircase_Signal.pdf}
+\caption{$x(t)$}
+\label{fig:Ch04_MiniStaircase_Signal}
+\end{figure}
+
+\textbf{BONUS:} Write the closed form expression for $x(t)$. \hfill \textbf{(5 Points)}
+
+\item 
+\label{sec:doubletriangle2_2}
+Compute the Fourier transform $F(\Omega)$ of the signal $f(t)$ from its integral formula. \hfill \textbf{(10 Points)}
+
+
+\begin{figure}[H]
+\centering
+\includegraphics[width=0.7\linewidth, trim={0cm 0.0cm 0cm 0.0cm},clip]{figures/Ch04_DoubleTriangle_Signal.pdf}
+\caption{$x(t)$}
+\label{fig:Ch04_DoubleTriangle_Signal}
+\end{figure}
+
+\textbf{BONUS:} Write the closed form expression for $x(t)$. \hfill \textbf{(5 Points)}
+
+\end{enumerate}
+
+\section{Inverse Fourier Transform (10 Points)}
+From the definition of Inverse Fourier Transform
+
+\begin{multiequation}
+f(t) = \frac{1}{2\pi}\int_{-\infty}^\infty F(\Omega) e^{j\Omega t}d\Omega
+\end{multiequation}
+find the inverse Fourier transform of the spectrum below:
+
+\begin{figure}[H]
+\centering
+\includegraphics[width=0.7\linewidth, trim={0cm 0.0cm 0cm 0.0cm},clip]{figures/Ch04_DoubleParabola_Signal.pdf}
+\caption{$x(t)$}
+\label{fig:Ch04_DoubleParabola_Signal}
+\end{figure}
+
+\textbf{Hint:} Use Integral formula: $\int x^2 e^{ax}dx = \frac{e^{ax}}{a^3}\bigg( a^2 x^2 - 2ax +2 \bigg)$.
+
+
+\vspace{20pt}
+
+\hrule
+
+\vspace{20pt}
+
+
+{{\LARGE \textbf{Practice}}}
+
+\section{Rectangular Pulse Fourier Transform (20 Points)}
+
+The rectangular pulse is defined by 
+
+\begin{multiequation}
+x(t) = \begin{cases}    
+1 , \quad |t| \leq |a|\\
+0, \quad |t| > |a|
+\end{cases}
+\end{multiequation}
+
+Name the MATLAB file corresponding to this code as \texttt{rectangular\_pulse\_hw05.m}. You will not choose any other file name while making submission. Your code should not start with a function definition.
+
+\begin{enumerate}
+    \item Write a MATLAB program to plot the signal $x(t)$.  \textbf{(5 points)}.
+    \item Find the Fourier transform $X(\Omega)$ analytically (i.e. mathematically) of $x(t)$. \textbf{(10 points)}.
+    \item Write a MATLAB program to plot the magnitude spectrum $|X(\Omega)|$ vs $\Omega$. \textbf{(5 points)}.
+\end{enumerate}
+
+
+\section{Numerical Fourier Transform (25 Points)}
+
+In this part of the homework, you are required to compute Fourier Transform of a signal numerically. However, if you notice, the intgeral formula contains $\Omega$'s limits from  $-\infty$ to $\infty$. That cannot be achieved in practice while coding numerically. Hence, we need to specify maximum value of $\pm \Omega$ while computing numerical integration. Let's call it $\pm\Omega_{max}$.
+
+\begin{enumerate}
+
+\item Compute Numerical Fourier Transform of the signal $f(t)$ provided in Figure~\ref{fig:Ch04_DoubleTriangle_Signal}. Use $\tau = 3.0$, Maximum Time $T_{max} = 6.0$, $ \Omega_{max} = 50.0$. Select number of frequency points = 1000, Number of time amd points = 1000. Use MATLAB's \texttt{trapz} function fo computing numerical integration. DO NOT USE MATLAB's \texttt{fft} function for computing Fourier transform. Please refer the implementation \url{https://github.com/rahulbhadani/CPE381_FA26/blob/main/Code/Ch05_Numerical_Fourier_Transform.m} provided as a part of your course repository for your implementation. You must provided code as a part of your submission. Name the MATLAB file corresponding to this code as \texttt{numericalFT\_hw05.m}. Your code should not start with a function definition. You will not choose any other file name while making submission. \hfill \textbf{(15 Points)}
+
+
+\item Create several plots: (i) Plot of actual signal $f(t)$, (ii) Plot of Magnitude Spectrum $|F(\Omega)|$ vs $\Omega$, (iii) Plot of Phase Spectrum $\angle F(\Omega)$ vs $\Omega$, (iv) Plot of Real Part of $F(\Omega)$ vs $\Omega$, (v) Plot of Imaginary Part of $F(\Omega)$ vs $\Omega$ (vi) Plot of Error of $| F_n(\Omega) - F_a(\Omega)|$ where $F_n(\Omega) $ denotes numerically computed Fourier transform, and $F_a(\Omega)$ denotes analytical fourier transfor compute in \textbf{Problem}~\ref{sec:doubletriangle2}-\ref{sec:doubletriangle2_2}. Each of the first five plots must be overlaid with corresponding graph calculated from the true analytical solution obtained in \textbf{Problem}~\ref{sec:doubletriangle2}-\ref{sec:doubletriangle2_2}. You must provided those plots as a part of your submission. \hfill \textbf{(10 Points)}
+
+\end{enumerate}
+
+
+\section{Filter Design (35 points)}
+
+Note: For this implementation, name your MATLAB script as \texttt{filter\_design\_sine\_hw05.m}. Your code should not start with a function definition. You will not choose any other file name while making submission.
+
+Consider a sine wave as $x(t) = \sin(2\pi t)$.
+\begin{enumerate}
+    \item What's the fundamental period of $x(t)$? \hfill \textbf{(2 points)}.
+    
+    \item Write a MATLAB script to plot $x(t)$. Using the sampling frequency \texttt{fs} as 100 Hz. Provide the plot as a part of your submission. \hfill \textbf{(2 points)}.
+    
+    \item Compute its Fourier Transform numerically using MATLAB using \texttt{fft} function. Do not use symbolic computation. Check the lecture slides, and course GitHub repo for an example code at \url{https://github.com/rahulbhadani/CPE381_FA26/blob/main/Code/Ch05_speed_fourier.m}. Plot the magnitude spectrum as a function of  frequency $\Omega$. Provide the plot as a part of your submission. \hfill \textbf{(10 points)}
+    
+    \item Create a sine wave $\eta(t)$ of a frequency ten times that of $x(t)$ with an amplitude 10\% of the amplitude of $x(t)$. Add $\eta(t)$ to the original sine wave so that $y(t) = \eta(t) + x(t)$. Plot $y(t)$. Provide the plot as a part of your submission. \hfill \textbf{(2 points).}
+    
+    \item Compute the Fourier transform of $y(t)$ using \texttt{fft} function and plot its Magnitude spectrum $|Y(\Omega)|$ as a function of $\Omega$. Explain in two sentences how the magnitude spectrum of $y(t)$ differs from that of $x(t)$. \hfill \textbf{(4 points)}.
+    \item Now, we will design a filter to remove high-frequency noise from $y(t)$. We will design a low-pass filter using $\texttt{butter}$ function (that implements Butterworth filter). Choose the filter order of $4$ and a cutoff frequency of $5 Hz$.
+
+    An example syntax for \texttt{butter} is:
+
+    % Design the low-pass filter
+    \begin{minted}
+[
+frame=lines,
+framesep=2mm,
+baselinestretch=1.2,
+bgcolor=LightGray,
+fontsize=\footnotesize
+]
+{matlab}
+[b, a] = butter(order, cutoff_freq / (fs/2), 'low');
+\end{minted}
+\texttt{fs} is the sampling frequency.
+
+Write down filter coefficients b, and a. \hfill \textbf{(5 points)}.
+
+\item Now, we will use the filter to clean the noisy sine wave $y(t)$. The syntax is as follows
+
+    \begin{minted}
+[
+frame=lines,
+framesep=2mm,
+baselinestretch=1.2,
+bgcolor=LightGray,
+fontsize=\footnotesize
+]
+{matlab}
+filtered_sine = filter(b, a, noisy_sine);
+\end{minted}
+
+Plot the filtered sine wave. Provide the plot as a part of your submission. \hfill \textbf{(5 points)}.
+
+\item Report the mean squared error between the original signal $x(t)$ and the filtered sine wave. \hfill \textbf{(5 points)}.
+
+\end{enumerate}
+
+
+\section{Filtering a Real Signal (35 points)}
+
+Note: For this implementation, name your MATLAB script as \texttt{filter\_design\_acceleration\_hw05.m}. Your code should not start with a function definition. You will not choose any other file name while making submission.
+
+\begin{enumerate}
+    \item Download an acceleration data from \url{https://github.com/rahulbhadani/CPE381_FA26/blob/main/Data/accel.csv}, and read into MATLAB. The unit of the acceleration is $m/s^2$. Plot the signal as a function of time. Provide the plot as a part of your submission. \hfill  \textbf{(5 points)}
+    
+    \item Perform Fourier transform on the data using \texttt{fft} function. \hfill \textbf{(5 points)}. Note that the signal is not uniformly sampled. Hence, you need to determine the average sampling frequency from the timestamp provided in the data file. \hfill \textbf{(10 points)}
+
+    \item Design a low pass filter using \texttt{butter} function with cutoff frequency $2 Hz$ and choose the order as 4.
+    Write down filter coefficients b, and a. \hfill \textbf{(5 points)}.
+
+    \item Use the filter coefficients with \texttt{filter} function to smoothened-out the acceleration data. Plot the acceleration data along with the smoothened-out acceleration data on the same plot, and also create another plot between 130 - 133 seconds to zoom out and visualize the smoothened-out acceleration signal. Provide the plot as a part of your submission. \hfill \textbf{(5 points)}
+
+        \item Plot the Magnitude and Phase spectrum of the Fourier Transform of the origin acceleration data and smoothened-out acceleration on the same plot for the comparison (Magnitude and Phase spectrum will be on separate plots). Provide the plot as a part of your submission. \hfill \textbf{(5 points)}
+\end{enumerate}
+
+
+\begin{center}
+   \S - \S - \S
+\end{center}
+\end{document}
