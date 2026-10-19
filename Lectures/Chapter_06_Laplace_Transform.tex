@@ -1,0 +1,1791 @@
+%----------------------------------------------------------------------------------------
+%	PACKAGES AND THEMES
+%----------------------------------------------------------------------------------------
+\PassOptionsToPackage{table}{xcolor}
+\documentclass[aspectratio=169,xcolor=dvipsnames,svgnames,x11names,fleqn]{beamer}
+% \documentclass[aspectratio=169,xcolor=dvipsnames,fleqn]{beamer}
+
+\usetheme{RedVelvet}
+
+\usefonttheme[onlymath]{serif}
+
+
+
+\usepackage{xspace}
+\usepackage{amsmath}
+\usepackage{amssymb}
+\usepackage{amsfonts}
+\usepackage{color}
+\usepackage{physics}
+% \usepackage{mathbb}
+\usepackage{rahul_math}
+\usepackage{bigints}
+\usepackage{hyperref}
+
+\usepackage{graphicx} % Allows including images
+\usepackage{booktabs} % Allows the use of \toprule, \midrule and \bottomrule in tables
+\usepackage{tikz,pgfplots}
+\usepackage{subfigure}
+\usetikzlibrary{arrows}
+\usepackage{minted}
+\definecolor{LightGray}{gray}{0.9}
+\definecolor{cream}{rgb}{0.92, 0.9, 0.55}
+\definecolor{lightblue}{rgb}{0.68, 0.85, 0.9}
+
+
+\usepackage{xcolor-material}
+\usetikzlibrary{fit}
+\tikzset{%
+apple/.pic={
+  \fill [MaterialBrown] (-1/8,0)  arc (180:120:1 and 3/2) coordinate [pos=3/5] (@)-- ++(1/6,-1/7)  arc (120:180:5/4 and 3/2) -- cycle;
+  \fill [MaterialLightGreen500] (0,-9/10)  .. controls ++(180:1/8) and ++(  0:1/4) .. (-1/3,  -1) .. controls ++(180:1/3) and ++(270:1/2) .. (  -1,   0) .. controls ++( 90:1/3) and ++(180:1/3) .. (-1/2, 3/4) .. controls ++(  0:1/8) and ++(135:1/8) .. (   0, 4/7)
+}
+}
+
+\newcommand{\leftdoublequote}{\textcolor{blue}{\scalebox{3}{``}}}
+
+\newcommand{\rightdoublequote}{\textcolor{blue}{\scalebox{3}{''}}}
+
+
+\usepackage{textcomp}
+\usepackage{fontawesome}
+
+\usepackage{overpic}
+
+%----------------------------------------------------------------------------------------
+%	TITLE PAGE
+%----------------------------------------------------------------------------------------
+
+\usepackage{tikz-qtree,tikz-qtree-compat}
+\usetikzlibrary{calc}
+
+
+\title[CPE 381: Signals and Systems]{CPE 381: Fundamentals of Signals and Systems for Computer Engineers} % The short title appears at the bottom of every slide, the full title is only on the title page
+\subtitle{06 Laplace Transform}
+
+\author[Rahul Bhadani] {{\Large \textbf{Rahul Bhadani}}}
+
+\institute[UAH] % Your institution as it will appear on the bottom of every slide, maybe shorthand to save space
+{
+    Electrical \& Computer Engineering,  The University of Alabama in Huntsville
+}
+\date
+
+% \titlegraphic{
+%    \includegraphics[width=0.4\linewidth]{figures/UAH_primary.png}
+% }
+
+\begin{document}
+
+%-------------------------------------------------
+\begin{frame}
+\titlepage
+\end{frame}
+
+%-------------------------------------------------
+\begin{frame}{Outline}
+    \tableofcontents
+\end{frame}
+
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\section{Motivating Laplace Transform}
+
+%-----------------------------------------
+
+\begin{frame}{}
+    \begin{center}
+    \Huge \bf \color{DarkBlue}
+    \faFire
+    
+    Motivating Laplace Transform
+
+\end{center}
+\end{frame}
+
+\begin{frame}{From Calculus to Algebra}
+
+\begin{graddash}{SpringGreen}{White}
+\begin{center}
+    \textbf{Solving the differentiation equation is hard, but solving a linear algebraic equation is easier.}
+\end{center}
+
+\end{graddash}
+
+
+
+Euler found that when using an appropriate \textbf{Kernel function}, multiplied to a function, and then integrated transform it into another function of different variable that can be operated using algebraic operators.
+
+\Large
+\begin{gradred}
+\begin{center}
+     $F(p) = \int_a^b K(t, p)f(t) dt$
+\end{center}
+   
+\end{gradred}
+
+\normalsize
+
+where $K(t,p)$ is a Kernel function. This goes back to the integral transform invented by Leonhard Euler \url{https://www.jstor.org/stable/41133757}.
+
+
+
+    
+\end{frame}
+
+
+
+\begin{frame}{Solving Differential Equations}
+
+\begin{center}
+The primary motivation becomes to solve initial value problem (i.e. differential equations with initial conditions specified).
+\end{center}
+
+\begin{tblock}{}
+A Kernel function $K(t, p)$ when multiplied with a time-domain function $f(t)$ transforms it such that solving initial value problem becomes easier.
+\end{tblock}
+
+We need to solve initial value problems, as want to understand how a system behaves to some inputs with some initial conditions.
+
+\end{frame}
+
+
+\begin{frame}{Eigenfunctions}
+
+\begin{center}
+    If the output signal is a scalar multiple of the input signal, we refer to the signal as an eigenfunction and the multiplier as the eigenvalue.
+     \includegraphics[width=0.6\linewidth,trim=0 0 0 0cm,clip]{figures/eigen.png}
+\end{center}
+
+\end{frame}
+
+\begin{frame}{Complex Exponentials as Eigenfunction of LTI Systems}
+Complex exponentials are eigenfunctions of LTI systems.
+
+If $x(t) = e^{st}$ and $h(t)$ is the impulse response then
+
+$$
+y(t) = (h*x)(t) = \int_{-\infty}^\infty h(\tau)e^{s(t-\tau)}d\tau = e^{st}\int_{-\infty}^\infty h(\tau)e^{-s\tau}d\tau = H(s)e^{st}
+$$
+
+ \includegraphics[width=0.6\linewidth,trim=0 0 0 0cm,clip]{figures/LTI_System.png}
+
+$H(s)$ is the Laplace transform of $h(t)$. This definition is only applicable to LTI systems. 
+
+\color{red}
+\textbf{
+\textit{That's why we need to know first if a system is an LTI system.}}
+
+\end{frame}
+
+\begin{frame}{Complex Exponentials}
+Consider $s = \sigma + j \Omega$, then 
+
+$$
+H(s) =  \int_{-\infty}^\infty  h(\tau) e^{-\tau s}d\tau
+$$
+
+\begin{gradblue}
+From the above equations, it seems obvious that $H(s)$ is an infinite combination of complex exponentials, weighted by the impulse response.
+\end{gradblue}
+
+Here, $s$ loosely stands for space-domain.
+
+
+
+
+\end{frame}
+
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\section{Laplace Transform}
+
+%-----------------------------------------
+
+\begin{frame}{}
+    \begin{center}
+    \Huge \bf \color{DarkBlue}
+   \faCertificate
+    
+    Laplace Transform
+
+\end{center}
+\end{frame}
+
+\begin{frame}{Two-sided or Bilateral Laplace Transform}
+    
+    \small
+    
+\begin{custombox}{Definition}{SpringGreen}{pink}
+\Large
+\begin{equation}
+    F(s) = \Lcal[ f(t) ] = \int_{-\infty}^\infty f(t) e^{-st} dt, \quad s\in \textrm{ROC}
+\end{equation}
+\end{custombox}
+
+ROC = Region of Convergence, the region in the complex plane (henceforth referred to as $s$ plane, as $s= \sigma + j\Omega$ is a complex number).
+
+\begin{itemize}
+    \item $\sigma $ : damping factor;
+    \item $\Omega $ : frequency in \texttt{rad/s}.
+\end{itemize}
+
+\begin{tblock}{}
+We see that in Fourier Transform, a signal is represented as a sum of (weighted) sinusoids. However, in Laplace transform, it is a sum of (weighted) damped sinusoids.
+\end{tblock}
+    
+\end{frame}
+
+\begin{frame}{Inverse Laplace Transform}
+    \begin{custombox}{Definition}{Dandelion}{MistyRose}
+    \Large
+        \begin{equation}
+            f(t) = \Lcal^{-1}[F(s)] = \cfrac{1}{2\pi j}\int_{\sigma - j\infty}^{\sigma + j\infty} F(s)e^{st}ds, \quad \sigma \in \textrm{ROC}
+        \end{equation}
+    \end{custombox}
+    The relationship between a function and its Laplace transform can be written as:
+    \begin{center}
+        \begin{equation}
+            f(t) \iff F(s)
+        \end{equation}
+    \end{center}
+    
+\end{frame}
+
+\begin{frame}{Transfer Function}
+\begin{center}
+    For a given system $\Scal$, if $f(t) = h(t)$, then $H(s)$ is called the Transfer Function and characterizes the system in $s$-domain (or frequency domain).
+\end{center}
+\end{frame}
+
+\begin{frame}[allowframebreaks]{Why Damping Factor and Frequency in $s$?}
+Going back to Euler's transform:
+\begin{center}
+     $F(p) = \int_a^b K(t, p)f(t) dt$
+\end{center}
+
+$e^{-st}$ is a special case Kernel function. 
+
+
+\begin{gradyellow}
+    When the exponential is raised to a negative value, then the exponential is damped.  Hence, even with limits from $-\infty$ to $\infty$, we may expect the integral to converge (or within other specified limits).
+\end{gradyellow}
+
+\newpage
+If $s$ is a complex number $\sigma + j\Omega$, then $e^{-\sigma t}$ will damp the input signal, but $e^{-j\Omega t}$ will have an effect or rotating phasor with $\Omega$ as the angular frequency. Laplace built his idea on the top of Euler's work.
+
+\vspace{15pt}
+
+Read more: \url{https://www.cfm.brown.edu/people/dobrush/am33/MuPad/part6.html} or \url{https://web.archive.org/web/20230829205701/https://www.cfm.brown.edu/people/dobrush/am33/MuPad/part6.html}
+
+\end{frame}
+
+
+\begin{frame}{Region of Convergence (ROC)}
+
+    \begin{custombox}{Definition}{LightSeaGreen}{OrangeRed}
+    \large
+        The region in the $s$ plane for which the integral converges is called the region of convergence.
+    \end{custombox}
+
+    We denote the ROC set as $\Rcal$.
+\end{frame}
+
+\begin{frame}{Example}
+\vspace*{-6\baselineskip}
+\begin{custombox}{Laplace Transform}{Thistle}{MediumSpringGreen}
+
+        \large
+        
+    For a signal $x(t) = e^{-at}u(t)$, find the Laplace transform $X(s)$ and its ROC.
+    
+\end{custombox}
+
+\end{frame}
+
+
+\begin{frame}{}
+\vspace*{-9\baselineskip}
+    \color{LightGray}{Blank space for calculation}
+\end{frame}
+
+\begin{frame}{Example}
+\vspace*{-6\baselineskip}
+\begin{custombox}{Laplace Transform}{Thistle}{MediumSpringGreen}
+
+        \large
+        
+    Find the Laplace transform of (i) $\delta(t)$, (ii) $u(t)$, (iii) $p(t) = u(t) - u(t-1)$
+    
+\end{custombox}
+\end{frame}
+
+\begin{frame}{}
+\vspace*{-9\baselineskip}
+    \color{LightGray}{Blank space for calculation}
+\end{frame}
+
+
+
+\begin{frame}[containsverbatim]{Laplace Transform using Symbolic Expression in MATLAB}
+
+\begin{columns}
+    \column{0.5\linewidth}
+        \begin{minted}
+[
+frame=lines,
+framesep=2mm,
+baselinestretch=1.2,
+bgcolor=LightGray,
+fontsize=\footnotesize
+]
+{matlab}
+syms a t s
+f = exp(-a*t);
+F = laplace(f, t, s);
+
+% Display the Laplace transform
+disp('Laplace Transform:');
+disp(F);
+
+% Extract the pole from the Laplace transform
+[~, poles] = numden(F);
+poles = solve(poles, s);
+\end{minted}
+
+\column{0.5\linewidth}
+Output:
+
+\begin{verbatim}
+    Laplace Transform:
+1/(a + s)
+ 
+ 
+poles =
+ 
+-a
+\end{verbatim}
+\end{columns}
+
+\end{frame}
+
+\begin{frame}[containsverbatim]{Laplace Transforms of Unit-Impulse and Unit-Step Functions
+}
+
+\begin{columns}
+    \column{0.5\linewidth}
+        \begin{minted}
+[
+frame=lines,
+framesep=2mm,
+baselinestretch=1.2,
+bgcolor=LightGray,
+fontsize=\footnotesize
+]
+{matlab}
+syms t s
+syms a positive
+F = laplace(dirac(t-a),t,s)
+G = laplace(heaviside(t-a),t,s)
+\end{minted}
+
+\column{0.5\linewidth}
+\begin{itemize}
+    \item \texttt{dirac} is the unit-impulse function.
+    \item \texttt{heaviside} is the unit-step function.
+\end{itemize}
+Output:
+\begin{verbatim}
+    F =
+ 
+exp(-a*s)
+ 
+ 
+G =
+ 
+exp(-a*s)/s
+\end{verbatim}
+
+\end{columns}
+
+\end{frame}
+
+
+\begin{frame}[containsverbatim]{Laplace Transform of Symbolic Function}
+
+\begin{columns}
+    \column{0.5\linewidth}
+        \begin{minted}
+[
+frame=lines,
+framesep=2mm,
+baselinestretch=1.2,
+bgcolor=LightGray,
+fontsize=\footnotesize
+]
+{matlab}
+syms f1(x) f2(x) a b
+f1(x) = exp(x);
+f2(x) = x;
+F = laplace([f1 f2],x,[a b])
+
+\end{minted}
+
+\column{0.5\linewidth}
+\begin{itemize}
+    \item \texttt{dirac} is the unit-impulse function.
+    \item \texttt{heaviside} is the unit-step function.
+\end{itemize}
+Output:
+\begin{verbatim}
+ 
+F =
+ 
+[1/(a - 1), 1/b^2]
+\end{verbatim}
+
+\end{columns}
+
+\end{frame}
+
+
+\begin{frame}
+  \frametitle{A Note on ROC for Finite-Duration Signal}
+
+  \begin{itemize}
+    \item A finite-duration signal $ x_f(t) $ is a signal that is nonzero only for $ t_1 \leq t \leq t_2 $, where both $ t_1 $ and $ t_2 $ are finite numbers and $ t_2 > t_1 $.
+    \item \textbf{For a finite-duration, absolutely integrable signal, the ROC is the entire $ s $-plane}.
+  \end{itemize}
+
+  \begin{custombox}{Key Point}{blue}{gray}
+    If $ x_f(t) $ is absolutely integrable and a finite-duration signal, then $ x(t)e^{-\sigma t} $ is also absolutely integrable for any value of $ \sigma $ because the integration is over the finite range of $ t $ only.
+  \end{custombox}
+\end{frame}
+
+\begin{frame}{Region of Convergence}
+    \begin{columns}
+        \column{0.4\linewidth}
+        \includegraphics[width=0.99\linewidth,trim=0 0 0 0cm,clip]{figures/ROC_region.png}
+        \column{0.6\linewidth}
+        ROC (shaded region) for
+        \begin{itemize}
+            \item  (A) causal signal with poles with $\sigma_{max} = 0$; 
+            \item (B) causal signal with poles with $\sigma_{max} < 0$;
+\item (C) anticausal signal with poles with $\sigma_{min} > 0$; 
+\item (D) two-sided or noncausal signal where ROC is bounded by poles
+(poles on left-hand plane give causal component and poles on the right-hand s-plane give the anticausal component
+of the signal). 
+\item The ROCs do not contain poles, but they can contain zeros.
+        \end{itemize}
+    \end{columns}
+\end{frame}
+\begin{frame}
+  \frametitle{ROC for Finite-Duration Signals}
+
+  \begin{itemize}
+    \item The Laplace transform of a finite-duration signal converges for every value of $ s $.
+    \item This means that the ROC of a general signal $ x(t) $ remains unaffected by the addition of any absolutely integrable, finite-duration signal $ x_f(t) $ to $ x(t) $.
+  \end{itemize}
+
+  \begin{custombox}{Conclusion}{red}{yellow}
+    If $ \mathcal{R} $ represents the ROC of a signal $ x(t) $, then the ROC of a signal $ x(t) + x_f(t) $ is also $ \mathcal{R} $.
+  \end{custombox}
+\end{frame}
+
+\begin{frame}{Why do we care about ROC?}
+
+\textbf{Recall:}
+
+\begin{custombox}{Inverse Laplace Transform}{Violet}{Tomato}
+\large
+    $$
+    f(t) = \Lcal^{-1}[F(s)] = \cfrac{1}{2\pi j}\int_{\sigma - j\infty}^{\sigma + j\infty} F(s)e^{st}ds, \quad \sigma \in \textrm{ROC}
+    $$
+\end{custombox}
+
+    \begin{itemize}
+        \item Knowledge of ROC is required when calculating inverse Laplace transform.  
+\item Path of integration on the complex plane is $\sigma+j\Omega$, $\Omega$ varies from $-\infty$ to $\infty$. In addition, this path of integration must lie on the ROC. We won’t discuss further ‘path of integration’ but if you are interested, I recommend MA 453/MA 503 -- Introduction To Complex Analysis
+    \end{itemize}
+
+    % An in-depth discussion of Laplace transform can be found in “Introduction to the Theory and Application of the Laplace Transformation”, G. Doetsch, 1974, Springer, ISBN 10: 3540064079, ISBN 13: 9783540064077
+\end{frame}
+
+\begin{frame}{One-sided of Unilateral Laplace Transform}
+$t>0$, a causal system.
+
+For any function $f (t), -\infty <t< \infty$, its one-sided Laplace transform $F(s)$ is defined as
+
+\begin{gradred}
+$$
+F(s) = \Lcal[f(t)u(t)] = \int_{0^-}^\infty f(t) e^{-st} dt \quad s \in \textrm{ROC}
+$$
+\end{gradred}
+
+\begin{itemize}
+    \item An important use of the one-sided Laplace transform is for solving ordinary differential equations with initial conditions.
+    \item  The two-sided Laplace transform by starting at $t = -\infty$ (lower bound of the integral) ignores possible nonzero initial conditions at $t = 0$. Thus it is not useful in solving ordinary differential equations unless the initial conditions are zero.
+\end{itemize}
+\end{frame}
+
+\begin{frame}{Structure of Transfer Function and Poles and Zeros}
+\begin{itemize}
+    \item $H(s)$ is a ratio of numerator to denominator where each is polynomial in $s$.
+\item $H(s) = N(s)/D(s)$.
+\item The roots of $N(s) = 0$ are called zeros.
+\item The roots of $D(s) = 0$ are called poles.
+\item ROC is related to poles of the transfer function.
+\item Poles and zeros at the same place on the complex plane cancel each other.
+
+
+\end{itemize}
+    
+\end{frame}
+
+\begin{frame}{Poles and ROC}
+    The ROC consists of the values of $\sigma$ for which $x(t)e^{-\sigma t}$ is absolutely integrable.
+    \begin{itemize}
+        \item No poles appear on ROC. (Poles make the $H(s)$ go to infinity).
+        \item ROC plane is parallel to $\Omega$ axis.
+        \item ROC doesn’t depend on $\Omega$. Thus all ROC has $-\infty < \Omega < \infty$.
+\item For a causal system, ROC is the plane right of the poles.
+\item For an anti-causal system, ROC is the plane left of the poles.
+\item For non-causal system, ROC is the intersection of multiple components, wherever, the integration is finite.
+
+    \end{itemize}
+\end{frame}
+
+% \begin{frame}{Example}
+
+%     Find the Laplace transform of $\delta(t)$, $u(t)$ and a pulse $p(t) = u(t) - u(t - 1)$ indicating their regions of convergence.
+
+% \end{frame}
+
+\begin{frame}{Laplace Transform of a bounded function}
+    The Laplace transform of a bounded function $f (t)$ of finite support $t_1 \leq t \leq t_2$, always exists and has the whole $s$-plane as ROC.
+
+\end{frame}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\section{Region of Convergence}
+
+%-----------------------------------------
+
+\begin{frame}{}
+    \begin{center}
+    \Huge \bf \color{DarkBlue}
+   \faAreaChart
+    
+   Region of Convergence
+
+
+\end{center}
+\end{frame}
+
+\begin{frame}{Properties of ROC}
+
+    1. The ROC does not contain any poles. 
+    
+\end{frame}
+
+
+\begin{frame}{Properties of ROC}
+
+    2. The ROC of $X(s)$ consists of strips parallel to the $j\Omega$-axis in the $s$-plane and ROC does not contain any poles.
+    
+\end{frame}
+
+\begin{frame}{Properties of ROC}
+
+    3.  If $x(t)$ is a finite-duration signal and absolutely integrable, ROC is the entire $s$-plane except possibly $s = 0$ or $s = \infty $
+    
+\end{frame}
+
+\begin{frame}{Properties of ROC}
+    4. If $x(t)$ is a right-sided signal, that is $x(t) = 0$ for $t < t_1 < \infty$, then ROC is of the form $Re(s) > \sigma_{\textrm{max}}$, where $\sigma_{\textrm{max}}$ equals the maximum real part of any poles of $X(s)$, thus ROC is to the right of all the poles of $X(s)$.
+\end{frame}
+
+\begin{frame}{Properties of ROC}
+    5. If $x(t)$ is a left-sided signal, that is $x(t) = 0$ for $t > t_2 > -\infty$, then ROC is of the form $Re(s) < \sigma_{\textrm{min}}$, where $\sigma_{\textrm{min}}$ is the minimum real part of any of the poles of $X(s)$, thus ROC is to the left of all the poles of $X(s)$. 
+\end{frame}
+
+\begin{frame}{Properties of ROC}
+    6. If $x(t)$ is a two-sided signal, that is $x(t)$ is an infinite-duration signal, then ROC is of the form $s_1 < Re(s) < s_2$ where $s_1$, $s_2$ are real parts of the two poles of $X(s)$, thus ROC is a vertical strip in the $s$-plane between $s_1$ and $s_2$.
+
+\end{frame}
+
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\section{Properties of One-side Laplace Transform
+}
+
+%-----------------------------------------
+
+\begin{frame}{}
+    \begin{center}
+    \Huge \bf \color{DarkBlue}
+   \faAreaChart
+    
+   Properties of One-side Laplace Transform
+
+
+
+\end{center}
+\end{frame}
+
+\begin{frame}{Linearity}
+    Laplace Transform is linear.
+
+$$
+f(t) \iff F(s),~~~~~g(t)\iff G(s), 
+$$
+
+then
+
+$$
+\Lcal [a f(t)u(t) + b g(t)u(t)] = aF(s) + bG(s)
+$$
+\end{frame}
+
+\begin{frame}{Example}
+
+\begin{itemize}
+    \item 
+
+   $ f (t) = Ae^{-at}u(t)$
+
+\item $f(t) \iff F(s)$
+
+\item $F(s) = \cfrac{A}{(s+a)} ,\quad  ROC: \sigma  > -|a|$
+
+\item $a = 5$ makes $f(t)$ decaying exponential.
+
+\item The larger the $|a|$, the faster is the decay.
+
+\item $a = -5$ makes $f(t)$ growing exponential. 
+
+\item The larger the $|a|$, the faster is the growth.
+
+\end{itemize}
+\end{frame}
+
+\begin{frame}{Example continues ...}
+    Now, consider
+
+    $$
+    g_1(t)  = A\cos(\Omega_0 t) u(t) = 0.5[Ae^{at}u(t) + Ae^{-at}u(t)]
+    $$
+
+    Assume $ a= j \Omega_0$.
+
+    We can use linearity to solve it:
+$$
+G_1(s) = 0.5\bigg[ \cfrac{A}{s-a} + \cfrac{A}{s+a} \bigg] = \cfrac{As}{s^2 + \Omega_0^2 }
+$$
+
+and we will have two poles, $s = -j \Omega_0$, $s = j \Omega_0$.
+
+\begin{gradblue}
+    The value of $a$ determines the location of poles. As $a$ is a pure imaginary number, then if the poles are farther away from the origin, we will have a higher frequency.
+\end{gradblue} 
+\end{frame}
+
+\begin{frame}{Example continues ...}
+Further, consider
+
+$g_2(t) = Ae^{-\alpha t }\cos(\Omega_0t)u(t)$
+
+We can break down the sin part into exponential term using Euler's identity, which would lead to $G_2(s)$:
+
+$$
+G_2(s) = \cfrac{A}{2}\bigg[ \cfrac{1}{s + \alpha - j\Omega_0}  + \cfrac{1}{s + \alpha + j\Omega_0}  \bigg] 
+$$
+
+\begin{gradyellow}
+    Comparing $G_1$ and $G_2$, we see that, $G_2(s) = G_1(s + \alpha)$ and we originally had $g_2(t)  = g_1(t)e^{-\alpha t}$. Thus we learn that multiplying $g_1(t)$ by $e^{-\alpha t}$ shifts the Laplace transform by $\alpha$ amount.
+\end{gradyellow}
+
+This is called \textbf{Frequency-Shift} property.
+
+
+\end{frame}
+
+\begin{frame}{Example}
+\vspace*{-4\baselineskip}
+\begin{custombox}{Laplace Transform}{Thistle}{MediumSpringGreen}
+
+        \large
+        
+    Find and use the Laplace transform of  
+    $$
+    e^{j\Omega_0 t + \theta} u(t)
+ $$
+ to obtain the Laplace transform of $x(t) = \cos(\Omega_0 t  + \theta ) u(t)$
+    
+\end{custombox}
+\end{frame}
+
+\begin{frame}{}
+\vspace*{-9\baselineskip}
+    \color{LightGray}{Blank space for calculation}
+\end{frame}
+
+\begin{frame}{Multiplication by Time}
+
+
+\begin{columns}
+    \column{0.5\linewidth}
+    \begin{equation*}
+        \begin{aligned}
+            p(t) & = t g_2(t) = tAe^{-\alpha t }\cos(\Omega_0t)u(t)\\
+            P(s) & = \Lcal[ p(t)]\\
+            & = \int_{-\infty}^\infty  tAe^{-\alpha t }\cos(\Omega_0t)u(t) e^{-st}dt\\
+            & = \int_{0}^\infty  tAe^{-\alpha t }\cos(\Omega_0t) e^{-st}dt
+        \end{aligned}
+    \end{equation*}
+
+
+
+    \column{0.5\linewidth}
+    \begin{equation*}
+        \begin{aligned}
+            G_2(s) & =  \int_{0}^\infty  Ae^{-\alpha t }\cos(\Omega_0t) e^{-st}dt\\
+            \Rightarrow \cfrac{dG_2(s)}{ds}& =   \int_{0}^\infty  Ae^{-\alpha t }\cos(\Omega_0t) \cfrac{d}{ds}e^{-st}dt
+            \\
+            & = - \int_{0}^\infty  Ae^{-\alpha t }\cos(\Omega_0t)te^{-st}dt\\
+            & = -P(s)
+        \end{aligned}
+    \end{equation*}
+\end{columns}
+Hence, multiplication by time variable 4 in time is equal to taking the derivative in the $s$-domain. In general, 
+
+  
+    $
+        t^n f(t) u(t) \iff (-1)^n \cfrac{d^n F(s)}{ds^n}, \quad n \geq 1
+    $
+
+    
+\end{frame}
+
+\begin{frame}{Laplace Transform of Sum of Signals}
+
+    \begin{center}
+        If we were to add the different signals, then the Laplace transform of the resulting signal would be the sum of the Laplace transform of each of the signals and the poles/zeros would be the aggregation of the poles/zeros from each.
+    \end{center}
+\end{frame}
+
+\begin{frame}{Plotting Poles}
+    \begin{center}
+         \includegraphics[width=0.9\linewidth,trim=0 0 0 0cm,clip]{figures/plotting_poles.pdf}
+    \end{center}
+\end{frame}
+
+{
+ \setbeamercolor{background canvas}{bg=gray!15}
+\begin{frame}{Reviewing Integration by Parts}
+ 
+
+    \Huge
+    \begin{gradyellow}
+        $$
+        \centering
+            \int fg'  = fg - \int f'g
+       $$
+    \end{gradyellow}
+
+
+\end{frame}
+}
+
+\begin{frame}{The Laplace Transform of the Derivative of a Causal Signal}
+
+
+    \begin{equation*}
+        \begin{aligned}
+            \Lcal \bigg[\cfrac{df(t)}{dt}u(t)\bigg] & = \int_{0^-}^\infty \cfrac{df(t)}{dt}e^{-st}dt
+        \end{aligned}
+    \end{equation*}
+
+Let $f = e^{-st}$, then $f' = -se^{-st} dt$ , $g' = \cfrac{d f(t)}{dt}$, $g = f(t)$.
+
+\begin{columns}
+    \column{0.7\linewidth}
+    \begin{equation*}
+    \begin{aligned}
+       \int_{0^-}^\infty \cfrac{df(t)}{dt}e^{-st}dt & = e^{-st} f(t) \bigg|_{0^-}^\infty -  \int_{0^-}^\infty f(t) ( -se^{-st} ) dt  \\
+       &  = - f(0_-) + s\bigg|_{0^-}^\infty  f(t)e^{-st}dt\\
+       & =  - f(0_-) + s F(s)
+    \end{aligned}
+\end{equation*}
+\column{0.3\linewidth}
+$f(0_-)$ term will vanish when the limits of integration are from $-\infty$ to $\infty$, i.e. for a two-sided Laplace transform
+
+\end{columns}
+
+
+\end{frame}
+
+\begin{frame}{The Laplace Transform of the Derivative of a Causal Signal}
+    In general
+
+\begin{gradred}
+    \huge
+     $$
+    \Lcal \bigg[ \cfrac{d^Nf(t)}{dt^N} u(t)     \bigg] = s^N F(s)
+    $$
+\end{gradred}
+
+   for two-sided Laplace transform. Thus solving a differential equation becomes an algebraic problem with the application of Laplace transform. 
+   
+\end{frame}
+
+\begin{frame}{The Laplace Transform of the Integral of a Causal Signal}
+    Let $g(t) = \int_0^t f(u) du$.
+
+     $\Rightarrow g'(t) = f(t)$, and assume, $g(0) = 0$.
+
+\begin{gradyellow}
+    \begin{equation*}
+        \begin{aligned}
+               \Lcal [ g'(t)] & = s\Lcal[g(t)] - g(0)  = s\Lcal [g(t)]\\
+               & = F(s),\quad \text{~~~as~~~} F(s) = \Lcal[f(t)]\\
+               \Rightarrow \Lcal[g(t)] & = \cfrac{F(s)}{s}\\
+\Rightarrow \Lcal \bigg[ \int_0^t f(u) du  \bigg] & = \cfrac{F(s)}{s}
+        \end{aligned}
+    \end{equation*}
+\end{gradyellow}
+\end{frame}
+
+\begin{frame}{Time-shift Property}
+$$
+\Lcal \bigg[f(t-\tau)u(t-\tau)\bigg] = \int_{-\infty}^\infty f(t-\tau)u(t-\tau) e^{-st}dt
+$$
+
+Let $t-\tau = T\Rightarrow t = T + \tau$, then $dt = d\tau$. Thus,
+
+$$
+\Lcal \bigg[f(t-\tau)u(t-\tau)\bigg]  =  \int_{-\infty}^\infty f(T)u(T) e^{-s(T+\tau)}dt  =  \int_{0}^\infty f(T)e^{-sT}dT = e^{-s\tau}F(s)
+$$
+
+\bf \color{red}
+Time-shift corresponds to a frequency shift in $s$-domain.
+    
+\end{frame}
+
+\begin{frame}{Summary: Duality in Time-domain and $s$-domain}
+
+\begin{itemize}
+    \item $f(t) \leftrightarrow F(s)$
+    \item $\cfrac{df(t)}{dt} \leftrightarrow sF(s)$
+    \item $t(f) \leftrightarrow -\cfrac{dF(s)}{ds}$
+    \item $f(t-\alpha)u(t-\alpha) \leftrightarrow F(s)e^{-\alpha s}$
+    \item $f(t)e^{-\alpha t} u(t) \leftrightarrow F(s+\alpha) $
+    \item $f(\alpha t) u(t) \leftrightarrow \cfrac{1}{|\alpha| }F(\tfrac{s}{\alpha})$
+
+    \item $ \tfrac{1}{|\alpha|}f(\tfrac{t}{\alpha})u(t) \leftrightarrow  F(\alpha s)$
+\end{itemize}
+    
+\end{frame}
+
+\begin{frame}{Convolutional Integral}
+
+If a system has an impulse response $h(t)$, then
+
+$y(t) = (x*h)(t)$, then by definition of convolutional integral, 
+
+$$y(t) = \int_0^\infty x(\tau) h(t-\tau)    d\tau $$
+
+Its Laplace transform is
+
+\begin{equation*}
+    \begin{aligned}
+        \Lcal[y(t)] & = Y(s) = \int_0^\infty\bigg[     \int_0^\infty x(\tau) h(t-\tau)    d\tau \bigg]  e^{-st} dt\\
+        & = \int_0^\infty\bigg[  x(\tau)    
+        \underbrace{\color{DarkGreen}\int_0^\infty h(t-\tau)  e^{-s(t-\tau)}  dt }_{\color{red}\text{Solve this by the change of variable}}
+        \bigg]  e^{-s\tau}d\tau = X(s)H(s)
+    \end{aligned}
+\end{equation*}
+
+    
+\end{frame}
+
+\begin{frame}{Initial Value Theorem}
+    It enables us to find the initial value at time $t = (0^+) $for a given transformed function (Laplace) without enabling us to work harder to find $f(t)$ which is a tedious process in such a case.
+
+    $$
+    x(0^+) = \lim_{s\to \infty }s X(s)
+    $$
+
+\end{frame}
+
+\begin{frame}{Final Value Theorem}
+This theorem is useful for finding the final value because it is almost always easier to derive the Laplace transform and evaluate the limit on the right-hand side than to derive the equation for f(t) and evaluate the limit on the left-hand side.
+
+ $$
+ \lim_{s\to 0 }   sX(s) = x(\infty)
+$$
+\end{frame}
+
+\begin{frame}{Example}
+\vspace*{-4\baselineskip}
+\begin{custombox}{Apply Final Value Theorem}{Thistle}{MediumSpringGreen}
+
+        \large
+        
+    Apply the Final Value Theorem to find $f(\infty)$:
+    (i) $F(s) = \cfrac{1}{s(s+ 4)}$; (ii) $F(s) = \cfrac{2s + 51}{47s^2 + 67s}$
+    
+\end{custombox}
+\end{frame}
+
+\begin{frame}{}
+\vspace*{-9\baselineskip}
+    \color{LightGray}{Blank space for calculation}
+\end{frame}
+
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\section{Transfer Function}
+
+%-----------------------------------------
+
+\begin{frame}{}
+    \begin{center}
+    \Huge \bf \color{DarkBlue}
+  \faCompress
+    
+   Transfer Function
+
+
+
+\end{center}
+\end{frame}
+
+
+
+\begin{frame}{Defining Transfer Function}
+
+    Laplace transform of the impulse response $h(t)$ of a LTI system with input $x(t)$ and output$ y(t)$:
+
+\begin{custombox}{Transfer Function}{LightSkyBlue1}{Tan1}
+    $$
+    H(s) = \cfrac{\Lcal[\text{output}]}{\Lcal[\text{input}]} = \cfrac{\Lcal[y(t)]}{\Lcal[x(t)]} = \cfrac{Y(s)}{X(s)}
+    $$
+    
+\end{custombox}
+    This function is called \textbf{transfer function} because it transfers the Laplace transform of the input to the output. Just as with the Laplace transform of signals, $H (s)$ characterizes an LTI system by means of its poles and zeros. Thus it becomes a very important tool in the analysis and synthesis of systems.
+\end{frame}
+
+\begin{frame}
+\frametitle{Inverse Laplace Transform Pairs}
+\renewcommand{\arraystretch}{2.5} % Adjust the value as needed
+\begin{table}
+\centering
+\begin{tabular}{|c|c|c|}
+\hline 
+& $ f(t) $ & $ F(s) $ \\
+\hline \hline
+1 & $ u(t) $ & $ \frac{1}{s} \quad \textrm{Re}(s) > 0 $ \\ \hline
+2 & $ \delta(t) $ & 1 , \textrm{ROC whole plane}\\\hline 
+3 & $ e^{-at}u(t) $ & $ \frac{1}{s+a}   \quad \textrm{Re}(s) > -a$ \\ \hline
+4 & $ t^n u(t) $ & $ \frac{n!}{s^{n+1}} \quad \textrm{Re}(s) > 0 $  \\ \hline
+\end{tabular}
+\end{table}
+\end{frame}
+
+\begin{frame}
+\frametitle{Laplace Transform Pairs (cont.)}
+
+\renewcommand{\arraystretch}{2.5} % Adjust the value as needed
+\begin{table}
+\centering
+\begin{tabular}{|c|c|c|}
+\hline
+& $ f(t) $ & $ F(s) $ \\ \hline
+\hline
+5 & $ e^{-at}t^n u(t) $ & $ \frac{n!}{(s+a)^{n+1}} \quad \textrm{Re}(s) > -a $ \\ \hline
+6 & $ \sin(at)u(t) $ & $ \frac{a}{s^2+a^2}   \quad \textrm{Re}(s) > 0$ \\\hline
+7 & $ \cos(at)u(t) $ & $ \frac{s}{s^2+a^2}   \quad \textrm{Re}(s) > 0 $ \\
+\hline
+\end{tabular}\end{table}
+\end{frame}
+
+\begin{frame}
+\frametitle{Laplace Transform Pairs (cont.)}
+
+\renewcommand{\arraystretch}{2.5} % Adjust the value as needed
+\begin{table}
+\centering
+\begin{tabular}{|c|c|c|}
+\hline
+& $ f(t) $ & $ F(s) $ \\
+\hline  \hline
+8a & $ e^{-at}\sin(bt)u(t) $ & $ \frac{b}{(s+a)^2+b^2}\quad \textrm{Re}(s) > -a  $ \\\hline
+8b & $ e^{-at}\cos(bt)u(t) $ & $ \frac{s+a}{(s+a)^2+b^2} \quad \textrm{Re}(s) > -a  $ \\\hline
+9a & $ \sinh(at)u(t) $ & $ \frac{a}{s^2-a^2}  \quad \textrm{Re}(s) > a $ \\\hline
+9b & $ \cosh(at)u(t) $ & $ \frac{s}{s^2-a^2}  \quad \textrm{Re}(s) > a $ \\
+\hline
+\end{tabular}\end{table}
+\end{frame}
+
+\begin{frame}
+\frametitle{Laplace Transform Pairs (cont.)}
+
+\renewcommand{\arraystretch}{2.5} % Adjust the value as needed
+\begin{table}
+\centering
+\begin{tabular}{|c|c|c|}
+\hline
+ & $ f(t) $ & $ F(s) $ \\
+\hline \hline
+10 & $ r e^{-at}\cos(bt+\theta)u(t) $ & $ \frac{0.5r e^{j\theta}}{(s+a - jb)} + \frac{0.5r e^{-j\theta}}{(s+a + jb)} $ \\
+\hline
+\end{tabular}\end{table}
+\end{frame}
+
+\begin{frame}{Summary: Basic properties of one-sided Laplace transforms}
+\begin{table}
+\centering
+\begin{tabular}{|c||c|}
+\hline
+Linearity & $\alpha f(t) + \beta g(t) \xrightarrow{\mathcal{L}} \alpha F(s) + \beta G(s)$\\ \hline
+Time-shifting & $ f(t-\alpha) u(t-\alpha) \xrightarrow{\mathcal{L}}  e^{-\alpha s}F(s)$\\ \hline
+Frequency-shifting & $f(t)e^{-\alpha t} u(t) \xrightarrow{\mathcal{L}} F(s+\alpha) $\\
+\hline
+Derivative & $\cfrac{df(t)}{dt} \xrightarrow{\mathcal{L}} sF(s) - f(0^-)$\\
+\hline
+Integration & $\int_{0^-}^t f(t')dt'  \xrightarrow{\mathcal{L}}  \cfrac{F(s)}{s}$\\
+\hline
+\end{tabular}
+\end{table}
+
+
+    
+\end{frame}
+
+
+\begin{frame}{Revisiting the old problem (Parallel RLC Circuit)}
+   \begin{columns}
+    \column{0.5\linewidth}
+    $$
+    \cfrac{v(t)}{R} + C \cfrac{dv(t)}{dt} + \cfrac{1}{L}\int_0^t v(t)dt = i(t)
+    $$
+
+      \includegraphics[width=0.99\linewidth,trim=0 0 0 0cm,clip]{figures/parallel_RLC.png}
+    \column{0.5\linewidth}
+   Solve the differential equation using Laplace transform.
+      
+\end{columns} 
+\end{frame}
+
+\begin{frame}{}
+\vspace*{-9\baselineskip}
+    \color{LightGray}{Blank space for calculation}
+\end{frame}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\section{Inverse Laplace Transform}
+
+%-----------------------------------------
+
+\begin{frame}{}
+    \begin{center}
+    \Huge \bf \color{DarkBlue}
+ \faNavicon
+    
+  Inverse Laplace Transform
+
+
+
+
+\end{center}
+\end{frame}
+
+
+\begin{frame}{Calculating Inverse Laplace Transform}
+
+Given the transform and ROC, find a time-domain function.
+Three cases to consider:
+
+\begin{enumerate}
+    \item Inverse of one-sided Laplace transforms giving causal functions
+    \item Inverse of Laplace transforms with exponentials
+    \item Inverse of two-sided Laplace transforms giving anti-causal or noncausal functions.
+\end{enumerate}    
+\end{frame}
+
+
+\begin{frame}{Inverse of One-sided Laplace transforms}
+
+    We consider a causal function. In $s$-domain, causal function means
+
+    $$\sigma > \sigma_{\text{max}} \quad, -\infty < \Omega_0 < \infty $$
+
+    where $\sigma_{\text{max}}$ is the maximum  of the real parts of $X(s)$.
+\end{frame}
+
+\begin{frame}{Review of Partial Fraction Expansion}
+
+Partial fraction expansion (also called \textbf{partial fraction decomposition}) is performed whenever we want to represent a complicated fraction as a sum of simpler fractions. 
+
+Let’s understand this with an example.
+
+\end{frame}
+
+
+\begin{frame}{Partial Fraction: Example 1}
+ \vspace*{-8\baselineskip}
+    $$
+    F(s) = \cfrac{s+3}{s^3  + 7s^2 + 10s}
+    $$
+\end{frame}
+
+\begin{frame}{}
+\vspace*{-9\baselineskip}
+    \color{LightGray}{Blank space for calculation}
+\end{frame}
+
+
+
+\begin{frame}{Partial Fraction: Example 2}
+ \vspace*{-6\baselineskip}
+ Evaluate:
+    $$
+    \int_0^{\pi/2}\cfrac{\cos x }{(1+ \sin x) (2 + \sin x)} dx
+    $$
+\end{frame}
+
+\begin{frame}{}
+\vspace*{-9\baselineskip}
+    \color{LightGray}{Blank space for calculation}
+\end{frame}
+
+\begin{frame}{Calculating Inverse Laplace Transform}
+
+    Calculating the inverse Laplace transform requires converting$ X(s) = \cfrac{N(s)}{D(s)}$ fraction to a proper fraction where the degree of the numerator polynomial is less than that of the denominator.
+
+\begin{gradyellow}
+    If $X(s)$ is not a proper fraction, we need to do a long division until we get a proper fraction.
+
+\end{gradyellow}
+
+\begin{gradblue}
+    We do partial fractions expansion so that we can directly calculate the inverse from the table.
+
+\end{gradblue}
+
+
+\end{frame}
+
+\begin{frame}{Example (Simple Pole)}
+$$
+X(s) = \cfrac{N(s)}{(s+p_1)(s+ p_2)}
+$$
+
+where $\{ s_k = -p_k\}, k = 1, 2$ are simple real poles of $X(s)$, its partial expansion, and hence inverse is given by 
+$$
+X(s) = \cfrac{A_1}{s+ p_1} + \cfrac{A_2}{s+ p_2} \to x(t) =[ A_1e^{-p_1 t} + A_2 e^{-p_2 t} ]u(t)
+$$
+    
+\end{frame}
+
+\begin{frame}{Example}
+ \vspace*{-4\baselineskip}
+    Consider a proper rational function:
+    $$
+    X(s) = \cfrac{3s + 5}{s^2 + 3s + 2}
+    $$
+    Find its causal inverse.
+    
+\end{frame}
+
+\begin{frame}{}
+\vspace*{-9\baselineskip}
+    \color{LightGray}{Blank space for calculation}
+\end{frame}
+
+\begin{frame}{Example (Complex Conjugate Poles)}
+ \vspace*{-6\baselineskip}
+$$
+X(s) = \cfrac{N(s)}{(s+ \alpha)^2  + \Omega_0^2}
+$$
+
+    
+\end{frame}
+
+\begin{frame}{}
+\vspace*{-9\baselineskip}
+    \color{LightGray}{Blank space for calculation}
+\end{frame}
+
+\begin{frame}{Example}
+ \vspace*{-6\baselineskip}
+    Find poles:
+    $$
+    X(s) = \cfrac{2s + 3}{s^2 + 2s + 4}
+    $$
+\end{frame}
+
+\begin{frame}{}
+\vspace*{-9\baselineskip}
+    \color{LightGray}{Blank space for calculation}
+\end{frame}
+
+\begin{frame}{Double Real Poles}
+ \vspace*{-6\baselineskip}
+    Find poles:
+    $$
+    X(s) = \cfrac{4}{s(s + 2)^2}
+    $$
+\end{frame}
+
+\begin{frame}{}
+\vspace*{-9\baselineskip}
+    \color{LightGray}{Blank space for calculation}
+\end{frame}
+
+\begin{frame}{Example: Simple pole and complex conjugate poles}
+ \vspace*{-6\baselineskip}
+    Find poles:
+    $$
+    X(s) = \cfrac{4}{s ( (s+1)^2  + 3)}
+    $$
+\end{frame}
+
+
+\begin{frame}{}
+\vspace*{-9\baselineskip}
+    \color{LightGray}{Blank space for calculation}
+\end{frame}
+
+\begin{frame}{Example with Exponentiation Term}
+ \vspace*{-6\baselineskip}
+    Find poles:
+
+    $$
+    X(s) = \cfrac{1- e^{-s}}{(s + 1) (1 + e^{-2s})}
+    $$
+\end{frame}
+
+\begin{frame}{}
+\vspace*{-9\baselineskip}
+    \color{LightGray}{Blank space for calculation}
+\end{frame}
+
+\begin{frame}{Example with Exponentiation Term}
+ \vspace*{-6\baselineskip}
+    Find poles:
+
+    $$
+    X(s) = \cfrac{2\pi (1+ e^{-s/2})}{(1 - e^{-s/2}) (s^2 + 4\pi^2)}
+    $$
+\end{frame}
+
+
+\begin{frame}{}
+\vspace*{-9\baselineskip}
+    \color{LightGray}{Blank space for calculation}
+\end{frame}
+
+\begin{frame}[containsverbatim]{Inverse Laplace Transformation using Symbolic Expression}
+\begin{columns}
+    \column{0.5\linewidth}
+        \begin{minted}
+[
+frame=lines,
+framesep=2mm,
+baselinestretch=1.2,
+bgcolor=LightGray,
+fontsize=\footnotesize
+]
+{matlab}
+syms s
+F = 1/s^2;
+f = ilaplace(F)
+
+\end{minted}
+\column{0.5\linewidth}
+Output:
+\begin{verbatim}
+    f =
+t
+\end{verbatim}
+\end{columns}
+    
+\end{frame}
+
+\begin{frame}[containsverbatim]{Inverse Laplace Transform Involving Unit-impulse and Unit-step
+}
+\begin{columns}
+    \column{0.5\linewidth}
+        \begin{minted}
+[
+frame=lines,
+framesep=2mm,
+baselinestretch=1.2,
+bgcolor=LightGray,
+fontsize=\footnotesize
+]
+{matlab}
+syms s t
+f1 = ilaplace(1,s,t)
+
+F = exp(-2*s)/(s^2+1);
+f2 = ilaplace(F,s,t)
+\end{minted}
+\column{0.5\linewidth}
+Output:
+\begin{verbatim}
+f1 =
+ dirac(t)
+ 
+f2 =
+ heaviside(t - 2)*sin(t - 2)
+ 
+\end{verbatim}
+\end{columns}
+    
+\end{frame}
+
+\begin{frame}[containsverbatim]{Inverse Laplace Transform as Convolution
+}
+    \begin{columns}
+    \column{0.5\linewidth}
+        \begin{minted}
+[
+frame=lines,
+framesep=2mm,
+baselinestretch=1.2,
+bgcolor=LightGray,
+fontsize=\footnotesize
+]
+{matlab}
+syms t positive % t >= 0
+f(t) = heaviside(t);
+g(t) = exp(-t);
+F = laplace(f);
+G = laplace(g);
+h = ilaplace(F*G)
+\end{minted}
+\column{0.5\linewidth}
+Output:
+\begin{verbatim}
+h =
+1 - exp(-t)
+\end{verbatim}
+\end{columns}
+\end{frame}
+
+\begin{frame}[containsverbatim]{Specifying Transfer Function
+}
+    \begin{columns}
+    \column{0.5\linewidth}
+        \begin{minted}
+[
+frame=lines,
+framesep=2mm,
+baselinestretch=1.2,
+bgcolor=LightGray,
+fontsize=\footnotesize
+]
+{matlab}
+numerator = 1;
+denominator = [2,3,4];
+sys = tf(numerator,denominator)
+\end{minted}
+\column{0.5\linewidth}
+Output:
+\begin{verbatim}
+sys =
+ 
+         1
+  ---------------
+  2 s^2 + 3 s + 4
+ 
+Continuous-time transfer function.
+\end{verbatim}
+\end{columns}
+\end{frame}
+
+\begin{frame}[containsverbatim]{Getting  Poles and Zeros
+}
+    \begin{columns}
+    \column{0.5\linewidth}
+        \begin{minted}
+[
+frame=lines,
+framesep=2mm,
+baselinestretch=1.2,
+bgcolor=LightGray,
+fontsize=\footnotesize
+]
+{matlab}
+numerator = 1;
+denominator = [2,3,4];
+sys = tf(numerator,denominator)
+\end{minted}
+\column{0.5\linewidth}
+Output:
+\begin{verbatim}
+sys =
+ 
+         1
+  ---------------
+  2 s^2 + 3 s + 4
+ 
+Continuous-time transfer function.
+\end{verbatim}
+\end{columns}
+\end{frame}
+
+\begin{frame}[containsverbatim]{Getting  Poles and Zeros
+}
+    \begin{columns}
+    \column{0.5\linewidth}
+        \begin{minted}
+[
+frame=lines,
+framesep=2mm,
+baselinestretch=1.2,
+bgcolor=LightGray,
+fontsize=\footnotesize
+]
+{matlab}
+numerator = [1 6 7];
+denominator = [1 3 2];
+sys = tf(numerator,denominator);
+z = roots(numerator); % zeros
+p = roots(denominator); % poles
+f = figure(1);
+plot(real(z), imag(z), 'b.', 
+    'MarkerSize',90);
+hold on;
+plot(real(p), imag(p), 'rx', 
+    'MarkerSize',15);
+\end{minted}
+\column{0.5\linewidth}
+        \begin{minted}
+[
+frame=lines,
+framesep=2mm,
+baselinestretch=1.2,
+bgcolor=LightGray,
+fontsize=\footnotesize
+]
+{matlab}
+grid on;
+grid minor;
+set(gca, 'FontSize', 16);
+set(gca, 'XColor', [0, 0, 0],
+    'YColor', [0, 0, 0], 'TickDir', 'out');
+xaxis = get(gca, 'XAxis');
+xaxis.TickLabelInterpreter = 'latex';
+yaxis = get(gca, 'YAxis');
+yaxis.TickLabelInterpreter = 'latex';
+exportgraphics(f, 'ch3_laplace.png');
+\end{minted}
+\end{columns}
+\end{frame}
+
+
+\begin{frame}[containsverbatim]{Getting  Poles and Zeros (contd.)
+}
+    \begin{columns}
+    \column{0.5\linewidth}
+        
+        \includegraphics[width=0.99\linewidth,trim=0 0 0 0cm,clip]{figures/ch3_laplace.png}
+        
+\column{0.5\linewidth}
+Output:
+\begin{verbatim}
+sys =
+  s^2 + 6 s + 7
+  -------------
+  s^2 + 3 s + 2
+Continuous-time transfer function.
+z =
+   -4.4142
+   -1.5858
+p =
+    -2
+    -1
+\end{verbatim}
+\end{columns}
+\end{frame}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\section{Analyzing LTI Systems}
+
+%-----------------------------------------
+
+\begin{frame}{}
+    \begin{center}
+    \Huge \bf \color{DarkBlue}
+\faCogs
+    
+ Analyzing LTI Systems
+\end{center}
+\end{frame}
+
+\begin{frame}{Solving a Differential Equation using Laplace Transform
+}
+\footnotesize
+\begin{columns}
+    \column{0.5\linewidth}
+     \vspace*{-8\baselineskip}
+    $$
+    \cfrac{d^2 y(t)}{dt^2} + 5\cfrac{dy(t)}{dt} + 6 y(t) = \cfrac{dx(t)}{dt} + x(t)
+    $$
+
+    Initial condition: $y(0^-) = 2$ and $y'(0^-) = 1$, and the input is $x(t) = e^{-4t}u(t)$
+
+    \column{0.5\linewidth}
+    \begin{itemize}
+        \item $\cfrac{dx(t)}{dt}\iff sX(s)  - x(0^-)$
+        \item $\cfrac{d^2x(t)}{dt^2}\iff s^2X(s)  - sx(0^-)  - x'(0^-)$
+        \item $\cfrac{d^n x(t)}{dt^n} \iff s^n X(s) - \sum_{k= 1}^n  s^{n-k}x^{(k-1)}(0^-)$
+        \item $\int_0^t  x(\tau)d\tau \iff \cfrac{1}{s}X(s)$
+        \item $\int_{-\infty}^t x(\tau) d\tau \iff \cfrac{1}{s}X(s)  + \cfrac{1}{s} \int_{-\infty}^{0^-} x(t) dt$
+    \end{itemize}
+\end{columns}
+\end{frame}
+
+
+\begin{frame}{Dynamic Linear Time Invariant Systems}
+    Ordinary differential equations typically represent dynamic linear time-invariant (LTI) systems.
+    \begin{columns}
+        \column{0.5\linewidth}
+        \includegraphics[width=0.99\linewidth,trim=0 0 0 0cm,clip]{figures/parallel_RLC.png}
+    \column{0.5\linewidth}
+
+     \includegraphics[width=0.69\linewidth,trim=0 0 0 0cm,clip]{figures/mass_spring_oscillator.png}
+    \end{columns}
+    
+\end{frame}
+
+\begin{frame}{Characterizing the Response of Causal LTI Systems}
+
+    \begin{center}
+        \begin{gradyellow}
+            \begin{itemize}
+                \item \textbf{zero-state} and \textbf{zero-input} responses, which have to do with the effect of the input and the initial conditions of the system,
+
+        \item \textbf{transient} and\textbf{ steady-state} responses, which have to do with close and far away the behavior of the response
+            \end{itemize}
+        \end{gradyellow}
+    \end{center}
+\end{frame}
+
+\begin{frame}{Nth Order Differential Equation for a System}
+
+\footnotesize
+
+    \begin{center}
+     $$
+     \sum_{k=0}^n a_k \cfrac{d^k y(t) }{dt^k} =  \sum_{k=0}^m b_k \cfrac{d^k x(t) }{dt^k}
+     $$
+    \end{center}  
+
+
+\begin{columns}
+    \column{0.5\linewidth}
+    Taking Laplace transform:
+    \begin{gradblue}
+        \begin{equation*}
+            \begin{aligned}
+                A(s)Y(s) & = B(s) X(s)  + I(s)\\
+                Y(s) & = \underbrace{\cfrac{B(s)}{A(s)}}_{\color{red}H(s)}X(s) + \underbrace{\cfrac{1}{A(s)}}_{\color{purple}H_1(s)}I(s) 
+            \end{aligned}
+        \end{equation*}
+    \end{gradblue}
+     \column{0.5\linewidth}
+     \begin{gradred}
+         \begin{equation*}
+             \begin{aligned}
+                 A(s) &  = \sum_{k = 0}^n a_k s^k\\
+                  B(s) &  = \sum_{j = 0}^m b_j s^k\\
+                  I(s) & = \sum_{k=0}^n \bigg( \sum_{j=0}^{k-1} s^{k-j-1} \cfrac{d^m y }{dt^m}(0) \bigg), ~~ a_n = 1
+             \end{aligned}
+         \end{equation*}
+     \end{gradred}
+\end{columns}
+    
+\end{frame}
+
+
+\begin{frame}{The Response of the LTI System
+}
+    \begin{columns}
+        \column{0.5\linewidth}
+        $Y(s) = H(s) X(s) + H_1(s) I(s)$
+
+        $y(t) = y_{zs}(t) + y_{zi}(t)$
+        \column{0.5\linewidth}
+        \includegraphics[width=0.69\linewidth,trim=0 0 0 0cm,clip]{figures/zero_input_zero_state_response.png}        
+    \end{columns}
+    
+    \vspace{2pt}
+    
+    $
+    y_{zs}(t) = \Lcal^{-1} [    H(s) X(s)   ] $ is the system's \textbf{zero-state response}.
+
+
+     $
+    y_{zi}(t) = \Lcal^{-1} [    H_1(s) I(s)   ] $ is the system's \textbf{zero-input response}.
+    
+\end{frame}
+
+\begin{frame}{Transient and Steady-State Responses}
+    \begin{itemize}
+        \item The transient response can be thought of as the inertia the system presents to the input.
+\item The steady-state response is how the system reacts to the input away from the initial time.
+
+
+    \end{itemize}
+\end{frame}
+
+
+\begin{frame}{Steady-state Response}
+    If the poles (simple or multiple, real or complex) of the Laplace transform of the output, Y (s), of an LTI system are in the open left-hand s-plane (i.e., no poles on the $j\Omega$-axis) the steady-state response is
+
+    $$
+    y_ss(t) = \lim_{t \to \infty } y(t) = 0
+    $$
+
+    but the steady state can also occur much earlier.
+
+\vspace{10pt}
+
+    \bf \color{red}
+Simple complex conjugate poles and a simple real pole at the origin of the $s$-plane cause a steady state response.
+
+    
+\end{frame}
+
+
+\begin{frame}{Real pole $s = -\alpha$, $\alpha > 0$, of multiplicity $m \geq 1$}
+$$
+\Lcal^{-1}\bigg[ \cfrac{N(s)}{(s+ \alpha)^m  }  \bigg] = \sum_{k=1}^m A_t t^{k-1}\underbrace{e^{-\alpha t}}_{*} u(t)
+$$
+
+* For any value of $ \alpha > 0$ and any order $m \geq 1$, the above inverse will tend to zero as $t$ increases.    
+
+$N(s)$ is a polynomial function with degree $m - 1$ or less.
+
+The rate at which they will go zero will depend on how far apart poles are on the $ j\Omega$-axis.
+
+\end{frame}
+
+
+\begin{frame}{Complex Conjugate Pairs of Poles with Negative Real Part}
+$$
+\Lcal^{-1}\bigg [  \cfrac{N(s)}{( ( s+ \alpha)^2 + \Omega_0^2 )^m}  \bigg] = \sum_{ k=1}^m 2 | A_k | t^{k-1}e ^{   -\alpha t} \cos (\Omega_0 + \angle (A_k) ) u(t), \quad m \geq 1
+$$    
+
+Due to the decaying exponentials this type of response will go to zero as $t\to \infty $.
+
+\end{frame}
+
+
+
+
+\begin{frame}{Points to Note about Steady-state Response}
+    \begin{center}
+        The steady-state component of the complete solution is given by the inverse Laplace transforms of the partial fraction expansion terms of $Y(s)$ that have simple poles (real or complex conjugate pairs) in the $j\Omega$-axis.
+
+
+    \end{center}
+\end{frame}
+
+\begin{frame}{The Transient Response}
+    The transient response is given by the inverse Laplace transform of the partial fraction expansion terms with poles in the left-hand $s$-plane, independent of whether the poles are simple or multiple, real or complex.
+
+    \begin{custombox}{Definition}{Chocolate1}{DarkOliveGreen1}
+        The response of a system to a change from an equilibrium or a steady state is called \textbf{transient response}.
+
+        The impulse response and step response are transient responses to a specific input.
+    \end{custombox}
+\end{frame}
+
+\begin{frame}{A System’s Response as Transient + Steady State Response}
+    The transient response is present in a short period immediately after the system is turned on. If the system is asymptotically stable, the transient response disappears eventually.
+
+    $$
+    y(t) = y_{tr}(t)+ y_{ss}(t) 
+    $$
+
+    If the system is unstable, the transient response will increase very quickly (exponentially) in time, and in most cases, the system will be practically unusable or even destroyed during the unstable transient response (as can occur, for example, in some electrical networks).
+
+\end{frame}
+
+\begin{frame}{Find the Impulse Response and Step Response of the System}
+ \vspace*{-5\baselineskip}
+ 
+    $$
+    \cfrac{d^2y(t)}{dt^2} + 3\cfrac{dy(t)}{dt} + 2 y(t) =  x(t)
+    $$
+    \begin{enumerate}
+        \item initial zero condition
+
+\item $y(0) = 1$, $y'(0) = 0$, $x(t) = u(t)$
+
+    \end{enumerate}
+\end{frame}
+
+
+\begin{frame}{}
+\vspace*{-9\baselineskip}
+    \color{LightGray}{Blank space for calculation}
+\end{frame}
+
+
+\begin{frame}{Noncausal Inverse Laplace Transform}
+ \vspace*{-6\baselineskip}
+
+ Find $x(t)$ for 
+    \begin{equation*}
+        X(s) = \cfrac{1}{(s+2)(s-2)}, \quad \textrm{ROC:} -2 < Re(s) < 2
+    \end{equation*}
+\end{frame}
+
+
+
+\begin{frame}{}
+\vspace*{-9\baselineskip}
+    \color{LightGray}{Blank space for calculation}
+\end{frame}
+
+
+\begin{frame}{Determining BIBO Stability}
+    \begin{enumerate}
+        \item If the system is both causal and stable, then the poles of $H(s)$ must lie in the left half of $s$-plane.
+        \item A LTI with a transfer function $H (s)$ and region of convergence $R$ is BIBO stable if the $j\Omega$-axis is contained in the region of convergence.
+        \item A causal LTI system with impulse response h(t) or transfer function $H (s) = \Lcal[h(t)]$ is BIBO stable if the following equivalent conditions are satisfied:
+        \begin{itemize}
+            \item $H(s) = \Lcal[h(t)] = \cfrac{Ns=(s)}{D(s)}$, $j\Omega$ axis in ROC of $H(s)$.
+            \item $\int_0^\infty |h(t)| dt < \infty $, $h(t)$ is absolutely integrable.
+            \item Poles of $H(s)$ are  in the open left-hand  $s$-plane (not including the $j\Omega$-axis).
+        \end{itemize}
+    \end{enumerate}
+\end{frame}
+
+\begin{frame}{Example: BIBO Stability}
+Consider causal LTI systems with impulse responses: (i) $ h_1(t) = [4 cos(t) - e^{-t}
+]u(t)$, (ii) $h_2(t) = [te^{-t} + e^{-2t}
+]u(t)$, (iii) $h_3(t) = [te^{-t} \cos(2t)]u(t)$.
+
+Determine which of these systems is BIBO stable. For those that are not, indicate why they are not.
+\end{frame}
+
+\begin{frame}{}
+\vspace*{-9\baselineskip}
+    \color{LightGray}{Blank space for calculation}
+\end{frame}
+
+\begin{frame}{}
+\vspace*{-9\baselineskip}
+    \color{LightGray}{Blank space for calculation}
+\end{frame}
+
+
+\end{document}
