@@ -1,0 +1,201 @@
+\documentclass[12pt, xcolor=dvipsnames,svgnames,x11names]{article}
+
+% ============================================================
+% Homework identity
+% ============================================================
+\newcommand{\hw}{Homework 6}
+\newcommand{\hwtopic}{Laplace Transform}
+\newcommand{\duedate}{November 08, 2026, 11:59 PM}
+\newcommand{\totalpoints}{130}
+\newcommand{\hwturnin}{hw06}
+
+\input{common}
+
+\usepackage{design}
+
+\pagestyle{fancy}
+
+\lhead{\footnotesize{\coursenumber, \courseterm}}
+\chead{}
+\rhead{\footnotesize{\emph{\hw}}}
+\lfoot{\footnotesize{\instructorname}}
+\cfoot{\footnotesize{\thepage}}
+\rfoot{\footnotesize{\textit{Last Revised:~\today}}\\ \footnotesize{The University of Alabama in Huntsville}}
+\renewcommand{\headrulewidth}{0.1pt}
+\renewcommand{\footrulewidth}{0.1pt}
+
+\renewcommand{\thefootnote}{\fnsymbol{footnote}}
+
+
+\renewcommand{\headrulewidth}{0.1pt}
+\renewcommand{\footrulewidth}{0.1pt}
+
+\renewcommand{\thefootnote}{\fnsymbol{footnote}}
+
+
+
+\renewcommand{\thefootnote}{\fnsymbol{footnote}}
+
+\newcommand{\showanswers}{no}
+
+\begin{document}
+
+
+\date{Due: \duedate}
+
+\maketitle
+
+\setlength{\unitlength}{1in}
+You are allowed to use a generative model-based AI tool for your assignment. However, you must submit an accompanying reflection report detailing how you used the AI tool, the specific query you made, and how it improved your understanding of the subject. You are also required to submit screenshots of your conversation with any large language model (LLM) or equivalent conversational AI, clearly showing the prompts and your login avatar. Some conversational AIs provide a way to share a conversation link, and such a link is desirable for authenticity. Failure to do so may result in actions taken in compliance with the plagiarism policy.
+
+Additionally, you must include your thoughts on how you would approach the assignment if such a tool were not available. Failure to provide a reflection report for every assignment where an AI tool is used may result in a penalty, and subsequent actions will be taken in line with the plagiarism policy.
+
+\subsection*{Submission instruction:}
+Upload a .pdf on Canvas with the format  \texttt{CPE381-LastFirst-HW-XX}. For example, if your name is Sam Wells, your file name should be \texttt{CPE381-WellsSam-HW-XX.pdf}.  If there is a programming assignment, then you should include your source code along with your PDF files in a zip file \texttt{CPE381-LastFirst-HW-XX.zip}. 
+Your submission must contain your name and UAH Charger ID or your UAH email address.  Please number your pages as well.
+\vskip 1em
+\hrule
+\vskip 1em
+
+
+\section{Autobots, transform and roll out! (20 points)} 
+Find the Laplace transform of the following and specify their region of convergence (ROC):
+\begin{enumerate}
+    \item $x(t) = -e^{-at}u(-t)$. Use the first principle.
+    where $u(t)$ is the unit-step signal.
+    \item $x(t) = e^{at}u(-t)$. Use the first principle.
+    \item $x(t) = e^{-2t}u(t) + e^{-3t}u(t)$. Use the Laplace transform table.
+    \item $x(t) = e^{-3t}u(t) + e^{2t}u(-t)$. Use the Laplace transform table.
+    \item $x(t) = 5e^{-0.3t}u(t-2)$ Use the Laplace transform table.
+\end{enumerate}
+
+\section{Time is mysterious. (10 points)}
+\begin{enumerate}
+    \item The unilateral Laplace transform of $f(t)$ is $\cfrac{1}{s^2 + s + 1}$. Calculate the Laplace transform of $tf(t)$.
+    \item The transfer function of a system is given by $H(s) = \cfrac{1}{s^2(s - 2)}$. Find out the impulse response of the system if $u(t)$ is used to denote the unit-step signal.
+\end{enumerate}
+
+
+\section{Are you the Riddler? (20 points) }
+\begin{enumerate}
+    \item A system is described by the following differential equation, where $u(t)$ is the input to the system and $y(t)$ is the output of the system
+    \begin{equation}
+        y'(t)+ 5y(t) = u(t)
+    \end{equation}
+    When $y(0^-) = 1$ and $u(t)$ is a unit step function, find $y(t)$ using the Laplace transform method.
+
+    \item A continuous-time LTI system is described by
+    \begin{equation}
+        \begin{split}
+            \cfrac{d^2 y (t)}{dt^2} + 4\cfrac{ dy(t)}{dt} +3y(t)  = 2\cfrac{dx(t)}{dt} + 4 x(t)
+        \end{split}
+    \end{equation}
+    Assuming zero initial condition,  find out the response $y(t)$ of the above system for the input $x(t) = e^{-2t} u(t)$.
+\end{enumerate}
+
+
+\section{Ready steady, go! (10 points)}
+\begin{enumerate}
+    \item For the system shown below, $x(t) = \sin (t) u(t)$,
+    \begin{figure}[htpb]
+    \centering
+    \label{fig:hw03_Q4_1}
+    \includegraphics[width=0.39\linewidth, trim={0cm 0.0cm 0cm 0.0cm},clip]{figures/hw03_Q4_1.png}
+    \caption{Question 4.1}
+    \end{figure}
+    find out the response $y(t)$ in the steady-state.
+\end{enumerate}
+
+Note that here, the impulse response $h(t)$ is shown in $s-$domain in the diagram. The impulse response in $s-$domain is called transfer function.
+
+\section{Journey to the \textit{s}-verse (30 points)} % (fold)
+
+
+Consider a ramp signal $r(t)$ as shown in Figure~\ref{fig:CPE381_Midterm1_FA23_Q3} by the dashed line. The x-axis denotes the time-axis and the y-axis denotes the signal value.
+\begin{figure}[h]
+\centering
+\includegraphics[width=0.8\linewidth, trim={0cm 0.0cm 0cm 0.0cm},clip]{figures/CPE381_Midterm1_FA23_Q3.pdf}
+\caption{Ramp Signal $r(t)$}
+\label{fig:CPE381_Midterm1_FA23_Q3}
+\end{figure}
+\begin{enumerate}
+    \item Write the equation of the ramp signal in terms of time $t$, and the unit-step signal $u(t)$. \textbf{(3 points)}
+    \item Derive the Laplace transform $R(s)$ of the ramp signal from the definition of the Laplace transform integral, (i.e. do not use Laplace Transform Table). \textbf{(9 points)}  \textit{Hint: Use integration by parts $\int f(t) g(t)' dt  = f(t)g(t) - \int f'(t)g(t) dt $.}
+    \item What is the region of convergence (ROC) for the Laplace transform $R(s)$ to exist? \textbf{(3 points)}
+    \item Consider a frequency shift $e^{-2s}$ in s-domain applied to the ramp signal $r(t)$. Using the properties of the Laplace transform, write down the resulting signal in terms of time $t$ and the unit-step signal $u(t)$. You may use the provided tables to facilitate your answer. \textbf{(6 points)}
+    \item The ramp signal is \underline{time-differentiated} and used as an input to a system represented by the transfer function $H(s) = \cfrac{1}{s+2}$. What's the output signal $y(t)$ in the time domain? \textbf{(6 points)}
+    \item Find $\lim_{t\to\infty} y(t)$. \textbf{(3 points)}
+\end{enumerate}
+
+
+\section{Systems (10 points)} % (fold)
+Consider a causal LTI continuous system described by the differential equation
+
+\begin{equation}
+\label{eq:Q4}
+    y''(t) + 3y'(t) + 2y(t) = 2x'(t) - x(t)
+\end{equation}
+
+\begin{enumerate}
+    \item Using Laplace transform technique, determine the zero-input response $y_{zi}(t)$ if $y'(0^-) = 2$ and $y(0^-) = -3$. \textbf{(3 points)}
+
+    \item Using Laplace transform technique, determine the zero-state response $y_{zs}$  if the input is $x(t) = u(t)$. \textbf{(2 points)}
+
+    \item Find the complete response of the system for $y'(0^-) = 2$ and $y(0^-) = -3$ if the input is $x(t) = u(t)$. \textbf{(3 points)}
+
+  
+
+    \item Is the system stable with the  $x(t) = u(t)$ ? Provide your argument. \textbf{(2 points)}
+\end{enumerate}
+
+
+
+
+\section{Laplace Transform in MATLAB (10 points)}
+
+Use Matlab symbolic computation to find the Laplace transform of a real
+exponential
+
+$$
+x(t) = 5e^{-2t}\cos(8t)u(t)
+$$
+
+Plot the signal and the poles and zeros of their Laplace transform. \textbf{Attach the plot with your submission.}
+
+Repeat the analysis and plot the results for
+
+$$
+x(t) = 5e^{-4t}\cos(8t)u(t)
+$$
+
+Discuss the changes in the $s$ plane and describe their effect on function in the time domain.
+
+
+\section{System Modeling with Simulink (20 points)}
+A continuous-time LTI system obeys the differential equation
+
+$$
+y''(t) + 3y'(t) + 2y(t) = 2x(t)
+$$
+
+with zero initial conditions, $y(0) = 0$ and $y'(0) = 0$. The input is the unit step, $x(t) = u(t)$.
+
+\begin{enumerate}
+
+\item Take the Laplace transform of the equation. Find the transfer function $H(s) = \frac{Y(s}{X(s)}$ and locate its poles. \textbf{\hfill (2 Points)}
+
+\item Write $Y(s)$ for the step input. Use partial fraction expansion to obtain $y(t)$. \textbf{\hfill (5 Points)}
+
+\item In Simulink, drive a Transfer Fcn block with a Step block and send the output to a Scope. Enter the coefficients of $H(s)$ in the Transfer Fcn block. Set the Step block’s step time to 0 and the stop time to 8 s. Choose fixed step size in model settings with step size of 0.001 and solver as ODE45. Provide the plot you get from Scope block as a part of your submission, Check the value of y(1), and compare it with the value your result from part (b) gives. \textbf{\hfill (10 Points)}
+
+\item Apply the final value theorem to $Y(s)$ to predict the steady-state output. Does the plot agree? \textbf{\hfill (3 Points)}
+
+
+\end{enumerate}
+
+
+\begin{center}
+   \S - \S - \S
+\end{center}
+
+\end{document}
