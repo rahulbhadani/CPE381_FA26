@@ -1,0 +1,1153 @@
+%----------------------------------------------------------------------------------------
+%	PACKAGES AND THEMES
+%----------------------------------------------------------------------------------------
+\PassOptionsToPackage{table}{xcolor}
+\documentclass[aspectratio=169,xcolor=dvipsnames,svgnames,x11names,fleqn]{beamer}
+% \documentclass[aspectratio=169,xcolor=dvipsnames,fleqn]{beamer}
+
+\usetheme{RedVelvet}
+
+\usefonttheme[onlymath]{serif}
+
+
+
+\usepackage{xspace}
+\usepackage{amsmath}
+\usepackage{amssymb}
+\usepackage{amsfonts}
+\usepackage{color}
+\usepackage{physics}
+% \usepackage{mathbb}
+\usepackage{rahul_math}
+\usepackage{bigints}
+\usepackage{hyperref}
+
+\usepackage{graphicx} % Allows including images
+\usepackage{booktabs} % Allows the use of \toprule, \midrule and \bottomrule in tables
+\usepackage{tikz,pgfplots}
+\usepackage{subfigure}
+\usetikzlibrary{arrows}
+\usepackage{minted}
+\definecolor{LightGray}{gray}{0.9}
+\definecolor{cream}{rgb}{0.92, 0.9, 0.55}
+\definecolor{lightblue}{rgb}{0.68, 0.85, 0.9}
+
+
+\usepackage{xcolor-material}
+\usetikzlibrary{fit}
+\tikzset{%
+apple/.pic={
+  \fill [MaterialBrown] (-1/8,0)  arc (180:120:1 and 3/2) coordinate [pos=3/5] (@)-- ++(1/6,-1/7)  arc (120:180:5/4 and 3/2) -- cycle;
+  \fill [MaterialLightGreen500] (0,-9/10)  .. controls ++(180:1/8) and ++(  0:1/4) .. (-1/3,  -1) .. controls ++(180:1/3) and ++(270:1/2) .. (  -1,   0) .. controls ++( 90:1/3) and ++(180:1/3) .. (-1/2, 3/4) .. controls ++(  0:1/8) and ++(135:1/8) .. (   0, 4/7)
+}
+}
+
+\newcommand{\leftdoublequote}{\textcolor{blue}{\scalebox{3}{``}}}
+
+\newcommand{\rightdoublequote}{\textcolor{blue}{\scalebox{3}{''}}}
+
+
+\usepackage{textcomp}
+\usepackage{fontawesome}
+
+\usepackage{overpic}
+
+%----------------------------------------------------------------------------------------
+%	TITLE PAGE
+%----------------------------------------------------------------------------------------
+
+\usepackage{tikz-qtree,tikz-qtree-compat}
+\usetikzlibrary{calc}
+
+
+\title[CPE 381: Signals and Systems]{CPE 381: Fundamentals of Signals and Systems for Computer Engineers} % The short title appears at the bottom of every slide, the full title is only on the title page
+\subtitle{10 Discrete Fourier Transform and Fast Fourier Transform}
+
+\author[Rahul Bhadani] {{\Large \textbf{Rahul Bhadani}}}
+
+\institute[UAH] % Your institution as it will appear on the bottom of every slide, maybe shorthand to save space
+{
+    Electrical \& Computer Engineering,  The University of Alabama in Huntsville
+}
+\date
+
+% \titlegraphic{
+%    \includegraphics[width=0.4\linewidth]{figures/UAH_primary.png}
+% }
+
+\begin{document}
+
+%-------------------------------------------------
+\begin{frame}
+\titlepage
+\end{frame}
+
+%-------------------------------------------------
+\begin{frame}{Outline}
+    \tableofcontents
+\end{frame}
+
+
+
+\section{Motivation}
+
+%-----------------------------------------
+
+\begin{frame}{}
+    \begin{center}
+    \Huge \bf \color{DarkBlue}
+    \faFire
+    
+    Motivation
+\end{center}
+\end{frame}
+
+\begin{frame}{Discrete-Time Representation of Fourier Transform}
+
+\begin{center}
+    %Just as the discrete analogous of Laplace transform is Z-transform, 
+    We have a discrete analogous of (continuous-time) Fourier transform called \textbf{Discrete-time Fourier Transform (DTFT)}.
+\end{center}
+    
+\end{frame}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\section{Discrete-Time Fourier Transform}
+
+%-----------------------------------------
+
+\begin{frame}{}
+    \begin{center}
+    \Huge \bf \color{DarkBlue}
+    \faFire
+    
+    Discrete-Time Fourier Transform
+\end{center}
+\end{frame}
+
+
+\begin{frame}{The Discrete-Time Fourier Transform (DTFT)}
+    For a discrete-time signal $x[n]$, the DTFT is
+
+\begin{gradred}
+    \begin{center}
+        \begin{multiequation}
+        X(e^{j\omega}) = \sum_n x[n] e^{-j \omega n}, \quad -\pi \leq \omega \leq \pi 
+    \end{multiequation}
+    \end{center}
+\end{gradred}
+
+and the inverse DTFT is
+
+   \begin{gradred}
+    \begin{center}
+         \begin{multiequation}
+      x[n] & = \cfrac{1}{2\pi} \int_{-\pi}^\pi  X(e^{j\omega}) e^{j\omega n} d\omega
+    \end{multiequation}
+    \end{center}
+\end{gradred}
+
+\end{frame}
+
+
+\begin{frame}{Points about DTFT}
+
+    \begin{enumerate}
+        \item DTFT measures the frequency content of a discrete-time signal.
+        \item DTFT is periodic in frequency with a period of $2\pi$
+
+        $$
+        X(e^{j\omega + 2\pi k }) =  \sum_n x[n] e^{-j (\omega 2\pi k )n} = X(e^{j\omega}), \quad k \textrm{~~ is an integer.}
+        $$
+
+        \item For DTFT $X(e^{j\omega})$ to converge, being an infinite sum, it is necessary that 
+
+        $$
+        |X(e^{j\omega})| \leq \sum_n | x[n]||e^{j\omega n} | = \sum_{n} | x[n]| < \infty
+        $$
+
+        
+    \end{enumerate}
+\end{frame}
+
+\begin{frame}{Sampling and DTFT}
+
+\small 
+    Sampled signal:  $x_s(t) = \suminf{n} x(nT_s) \delta(t-nT_s)$
+    
+\vspace{5pt}
+    
+    Its FT is $X_s(\Omega) = \suminf{n} x(nT_s) e^{-jn\Omega T_s }$.
+
+\vspace{5pt}
+
+    If we let $\omega = \Omega T_s$, the discrete frequency in radians, and $x[n] = x(nT_s)$, then FT can be 
+
+\vspace{5pt}
+
+    $X_s(e^{j\omega}) = \sum_n x[n] e^{-jn \omega}$
+    where $x[n] = x(nT_s) = x(t)\bigg|_{t = nT_s}$.
+
+    \vspace{5pt}
+
+At the same time, the spectrum of the sampled signal can be written as
+
+$$
+X_s(e^{j\Omega T_s}) = X_s(e^{j\omega})  = \sum_{k} \cfrac{1}{T_s}X\bigg( \cfrac{\omega}{T_s} - \cfrac{2\pi k}{T_s} \bigg), \quad \omega = \Omega T_s
+$$
+
+which is a periodic repetition with a fundamental period of $2\pi / T_s$ rad/s in the continuous frequency or $2\pi$ radian in the discrete frequency.
+
+The sampling converts the continuous-time signal into a discrete-time signal with a periodic spectrum in a continuous frequency.
+
+
+\end{frame}
+
+% \begin{frame}{Z-transform and DTFT}
+%     We can write DTFT using Z-transform computed on the unit circle as:
+
+%     $$
+%     X_s(e^{j\omega}) = X(z) |_{z = e^{j\omega}}
+%     $$
+%     For this relation to be valid, $X(z)$ must have ROC that includes the unit circle $z = 1e^{j\omega}$. In other cases, \textbf{we can use duality property}.
+% \end{frame}
+
+\begin{frame}{Example}
+Consider the noncausal signal $x[n]  = \alpha^{|n|}$. Determine its DTFT. Use the obtained DTFT to find 
+
+$$
+\suminf{n} \alpha^{|n|}
+$$
+    
+\end{frame}
+
+\begin{frame}{}
+\vspace*{-9\baselineskip}
+    \color{LightGray}{Blank space for calculation}
+\end{frame}
+\begin{frame}{}
+\vspace*{-9\baselineskip}
+    \color{LightGray}{Blank space for calculation}
+\end{frame}
+\begin{frame}{}
+\vspace*{-9\baselineskip}
+    \color{LightGray}{Blank space for calculation}
+\end{frame}
+\begin{frame}{}
+\vspace*{-9\baselineskip}
+    \color{LightGray}{Blank space for calculation}
+\end{frame}
+\begin{frame}{}
+\vspace*{-9\baselineskip}
+    \color{LightGray}{Blank space for calculation}
+\end{frame}
+
+\begin{frame}{Duality in Time and Frequency}
+First, we consider the DTFT of $\delta[n-k]$.
+
+%Z-transform $\Zcal[ \delta[n-k] ] = z^{-k}$ with ROC the whole z-plane except for the origin.
+
+%Then, 
+DTFT of $\delta[n-k]$ is $e^{-j\omega k}$.
+% after setting $z = e^{j\omega}$.
+
+From the duality we would expect the signal $e^{-j \omega_0 n}, -\pi \leq \omega_0 \leq \pi$, would have $2\pi \delta (\omega + \omega_0)$. We can see below, how:
+
+$$
+\cfrac{1}{2\pi } \int_{-\pi}^\pi 2\pi \delta (\omega + \omega_0) e^{j\omega n} d\omega = e^{-j\omega_0 n} \int_{-\pi}^\pi \delta (\omega + \omega_0) d\omega = e^{-j\omega_0 n}
+$$
+
+Here, we used the property of the $\delta$ function.
+
+This gives the following dual pairs:
+
+\begin{enumerate}
+    \item $\suminf{k} x[k] \delta[n-k] \Longleftrightarrow \suminf{k} x[k]e^{-j\omega k}$
+    \item $\suminf{k} X[k]e^{-\omega_k n} \Longleftrightarrow \suminf{k} 2\pi X[k] \delta(\omega + \omega_k)$
+\end{enumerate}
+
+\end{frame}
+
+
+\begin{frame}{DTFT of a Constant Signal}
+
+$$
+y[n] = A, -\infty < n < \infty -\infty < n < \infty  \
+$$
+We use duality to calculate DTFT of $y[n]$ as calculating DTFT using integral is not possible because $y[n]$ is not absolutely summable.
+
+$$
+x[n] = A\delta[n] \Longleftrightarrow X(e^{j\omega}) = A
+$$
+
+Then, by duality
+$$
+y[n] = A,-\infty < n < \infty  \Longleftrightarrow Y(e^{j\omega}) = 2\pi A\delta(\omega),\quad -\pi \leq \omega \leq \pi 
+$$
+
+The signal $y[n]$ doesn't change from $-\infty$ to $\infty$ so that its frequency is $\omega = 0$, and thus its DTFT $Y(e^{j\omega})$ is concentrated in that frequency.
+\end{frame}
+
+\begin{frame}{Example}
+    The DTFT of a signal $x[n]$ is 
+
+    $$
+    X(e^{j\omega}) =  1 + \delta(\omega - 4) + \delta(\omega + 4 ) + 0.5\delta(\omega - 2) + 0.5\delta(\omega + 2)
+    $$
+
+    The signal $x[n] = A + B \cos(\omega_0 n) \cos(\omega_1n)$ is given as a possible signal that has $X(e^{j\omega})$ as its DTFT.
+Determine whether you can find $A$, $B$ $\omega_0$, and $\omega_1$ to obtain the desired DTFT. If not, provide a
+better $x[n]$.
+
+\end{frame}
+
+\begin{frame}{}
+\vspace*{-9\baselineskip}
+    \color{LightGray}{Blank space for calculation}
+\end{frame}
+\begin{frame}{}
+\vspace*{-9\baselineskip}
+    \color{LightGray}{Blank space for calculation}
+\end{frame}
+\begin{frame}{}
+\vspace*{-9\baselineskip}
+    \color{LightGray}{Blank space for calculation}
+\end{frame}
+\begin{frame}{}
+\vspace*{-9\baselineskip}
+    \color{LightGray}{Blank space for calculation}
+\end{frame}
+\begin{frame}{}
+\vspace*{-9\baselineskip}
+    \color{LightGray}{Blank space for calculation}
+\end{frame}
+
+
+\begin{frame}{Time and Frequency Supports}
+
+\Large
+    \begin{center}
+        Just like with continuous-time signals, the frequency support of the DTFT of a discrete-time signal is inversely proportional to the time support of the signal.
+    \end{center}
+\end{frame}
+
+\begin{frame}{Example}
+    Consider a discrete-pulse
+    $$
+    p[n] = u[n] - u[n-N]
+    $$
+    Find its DTFT $P(e^{j\omega})$ and discuss the relation between its frequency support and the time support of $p[n]$ when $N = 1$ and when $N \to \infty$.
+\end{frame}
+
+\begin{frame}{}
+\vspace*{-9\baselineskip}
+    \color{LightGray}{Blank space for calculation}
+\end{frame}
+\begin{frame}{}
+\vspace*{-9\baselineskip}
+    \color{LightGray}{Blank space for calculation}
+\end{frame}
+\begin{frame}{}
+\vspace*{-9\baselineskip}
+    \color{LightGray}{Blank space for calculation}
+\end{frame}
+\begin{frame}{}
+\vspace*{-9\baselineskip}
+    \color{LightGray}{Blank space for calculation}
+\end{frame}
+\begin{frame}{}
+\vspace*{-9\baselineskip}
+    \color{LightGray}{Blank space for calculation}
+\end{frame}
+
+\begin{frame}{Downsampling}
+\small
+\begin{custombox}{Definition}{cpeyellow}{cpepink}
+    Down-sampling a signal $x[n]$ means getting rid of samples, i.e., contracting the signal. The signal down-sampled by an integer factor $M > 1$ is given by
+    $
+    x_d[n] = x[Mn]
+    $.
+\end{custombox}
+
+Inverse DTFT $x[Mn]$ is
+$$
+x[Mn] = \cfrac{1}{2\pi} \int_{-\pi/M}^{\pi/M} X(e^{j\omega}) e^{jMn\omega} d\omega = \cfrac{1}{2\pi} \int_{-\pi}^{\pi} X(e^{j\rho/M}) e^{jn\rho} d\rho
+$$
+with $\rho = M\omega$. Thus, the DTFT of $x_d[n] = \cfrac{1}{M}X(e^{j\omega/M})$, i.e. an expansion of the DTFT of $x[n]$ by a factor of $M$.
+\end{frame}
+
+\begin{frame}{Upsampling}
+    \begin{custombox}{Definition}{cpegreen}{cpelime}
+    Up-sampling a signal $x[n]$ on the other hand, consists in adding $L - 1$ zeros (for some integer $L > 1$) in between the samples of $x[n]$, i.e., the up-sampled signals is
+    $$
+    x_u[n] = \begin{cases}
+        x[n/L], \quad n = 0, \pm L, \pm 2L, \cdots\\
+        0, \quad \textrm{otherwise}
+    \end{cases}
+    $$.
+\end{custombox}
+thus expanding the original signal.
+
+Inverse DTFT $x_u[n]$ is
+$
+X_u(e^{j\omega}) = X(e^{jL\omega}), \quad -\pi \leq \omega < \pi
+$
+We can see that $X_u(e^{j\omega}) = \sum_{n = 0, \pm L, \pm 2L, \cdots}x[n/L]e^{-j\omega n} = \suminf{m} x[m] e^{-j\omega L m} = X(e^{jL\omega})$
+indicating a contraction of the DTFT of $x[n]$.
+
+\end{frame}
+
+\begin{frame}{Example}
+    Consider an ideal low-pass filter with frequency response
+
+    $$
+    H(e^{j\omega}) = \begin{cases}
+        1, \quad -\pi/2 \leq \omega \leq \pi/2\\
+        0, \quad -\pi \leq \omega < -\pi/2, ~~~\textrm{and}~~~ \pi/2 < \omega \leq \pi \\
+    \end{cases}
+    $$
+
+    which is the DTFT of an impulse response $h[n]$. Determine $h[n]$. Suppose that we down-sample $h[n]$ with a factor $M = 2$. Find the down-sampled impulse response $h_d [n] = h[2n]$ and its corresponding
+frequency response $H_d (e^{j\omega})$.
+
+\end{frame}
+
+\begin{frame}{}
+\vspace*{-9\baselineskip}
+    \color{LightGray}{Blank space for calculation}
+\end{frame}
+\begin{frame}{}
+\vspace*{-9\baselineskip}
+    \color{LightGray}{Blank space for calculation}
+\end{frame}
+\begin{frame}{}
+\vspace*{-9\baselineskip}
+    \color{LightGray}{Blank space for calculation}
+\end{frame}
+\begin{frame}{}
+\vspace*{-9\baselineskip}
+    \color{LightGray}{Blank space for calculation}
+\end{frame}
+\begin{frame}{}
+\vspace*{-9\baselineskip}
+    \color{LightGray}{Blank space for calculation}
+\end{frame}
+
+
+\begin{frame}{Example}
+
+A discrete pulse is given by $x[n] = u[n] - u[n - 4]$. Suppose we down-sample $x[n]$ by
+a factor of $M = 2$, so that the length $4$ of the original signal is reduced to $2$, giving
+
+$x_d [n] = x[2n] = u[2n] - u[2n - 4] = u[n] - u[n - 2]$.
+Find the corresponding DTFTs for $x[n]$ and $x_d [n]$, and determine how are they related.
+
+\end{frame}
+
+    \begin{frame}{}
+\vspace*{-9\baselineskip}
+    \color{LightGray}{Blank space for calculation}
+\end{frame}
+\begin{frame}{}
+\vspace*{-9\baselineskip}
+    \color{LightGray}{Blank space for calculation}
+\end{frame}
+\begin{frame}{}
+\vspace*{-9\baselineskip}
+    \color{LightGray}{Blank space for calculation}
+\end{frame}
+\begin{frame}{}
+\vspace*{-9\baselineskip}
+    \color{LightGray}{Blank space for calculation}
+\end{frame}
+\begin{frame}{}
+\vspace*{-9\baselineskip}
+    \color{LightGray}{Blank space for calculation}
+\end{frame}
+
+
+\begin{frame}{Decimator and Interpolator}
+    Cascading a low-pass filter to a down-sampler, to avoid aliasing, gives a \textbf{decimator}. Cascading a low-pass filter to an up-sampler, to smooth the signal, gives an \textbf{interpolator}
+\begin{center}
+    \includegraphics[width=0.55\linewidth, trim={0cm 0.0cm 0cm 0.0cm},clip]{figures/interpolator_decimator.png}
+\end{center}
+\end{frame}
+
+
+\begin{frame}{Anti-aliasing Low-Pass Filter for the Downsampler}
+    When down-sampling by a factor of $M$, to avoid aliasing (caused by the signal not being band-limited to $[-\pi/M, \pi/M]$) an antialiasing discrete low-pass filter is used before the down-sampler. The frequency response of the filter is
+
+$$
+H(e^{j\omega}) = \begin{cases}
+    1 , \quad -\pi/M \leq \omega \leq \pi/M\\
+    0, \quad \textrm{otherwise in} [-\pi, \pi)
+\end{cases}
+$$
+
+\end{frame}
+
+
+\begin{frame}{Low-pass Filter for Interpolation}
+    When up-sampling by a factor of $L$, to change the zero samples in the up-sampler into actual samples, we smooth out the up-sampled signal using an ideal low-pass with frequency response
+$$
+G(e^{j\omega}) = \begin{cases}
+    L , \quad -\pi/M \leq \omega \leq \pi/M\\
+    0, \quad \textrm{otherwise in} [-\pi, \pi)
+\end{cases}
+$$
+
+\end{frame}
+
+
+\begin{frame}{Energy and Power of Aperiodic Discrete-Time Signals}
+
+\small 
+\begin{itemize}
+    \item \textbf{Parseval's Energy Equivalence:} $E_x = \suminf{n}|x[n]|^2 = \tfrac{1}{2\pi} \int_{-\pi}^\pi |X(e^{j\omega})|^2 d \omega$
+
+    \item \textbf{Parseval's Power Equivalence:} $P_x = \lim_{N\to \infty} \cfrac{1}{2N+1} \sum_{n=-N}^N |y[n]|^2 = \tfrac{1}{2\pi} \int_{-\pi}^\pi S^x(e^{j\omega})d\omega$
+
+    where 
+
+    $$
+    S^x(e^{j\omega}) = \lim_{N \to \infty} \cfrac{| X_N(e^{j\omega})|^2}{2N + 1}
+    $$
+
+    $X_N(e^{j\omega}) = \Fcal( y[n] W_{2N+1}[n])$ which is DTFT of $x_N[n]$.
+
+    $W_{2N+1} = u[n+N] - u[n - (N+1)]$ is a rectangular window.
+
+\textbf{Remark:}  The significance of the above results is that for any signal, whether of finite energy or of finite power,
+we obtain a way to determine how the energy or power of the signal is distributed over frequency.  Suppose the signal is known to be infinite energy and finite power. In that case, the windowed computation of the power allows us to approximate the power and the power spectrum for a finite number of samples.
+    
+\end{itemize}
+    
+\end{frame}
+
+\begin{frame}{Time and Frequency Shifts}
+
+\begin{itemize}
+    \item Shifting a signal in time does not change its frequency content. Thus the magnitude of the DTFT of the signal is not affected, only the phase is.
+
+    $$
+    \Fcal{x(n-N)}  = \sum_{n}x[n-N]e^{-j\omega n} = \sum_{m} x[m]e^{-j \omega(m + N)} = e^{-j\omega N} X(e^{j\omega})
+    $$
+
+    \item In its dual, multiplying a signal by a complex exponential $e^{j\omega_0 n}$ for some frequency $\omega_0$, then the spectrum of the signal is shifted in frequency. 
+
+    Assuming $x_1[n] = x[n]e^{j\omega_0 n}$,
+
+    $$
+    X_1(e^{j\omega}) = \sum_n x_1[n]e^{-j\omega n} = \sum_n x[n] e^{-j(\omega - \omega_0)n} = X(e^{j(\omega - \omega_0)}).
+    $$
+\end{itemize}
+    
+\end{frame}
+
+\begin{frame}{Symmetry}
+    $\Re[X(e^{j\omega})] = \Re[X(e^{-j\omega})]$
+
+    and
+
+    $\Im[X(e^{j\omega})] = -\Im[X(e^{-j\omega})]$
+\end{frame}
+
+% Example 11.10
+\begin{frame}{Example}
+. For the signal $x[n] = \alpha^nu[n]$, $0 <\alpha< 1$, find the magnitude and the phase of its DTFT $X(e^{j\omega})$.
+    
+\end{frame}
+
+    \begin{frame}{}
+\vspace*{-9\baselineskip}
+    \color{LightGray}{Blank space for calculation}
+\end{frame}
+\begin{frame}{}
+\vspace*{-9\baselineskip}
+    \color{LightGray}{Blank space for calculation}
+\end{frame}
+\begin{frame}{}
+\vspace*{-9\baselineskip}
+    \color{LightGray}{Blank space for calculation}
+\end{frame}
+
+\begin{frame}{Convolution Sum in Frequency Domain}
+
+If $h[n]$ is the impulse response of a stable LTI system, its output $y[n]$ can be computed by means of the convolution sum
+
+$$
+y[n] = \sum_{k}x[k]h[n-k]
+$$
+where $x[n]$ is the input.
+%The Z-transform of the $y[n]$ is the product
+%$$
+%Y(z) = H(z)X(z), \quad ROC: \Rcal_Y = \Rcal_H \cap \Rcal_X.
+%$$
+If the unit circle is included in $\Rcal_Y$, then
+
+\begin{itemize}
+    \item $Y(e^{j\omega}) = H(e^{j\omega})X(e^{j\omega})$
+    \item $|Y(e^{j\omega})| = |H(e^{j\omega})||X(e^{j\omega})|$
+    \item $\angle Y(e^{j\omega}) =\angle H(e^{j\omega}) + \angle X(e^{j\omega})$
+\end{itemize}
+    
+\end{frame}
+
+\begin{frame}{Discrete-Time Fourier Transform (DTFT) properties}
+    \begin{center}
+    \includegraphics[width=0.75\linewidth, trim={0cm 0.0cm 0cm 0.0cm},clip]{figures/DTFT_Properties.png}
+\end{center}
+\end{frame}
+
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\section{Fourier Series of Discrete-Time Periodic Signals}
+
+%-----------------------------------------
+
+\begin{frame}{}
+    \begin{center}
+    \Huge \bf \color{DarkBlue}
+    \faFire
+    
+    Fourier Series of Discrete-Time Periodic Signals
+\end{center}
+\end{frame}
+
+\begin{frame}{Discrete-Time Periodic Signals}
+
+    A discrete-time signal $x[n]$ is periodic if there is a positive integer N such that $x[n + kN] = x[n]$, for any integer $k$.
+
+    
+
+\end{frame}
+
+\begin{frame}{Discrete-Time LTI System}
+    If the an input signal $x[n]$ to an LTI system of frequency response $H(e^{j\omega_0})$ has a form 
+    $$
+    x[n] =\sum_k A[k]e^{k\omega_k n}
+    $$
+    then the output is 
+    $$
+    y[n] =\sum_k A[k]e^{k\omega_k n} H(e^{j\omega_k})
+    $$
+
+    This property is valid whether the frequency components of the input signal are harmonically related (when $x[n]$ is periodic), or not.
+\end{frame}
+
+\begin{frame}{Fourier Series Recap for a Periodic Signal}
+
+Recall that a signal $x(t)$, periodic of fundamental period $T_0$, can be represented by its Fourier series
+
+$$
+x(t) = \suminf{k} \Xhat[k] e^{\tfrac{2\pi k t}{T_0}}
+$$
+    
+\end{frame}
+
+\begin{frame}{Fourier Series for Periodic Sampled Signal}
+
+
+For a sampled signal $x_s(t) = x(nT_s) = x[n]$ of $x(t)$ with a sampling period of $T_s = T_0/N$ (i..e $\Omega_s = N\Omega_0$, satisfying Nyquist sampling condition) where $N$ is a positive integer, then 
+
+$$
+x[n] = x(nT_s) =  \suminf{k} \Xhat [k]e^{\tfrac{2\pi k nT_s}{T_0}} = \suminf{k} \Xhat[k] e^{\tfrac{2\pi k nT_0}{T_0 N}} = \suminf{k} \Xhat [k]e^{\tfrac{2\pi k n}{N}}
+$$
+
+
+
+\end{frame}
+
+\begin{frame}{Fourier Series for Periodic Sampled Signal}
+\footnotesize
+
+$$
+x[n] =  \suminf{k} \Xhat [k]e^{\tfrac{2\pi k n}{N}}
+$$
+The summation repeats the frequencies between $0$ to $2\pi$. To avoid these repetitions, we let
+$k = m + rN$ where $0 \leq m \leq N - 1$ and $r = 0, \pm 1,\pm 2, \cdots ,$ i.e., we divide the infinite support of $k$.
+
+\begin{multiequation}
+x[n] & = \sum_{m=0}^{N-1}\suminf{r} \Xhat[m + rN] e^{j\tfrac{2\pi (m+rN)n}{N} } =  \sum_{m=0}^{N-1} \bigg[ \suminf{r} \Xhat[m + rN] \bigg] e^{j\tfrac{2\pi mn}{N}}\\
+& = \sum_{m=0}^{N-1} X[m] e^{j\tfrac{2\pi mn}{N}}
+\end{multiequation}
+where we write $X[m] = \bigg[ \suminf{r} \Xhat[m + rN] \bigg] $ and the exponential repeats after a full circular period, so we remove \textbf{m+rN}. This representation is in terms of complex exponentials with frequencies $2\pi m/N$, $m = 0,1, \cdots , N - 1$, from $0 to 2\pi(N - 1)/N$. We will see this Fourier series representation next.
+
+
+\end{frame}
+
+
+\begin{frame}{Circular Representation of Discrete-Time Periodic Signals}
+\footnotesize
+\begin{itemize}
+    \item Since both the fundamental period N of a periodic signal $x[n]$, and the samples in a first period $x_1[n]$ completely characterize a periodic signal $x[n]$, a circular rather than a linear representation would more efficiently represent the signal.
+    \item  The circular representation is obtained by locating uniformly
+around a circle, the values of the first period starting with $x[0]$ and putting in a clockwise direction the remaining terms $x[1]$,···, $x[N - 1]$.
+\item For $m= kN + r$, $0\leq r < N$, $x[m] = x[kN + r] = x[r]$. This is a circular representation.
+\begin{center}
+        \includegraphics[width=0.65\linewidth, trim={0cm 0.0cm 0cm 0.0cm},clip]{figures/circular_representation.png}
+\end{center}
+
+\end{itemize}    
+\end{frame}
+
+
+
+
+\begin{frame}{Response of LTI Systems to Periodic Signals}
+
+If $x[n]$ is a periodic signal of fundamental period $N$, and it is an input to an LTI system with the transfer function  $H(z)$, then
+
+$$
+y[n] = \sum_{k = 0}^{N-1} X[k] H(e^{jk\omega_0})e^{jk\omega_0 n}, \quad \omega_0 = \cfrac{2\pi }{N}, \textrm{~~ fundamental frequency}
+$$
+with $x[n]$ having the Fourier series  
+
+$$
+x[n] = \sum_{k=0}^{N-1} X[k]e^{jk\omega_0 n}
+$$
+and $Y[k] = X[k] H(jk\omega_0 n)$
+    
+\end{frame}
+
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\section{Discrete Fourier Transform}
+
+%-----------------------------------------
+
+\begin{frame}{}
+    \begin{center}
+    \Huge \bf \color{DarkBlue}
+    \faFire
+    
+    Discrete Fourier Transform
+\end{center}
+\end{frame}
+
+\begin{frame}{DTFT of Periodic Signals}
+
+
+Recall:
+\begin{itemize}
+    \item Direct DTFT: $X(e^{j\omega}) = \sum_{n} x[n]  e^{-j\omega n}, \quad -\pi \leq \omega < \pi$.
+    \item Inverse DTFT: $\cfrac{1}{2\pi}  \int_{-\pi}^{\pi}  $
+\end{itemize}
+
+\noticebox
+{
+Computer implementation of DTFT has two problems:
+\begin{enumerate}
+    \item $\omega$ varies continuously from $-\pi$ to $\pi$ , hence computing an exact $X(e^{j\omega})$ needs just uncountable number of continuously varying frequencies.
+    \item The inverse DTFT requires integration which is an approximate on the computer.
+\end{enumerate}
+}
+
+    
+\end{frame}
+
+
+\begin{frame}{Discrete Fourier Transform (DFT)}
+
+Discrete Fourier Transform (DFT) which is \underline{\textbf{not} DTFT} is computed at discrete frequencies and its inverse also doesn't require integration. It is also suitable for computer implementation using an algorithm called the Fast-Fourier Transform (FFT).
+
+\linebox{cpelime}
+{
+Note that the Fast-Fourier Transform (FFT) is not a new transform, it is an efficient algorithm for computer implementation.
+}
+This representation of the discrete-time periodic signal is discrete and periodic in both time and frequency.
+
+
+    
+\end{frame}
+
+\begin{frame}{Fourier Series in Discrete-Time and Discrete-Frequency}
+\small
+    For a periodic $\tilde{x}[n]$ of fundamental period $N$  and represented by $N$ values in a period, its Fourier series is
+
+    \begin{multiequation}
+        \tilde{x}[n] = \sum_{0}^{N-1} \tilde{X}[k]e^{j\omega_0 n k}, \quad 0 \leq k, n \leq N-1
+    \end{multiequation}
+    $\omega_0 = 2\pi/N$ is the fundamental discrete frequency.
+
+    \linebox{lavenderblue}
+    {
+    \begin{itemize}
+        \item The coefficients $\tilde{X}[k]$ correspond to harmonic frequencies $k\omega_0$, for $0 \leq k \leq N - 1$, so that $\tilde{x}[n]$  has no frequency components at any other frequencies.
+        \item Thus $\tilde{x}[n]$ and  $\tilde{X}[k]$ are both discrete and periodic of the same fundamental period $N$. 
+    \end{itemize}
+    }
+\end{frame}
+
+
+
+% \begin{frame}{Calculating Fourier Series Coefficients}
+
+%     The Fourier series coefficients can be calculated using the Z-transform
+
+% \begin{multiequation}
+%     \tilde{X}[k]  = \cfrac{1}{N}\Zcal[\tilde{x}_1[n]] |_{z=e^{jk\omega_0}}, \quad 0 \leq k \leq N-1 , \quad \omega_0  = 2\pi/N
+% \end{multiequation}
+
+% where $\tilde{x}_1[n] = \tilde{x}[n]W[n]$ is a period of $\tilde{x}[n]$. $W[n]$ is a rectangular window 
+
+% $$
+% W[n] = u[n] - u[n-N] = \begin{cases}
+%     1, \quad 0 \leq n \leq N-1\\
+%     0, \quad \textrm{otherwise}
+% \end{cases}
+% $$
+% And, we already know  $ \tilde{x}[n]  = \suminf{r}  \tilde{x}_1[n+rN]$
+% \end{frame}
+
+\begin{frame}{Calculating Fourier Series Coefficients}
+
+    \footnotesize
+
+The Fourier series coefficients for a discrete periodic signal can be calculated using the \textbf{Discrete Fourier Transform (DFT)}:
+
+\begin{equation}
+    \tilde{X}[k] = \sum_{n=0}^{N-1} \tilde{x}_1[n] e^{-j k \omega_0 n}, \quad 0 \leq k \leq N-1, \quad \omega_0 = \frac{2\pi}{N}
+\end{equation}
+
+where $\tilde{x}_1[n] = \tilde{x}[n]W[n]$ is one period of the periodic signal $\tilde{x}[n]$.
+
+The rectangular window $W[n]$ extracts one period:
+$$
+W[n] = u[n] - u[n-N] = \begin{cases}
+    1, \quad 0 \leq n \leq N-1\\
+    0, \quad \text{otherwise}
+\end{cases}
+$$
+
+Since $\tilde{x}[n]$ is periodic with period $N$:
+$$\tilde{x}[n] = \sum_{r=-\infty}^{\infty} \tilde{x}_1[n + rN]$$
+
+The normalized Fourier series coefficients are:
+$$\boxed{\tilde{X}[k] = \frac{1}{N} \sum_{n=0}^{N-1} \tilde{x}_1[n] e^{-j k \omega_0 n}}$$
+
+\end{frame}
+
+\begin{frame}{DFT Formula}
+    Then we can write the DFT of a periodic signal $\tilde{x}[n]$ as 
+
+    \begin{gradred}
+       $ X[k] = N\tilde{X}[k] = \sum_{n=0}^{N-1} \tilde{x}[n] e^{-j\omega_0 n k} = \tilde{x}[n] e^{-j2\pi n k/N}, \quad 0\leq k \leq N-1, \omega_0 = 2\pi/N$
+    \end{gradred}
+
+    and the inverse DFT is 
+
+    \begin{gradgreen}
+       $ \tilde{x}[n] = \cfrac{1}{N}\sum_{k=0}^{N-1}X[k]e^{j2\pi n k/N}, \quad 0\leq n \leq N-1$
+    \end{gradgreen}
+
+    
+\end{frame}
+
+
+\begin{frame}{Aperiodic Discrete-Time Signal}
+    \begin{itemize}
+        \item We obtain the DFT of an aperiodic signal $y[n]$ by sampling in frequency its DTFT $Y(e^{j\omega})$.
+        \item Sampling frequencies: $\{ \omega_k = 2\pi  k/L, \quad k = 0, 1, \cdots, L-1 \}$, $L$ to be determined.
+        \item From sampling discussion in Chapter 8: sampling in frequency generates a periodic signal in time:
+
+        \begin{multiequation}
+            \tilde{y}[n] = \suminf{r} y[n + rL]
+        \end{multiequation}
+    \end{itemize}
+
+    If $y[n]$  is of finite length, $N$, and $L\geq N$,   then the periodic extension $\tilde{y}[n] $ displays a period equal to $y[n]$ (may be some padded zeros if $ L > N$)
+\end{frame}
+
+\begin{frame}{Time-Aliasing}
+    If $L < N$, the first period of $\tilde{y}[n]$ does not coincide with $y[n]$ because of the superposition of shifted versions of it—this corresponds to \textbf{time aliasing}, the dual of frequency-aliasing which occurs in time-sampling. 
+\end{frame}
+
+
+\begin{frame}{DFT of Aperiodic Signal}
+
+For $L \geq N$, we have
+
+
+\begin{custombox}{Discrete Fourier Transform (DFT)}{cpelime}{cashyellow}
+  \begin{multiequation}
+Y[k] = Y(e^{j2\pi k /L})  =     \sum_{n=0}^{N-1} y[n] e^{-j2\pi n k /L}, \quad 0 
+\leq k \leq L -1
+\end{multiequation}  
+\end{custombox}
+
+    
+\end{frame}
+
+
+\begin{frame}{Inverse DFT of Aperiodic Signal}
+
+    For $L \geq N$, we have
+
+
+\begin{custombox}{InverseDiscrete Fourier Transform (DFT)}{cashblue}{cpegreen}
+  \begin{multiequation}
+y[n] = \cfrac{1}{L}\sum_{k=0} Y[k] e^{j2\pi n k /L}, \quad 0 \leq n \leq  L-1
+\end{multiequation}  
+\end{custombox}
+
+
+\end{frame}
+
+
+\begin{frame}{Some Practical Consideration for DFT Calculation}
+
+    \begin{itemize}
+        \item The generation of the periodic extension $\tilde{y}[n]$ is not needed, we just need to generate a period that either coincides with $y[n]$ when $L = N$, or that is $y[n]$ with a sequence of $L - N$ zeros
+attached to it (i.e., $y[n]$ is padded with zeros) when $L>N$.
+
+\item To avoid time aliasing we do not consider choosing $L<N$.
+
+\item For a very long sequence $N \to \infty$, it does not make sense to compute
+its DFT, even if we could. Such a DFT would give the frequency content of the whole signal and since a large support signal could have all types of frequencies its DFT would just give no valuable information.
+    \end{itemize}
+\end{frame}
+
+
+\begin{frame}{DFT of a Large Sequence}
+    \begin{itemize}
+        \item To obtain the frequency content of a signal with a large time-support
+is to window it and compute the DFT of each of these segments.
+\item Thus when $y[n]$ is of infinite length, or its length is much larger than the desired or feasible length $L$, we use a window $W_L[n]$ of length $L$,
+and represent $y[n]$ as the superposition
+$$
+y[n] = \sum_{m}y_m[n]
+$$
+where $y_m[n] = y[n]W_L[n-m L]$
+\item By linearity:
+
+$$
+Y[K] = \sum_{m}DFT(y_m[n]) = \sum_{m}Y_m[k]
+$$
+
+    \end{itemize}
+\end{frame}
+
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\section{Fast Fourier Transform}
+
+%-----------------------------------------
+
+\begin{frame}{}
+    \begin{center}
+    \Huge \bf \color{DarkBlue}
+    \faFire
+    
+    Fast Fourier Transform
+\end{center}
+\end{frame}
+
+\begin{frame}{Computing DFT via FFT}
+    Recall, for a sequence of length $L = N$, 
+\begin{gradred}
+      \textbf{DFT:}
+
+        $X[k] =  \sum_{n=0}^{N-1} x[n] e^{-j2\pi n k /N}$, $ k = 0, 1, \cdots, N-1$
+
+ \textbf{Inverse DFT:}
+
+        $x[n] = \cfrac{1}{N}\sum_{k=0}^{N-1} X[k] e^{j2\pi n k /N}$,  $ n = 0, 1, \cdots, N-1$
+\end{gradred}
+      
+    
+\end{frame}
+
+
+\begin{frame}{Employing Symmetry for FFT}
+
+\begin{columns}
+    \column{0.5\linewidth}
+
+     Let $W_N = e^{-j2\pi/N}$, then 
+
+    \begin{itemize}
+        \item $X[k] =  \sum_{n=0}^{N-1} x[n] W^{kn}_N$
+        \item $x[n] = \cfrac{1}{N}\sum_{k=0}^{N-1} X[k] W_N^{-kn}$
+    \end{itemize}
+
+\textbf{\color{red} Radix-2 FFT Decimation-in-Time Algorithm:} Assuming $N   = 2^\gamma$, $\gamma > 1$, then 
+
+\begin{enumerate}
+    \item $W_N^{nk}$ is periodic.
+
+    \begin{multiequation}
+        W_N^{nk} = \begin{cases}
+            W_N^{(n+N)k}\\
+            W_N^{n(k+N)}
+        \end{cases}
+    \end{multiequation}
+
+    \item $W_N^{nk}$ exhibits symmetry.
+
+\begin{multiequation}
+   \bigg[ W_N^{nk} \bigg]^* = W_N^{(N-n)k} = W_N^{n(N-k)}
+\end{multiequation}
+
+\end{enumerate}
+
+\column{0.5\linewidth}
+\begin{enumerate}
+    \item[3.] $W_N^{k(2n)} = e^{-j2\pi (2kn)/N}$
+    
+    \vspace{15pt}
+    
+              $W_N^{k(2n)} = e^{-j2\pi kn/(N/2)} = W^{kn}_{N/2}$
+    \item[4.] $W_N^{k(2n+1)}  = W_N^k W_{N/2}^{kn}$
+
+    \item [5.] $W$ is called \textbf{\color{black}Twiddle Factor}.
+\end{enumerate}
+\end{columns}
+   
+
+\end{frame}
+
+\begin{frame}{Divide and Conquer Approach for FFT Algorithm}
+    Using the divide and conquer principle:
+
+\begin{multiequation}
+    X[k] = \sum_{n= 0}^{N-1} x[n]W_N^{kn} = \sum_{n=0}^{N/2-1}\bigg[ \underbrace{x[2n]W_N^{k(2n)}}_{\textit{Even Terms}} + \underbrace{x[2n+1]W_N^{k(2n+1)}}_{\textit{Odd Terms}} \bigg], \quad k = 0, \cdots, N-1
+\end{multiequation}
+
+Using properties $W$, we can write 
+
+\begin{multiequation}
+    X[k] & = \underbrace{\sum_{n=0}^{N/2-1} x[2n] W^{kn}_{N/2}}_{\textit{N/2 point DFT}} +  W_N^k\underbrace{\sum_{n=0}^{N/2-1} x[2n+1] W^{kn}_{N/2}}_{\textit{N/2 point DFT}} =Y[k] + W_N^k Z[k]
+\end{multiequation}
+
+\end{frame}
+
+\begin{frame}{Divide and Conquer Approach for FFT Algorithm}
+    $Y[k]$ and $Z[k]$ are DFTs of the length  $N/2$ of even-number sequence an odd-numbered sequence respectively.
+
+    For $N/2$ points, we would employ a similar computation:
+
+    $$
+    X[k] = Y[k] + W_N^k Z[k], \quad k = 0, \cdots, (N/2)-1
+    $$
+
+    For $k \leq N/2$, we use :
+
+$$
+X[k + N/2] = Y[k + N/2] + W_N^{k+N/2}Z[k + N/2] = Y[k] - W^k_NZ[k], \quad k = 0, \cdots, N/2-1
+$$
+
+We used, $W_N{k+N/2}= -W_N^k$.
+\end{frame}
+
+
+\begin{frame}{Decimation in Time FFT Algorithm}
+    We can write in matrix form:
+
+\begin{multiequation}
+    \Xbf_N = \begin{bmatrix}
+        \Ibf_{N/2} & \boldsymbol{\Omega}_{N/2}\\\Ibf_{N/2} & -\boldsymbol{\Omega}_{N/2} 
+    \end{bmatrix}\begin{bmatrix}
+        \Ybf_{N/2}\\\Zbf_{N/2}
+    \end{bmatrix} = \Abf_1 \begin{bmatrix}
+        \Ybf_{N/2}\\ \Zbf_{N/2}
+    \end{bmatrix}
+\end{multiequation}
+
+where $\Ibf_{N/2}$ is the unit matrix (or identity matrix), and $\boldsymbol{\Omega}_{N/2}$ is a diagonal matrix with entries $W_N^k, \quad k = 0, 1, \cdots, N/2- 1$.
+
+The vectors $\Xbf_{N}$, $\Ybf_{N/2}$, and $\Zbf_{N/2}$ are vector form of $X[k]$, $Y[k]$, and $Z[k]$.
+\end{frame}
+
+
+\begin{frame}{Example}
+    Consider the decimation-in-time FFT algorithm for $N = 4$. Give the equations to compute the four DFT values $X[k]$, $k = 0, \cdots, 3$ in the matrix form.
+\end{frame}
+
+\begin{frame}{}
+\vspace*{-9\baselineskip}
+    \color{LightGray}{Blank space for calculation}
+\end{frame}
+\begin{frame}{}
+\vspace*{-9\baselineskip}
+    \color{LightGray}{Blank space for calculation}
+\end{frame}
+\begin{frame}{}
+\vspace*{-9\baselineskip}
+    \color{LightGray}{Blank space for calculation}
+\end{frame}
+\begin{frame}{}
+\vspace*{-9\baselineskip}
+    \color{LightGray}{Blank space for calculation}
+\end{frame}
+\begin{frame}{}
+\vspace*{-9\baselineskip}
+    \color{LightGray}{Blank space for calculation}
+\end{frame}
+
+\begin{frame}{Graphical Representation of FFT}
+
+\begin{columns}
+    \column{0.2\linewidth}
+    \tiny
+        \begin{multiequation}
+    X[k] & = \underbrace{\sum_{n=0}^{N/2-1} x[2n] W^{kn}_{N/2}}_{\textit{N/2 point DFT}}\\
+    & +  W_N^k\underbrace{\sum_{n=0}^{N/2-1} x[2n+1] W^{kn}_{N/2}}_{\textit{N/2 point DFT}}
+\end{multiequation}
+
+Each $N/2$ point DFT is only valued for $k=0,1,2, \cdots N/2-1$ because $W_{N/2}^k$ is periodic with the period $N/2$. For $N=8$,
+\column{0.8\linewidth}
+
+\begin{center}
+    \includegraphics[width=0.85\linewidth, trim={0cm 0.0cm 0cm 0.0cm},clip]{figures/ButterflyDiagram_N8.pdf}
+\end{center}
+\end{columns}
+
+$W$ factor gets multiplied and then gets added with another input. The diagram is called butterfly structure.
+
+
+\end{frame}
+
+\begin{frame}{Decomposition of Butterfly Structure}
+    This decomposition into half-length DFTs can be done again to each of the two
+$N/2$-pt. DFTs, and then again, and then again ... until reaching 2-pt DFTs.
+
+
+\begin{center}
+    \includegraphics[width=0.8\linewidth, trim={0cm 0.0cm 0cm 0.0cm},clip]{figures/TwoInput_Butterfly.pdf}
+\end{center}
+We can also exploit some properties of $W$ to  make the computation more efficient ($W_N^{(m+N/2)} = -W_N^{m}$):
+\begin{center}
+    \includegraphics[width=0.8\linewidth, trim={0cm 0.0cm 0cm 0.0cm},clip]{figures/ImprovedTwoInput_Butterfly.pdf}
+\end{center}
+
+\end{frame}
+
+\begin{frame}{Exploitable Structure of Twiddle Factors}
+     \begin{center}
+    \includegraphics[width=0.6\linewidth, trim={0cm 0.0cm 0cm 0.0cm},clip]{figures/TwiddleFactorStructure.png}
+\end{center}
+\end{frame}
+
+\begin{frame}{Improved 8-Point DFT}
+    \begin{center}
+    \includegraphics[width=0.6\linewidth, trim={0cm 0.0cm 0cm 0.0cm},clip]{figures/Improved8PtDFT.png}
+\end{center}
+
+\end{frame}
+
+\begin{frame}{Complete Divide and Conquer Strategy for FFT}
+        \begin{center}
+    \includegraphics[width=0.6\linewidth, trim={0cm 0.0cm 0cm 0.0cm},clip]{figures/FFTN8StepbyStep.png}
+\end{center}
+\end{frame}
+
+\begin{frame}{Inverse DFT using FFT}
+    The FFT algorithm can be used to compute the inverse DFT without any changes in the algorithm. Assuming the input $x[n]$ is complex ($x[n]$ being real is a special case), the complex conjugate of the inverse DFT equation, multiplied by $N$, is
+
+    \begin{multiequation}
+        Nx^*[n] = \sum_{k=0}^{N-1}X^*[k]W^{nk}
+    \end{multiequation}
+\end{frame}
+
+\end{document}

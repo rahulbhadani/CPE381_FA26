@@ -1,0 +1,1149 @@
+%----------------------------------------------------------------------------------------
+%	PACKAGES AND THEMES
+%----------------------------------------------------------------------------------------
+\PassOptionsToPackage{table}{xcolor}
+\documentclass[aspectratio=169,xcolor=dvipsnames,svgnames,x11names,fleqn]{beamer}
+% \documentclass[aspectratio=169,xcolor=dvipsnames,fleqn]{beamer}
+
+\usetheme{RedVelvet}
+
+\usefonttheme[onlymath]{serif}
+
+
+
+\usepackage{xspace}
+\usepackage{amsmath}
+\usepackage{amssymb}
+\usepackage{amsfonts}
+\usepackage{color}
+\usepackage{physics}
+% \usepackage{mathbb}
+\usepackage{rahul_math}
+\usepackage{bigints}
+\usepackage{hyperref}
+
+\usepackage{graphicx} % Allows including images
+\usepackage{booktabs} % Allows the use of \toprule, \midrule and \bottomrule in tables
+\usepackage{tikz,pgfplots}
+\usepackage{subfigure}
+\usetikzlibrary{arrows}
+\usepackage{minted}
+\definecolor{LightGray}{gray}{0.9}
+\definecolor{cream}{rgb}{0.92, 0.9, 0.55}
+\definecolor{lightblue}{rgb}{0.68, 0.85, 0.9}
+
+
+\usepackage{xcolor-material}
+\usetikzlibrary{fit}
+\tikzset{%
+apple/.pic={
+  \fill [MaterialBrown] (-1/8,0)  arc (180:120:1 and 3/2) coordinate [pos=3/5] (@)-- ++(1/6,-1/7)  arc (120:180:5/4 and 3/2) -- cycle;
+  \fill [MaterialLightGreen500] (0,-9/10)  .. controls ++(180:1/8) and ++(  0:1/4) .. (-1/3,  -1) .. controls ++(180:1/3) and ++(270:1/2) .. (  -1,   0) .. controls ++( 90:1/3) and ++(180:1/3) .. (-1/2, 3/4) .. controls ++(  0:1/8) and ++(135:1/8) .. (   0, 4/7)
+}
+}
+
+\newcommand{\leftdoublequote}{\textcolor{blue}{\scalebox{3}{``}}}
+
+\newcommand{\rightdoublequote}{\textcolor{blue}{\scalebox{3}{''}}}
+
+
+\usepackage{textcomp}
+\usepackage{fontawesome}
+
+\usepackage{overpic}
+
+%----------------------------------------------------------------------------------------
+%	TITLE PAGE
+%----------------------------------------------------------------------------------------
+
+\usepackage{tikz-qtree,tikz-qtree-compat}
+\usetikzlibrary{calc}
+
+
+\title[CPE 381: Signals and Systems]{CPE 381: Fundamentals of Signals and Systems for Computer Engineers} % The short title appears at the bottom of every slide, the full title is only on the title page
+\subtitle{08 Discrete Signals}
+
+\author[Rahul Bhadani] {{\Large \textbf{Rahul Bhadani}}}
+
+\institute[UAH] % Your institution as it will appear on the bottom of every slide, maybe shorthand to save space
+{
+    Electrical \& Computer Engineering,  The University of Alabama in Huntsville
+}
+\date
+
+% \titlegraphic{
+%    \includegraphics[width=0.4\linewidth]{figures/UAH_primary.png}
+% }
+
+\begin{document}
+
+%-------------------------------------------------
+\begin{frame}
+\titlepage
+\end{frame}
+
+%-------------------------------------------------
+\begin{frame}{Outline}
+    \tableofcontents
+\end{frame}
+
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\section{Discrete-time Signals}
+
+%-----------------------------------------
+
+\begin{frame}{}
+    \begin{center}
+    \Huge \bf \color{DarkBlue}
+    \faSortNumericAsc
+    
+    Discrete-time Signals
+\end{center}
+\end{frame}
+
+
+\begin{frame}{Discrete-time Signals}
+
+A discrete-time signal $x[n]$ can be thought of as a real- or complex-valued function of the integer sample index $n$:
+\begin{multiequation}
+    x[.] &: \Ical \to \Rcal (\Ccal)\\
+    n & \quad x[n].
+\end{multiequation}
+    
+\end{frame}
+
+
+\begin{frame}{Example}
+
+$$
+x(t) = 3 \cos(2\pi t + \cfrac{\pi}{4}), \quad -\infty < t < \infty
+$$
+
+$$
+T_s \leq \cfrac{\pi}{\Omega_{\textrm{max}}} = \cfrac{\pi}{2\pi} = 0.5 s/sample
+$$
+Then its discrete version is
+
+$$
+x[n] = 3 \cos(2\pi t + \cfrac{\pi}{4}) |_{t = 0.5n} = 3\cos(\pi n + \cfrac{\pi}{4} ) , \quad -\infty < t < \infty
+$$
+    
+\end{frame}
+
+
+\begin{frame}{Periodic Discrete-time Signal}
+
+$$
+x[n + kN] = x[n]
+$$
+
+$k$: any integer
+
+$N$: Fundamental period of $x[n]$
+
+\begin{gradred}
+    Aperiodic discrete-time signals don't satisfy the above property.
+\end{gradred}
+\end{frame}
+
+\begin{frame}{Sampling Analog Sinusoid}
+\small
+When sampling an analog sinusoid,
+$$
+x(t) = A\cos(\Omega_0 t + \theta),  \quad -\infty < t < \infty
+$$
+of fundamental period $T_0 = 2\pi/\Omega_9$, $\Omega_0 > 0$, we obtain a \textbf{periodic discrete sinusoid}.
+
+$$
+x[n] = A\cos(\Omega_0 T_s n + \theta) = A\cos(\cfrac{2\pi T_s}{T_0}n + \theta)
+$$
+provided that
+$$
+\cfrac{T_s}{T_0} = \cfrac{m}{N}
+$$
+for the positive integers $N$ and $m$ which are not divisible by each other. To avoid frequency aliasing, the sampling period should also satisfy the Nyquist sampling condition,
+$$
+T_s \leq \cfrac{\pi}{\Omega_0} = \cfrac{T_0}{2}
+$$
+    
+\end{frame}
+
+\begin{frame}{Finite-energy, Finite-power Discrete-time Signal}
+    \begin{itemize}
+        \item \textbf{Energy:} $\varepsilon_x = \suminf{n} = |x[n]|^2$
+        \item \textbf{Power:} $P_x = \lim_{N\to\infty} \cfrac{1}{2N+1}\sum_{n=-N}^N |x[n]|^2$
+        \item $x[n]$ is said to have \textbf{finite energy} or to be \textbf{square summable} if $\varepsilon_x < \infty$.
+        \item $x[n]$ is called \textbf{absolutely summable} if 
+
+        $$
+        \suminf{n} = |x[n]| < \infty
+        $$
+        \item $x[n]$ is said to have finite power if $P_x < \infty$.
+    \end{itemize}
+\end{frame}
+
+
+% Example 9.7
+\begin{frame}{Example}
+
+\begin{multiequation}
+    x(t) = \begin{cases}
+        2\cos(\Omega_0 t - \pi/4) \quad t\geq 0\\
+        0, \quad \textrm{~~otherwise}
+    \end{cases}
+\end{multiequation}
+
+    \begin{itemize}
+        \item Determine its discrete-time signal. Choose $T_s = 0.1$.
+        \item Determine if this discrete-time signal has finite energy, finite power and compare these characteristics with those of the continuous-time signal for $\Omega_0 = \pi$ and $\Omega_0 = 3.2$ rad/s. 
+    \end{itemize}
+\end{frame}
+
+\begin{frame}{}
+\vspace*{-9\baselineskip}
+    \color{LightGray}{Blank space for calculation}
+\end{frame}
+\begin{frame}{}
+\vspace*{-9\baselineskip}
+    \color{LightGray}{Blank space for calculation}
+\end{frame}
+\begin{frame}{}
+\vspace*{-9\baselineskip}
+    \color{LightGray}{Blank space for calculation}
+\end{frame}
+\begin{frame}{}
+\vspace*{-9\baselineskip}
+    \color{LightGray}{Blank space for calculation}
+\end{frame}
+
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\section{Operations on Discrete-time Signals}
+
+%-----------------------------------------
+
+\begin{frame}{}
+    \begin{center}
+    \Huge \bf \color{DarkBlue}
+    \faLineChart
+    
+   Operations on Discrete-time Signals
+\end{center}
+\end{frame}
+
+\begin{frame}{Discrete-time Signal Manipulation}
+A discrete-time signal $x[n]$ is said to be
+
+    \begin{itemize}
+        \item delayed by $L$ (an integer) samples if $x[n - L]$ is $x[n]$ shifted to the right $L$ samples,
+\item advanced by $M$ (an integer) samples if $x[n + M]$ is $x[n]$ shifted to the left $M$ samples,
+\item reflected if the variable $n$ in $x[n]$ is negated, i.e., $x[-n]$.
+    \end{itemize}
+      \begin{center}
+             \includegraphics[width=0.75\linewidth, trim={0cm 0.0cm 0cm 0.0cm},clip]{figures/DiscretSignalManipulation.png}
+    \end{center}
+\end{frame}
+
+\begin{frame}{Even and Odd Discrete-Time Signal}
+
+    \begin{itemize}
+        \item $x[n]$ is an \textbf{even} signal if $x[n] = x[-n]$.
+        \item $x[n]$ is an \textbf{odd} signal if $x[n] = -x[-n]$.
+    \end{itemize}
+
+  \textbf{Decomposing a signal into add and even signal:}
+
+    $$
+    x[n] = \cfrac{1}{2} ( x[n] + x[-n] ) + \cfrac{1}{2} ( x[n] - x[-n]) 
+    $$
+
+    where $x_e[n] =  \cfrac{1}{2} ( x[n] + x[-n] )$  is the even signal component and $x_o[n] = \cfrac{1}{2} ( x[n] - x[-n])  $ is the odd signal component.
+\end{frame}
+
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\section{Basic Discrete-Time Signals}
+
+%-----------------------------------------
+
+\begin{frame}{}
+    \begin{center}
+    \Huge \bf \color{DarkBlue}
+    \faMap
+    
+   Basic Discrete-Time Signals
+
+\end{center}
+\end{frame}
+
+\begin{frame}{Discrete-Time Complex Exponential}
+    Given a complex number $A = |A|e^{j\theta}$ and $\alpha = |\alpha|e^{j\omega_0}$, a discrete-time complex exponential is a signal 
+    
+    \begin{multiequation}
+    x[n] = A\alpha^n & = |A||\alpha|^n e^{j(\omega_0 n + \theta)}\\    
+    & = |A||\alpha|^n [ \cos(\omega_0 n + \theta) + j \sin(\omega_0 n + \theta)]
+    \end{multiequation}
+
+    where $\omega_0$ is a discrete frequency in radians.
+
+\Large
+
+\hrule
+
+\vspace{10 pt}
+
+\noticebox{\textbf{Notice that $\omega$ will represent discrete frequencies in our discussion, while $\Omega$ is used for the continuous frequencies.}}
+    
+\end{frame}
+
+\begin{frame}{}
+       \begin{center}
+             \includegraphics[width=0.5\linewidth, trim={0cm 0.0cm 0cm 0.0cm},clip]{figures/Discrete_Exponentials.png}
+
+                Real exponential $x_1[n] = 0.8^n$, $x_2[n] = 1.25^n$ \textbf{(top)} 
+                
+                and
+                
+                Modulated exponential $y_1[n] = x_1[n] \cos(\pi n)$ and $y_2[n] = x_2[n] \cos(\pi n)$ \textbf{(bottom)}.
+
+    \end{center}
+\end{frame}
+
+\begin{frame}{Discrete-time Sinusoids}
+    A special case of discrete-complex exponential:
+
+\begin{itemize}
+    \item $\alpha = e^{j\omega_0}$
+    \item $x[n] = A\alpha^n  = |A|e^{j (\omega_0 n + \theta) } = |A|\cos (\omega_0 n + \theta)  + j |A|\sin (\omega_0 n + \theta) $
+    \item The real part of $x[n]$ is a cosine, while the imaginary part is a sine.
+    \item Discrete sinusoids of amplitude $A$ and phase shift $\theta$ are periodic if 
+    $$
+    A\cos(\omega_0 n + \theta) = A\sin(\omega_0 n + \theta + \pi/2) ,\quad -\infty < n \infty
+    $$
+
+    \item $\omega_0 = 2\pi m/N$ (rad) is the discrete frequency, for integers $m$ and $N > 0$ which are not divisible. Otherwise, discrete-time sinusoids are not periodic.
+    \item $\omega_0 + 2\pi k = \omega_0$, where $k$ is an integer.
+
+\end{itemize}
+\end{frame}
+
+\begin{frame}{Limiting range for Discrete Frequencies}
+    To avoid ambiguity in discrete-frequency values, we limit its range
+
+$$
+-\pi  < \omega \leq \pi
+$$
+
+
+ \begin{center}
+             \includegraphics[width=0.7\linewidth, trim={0cm 0.0cm 0cm 0.0cm},clip]{figures/DiscreteFreqRange.png}
+    \end{center}
+    
+\end{frame}
+
+\begin{frame}{Discrete-Time Unit-Step and Unit-Sample Signals}
+    \begin{itemize}
+        \item The unit-step $u[n]$ and the unit-sample $\delta[n]$ discrete-time signals are defined as
+
+        \begin{multiequation}
+            u[n] & = \begin{cases}
+                1, \quad n \geq 0,\\
+                0, \quad n < 0
+            \end{cases}\\
+            \delta[n] & = \begin{cases}
+                1, \quad n = 0,\\
+                0, \quad \textrm{otherwise}
+            \end{cases}
+        \end{multiequation}
+
+        \item $\delta[n] = u[n] - u[n-1]$
+        \item $u[n] = \sum_{k=0}^\infty \delta[n-k] = \sum_{m = -\infty}^n \delta[m]$
+    \end{itemize}
+\Large
+\noticebox{
+\color{red}{\textbf{Note:} \color{DarkSlateBlue} \textbf{$u[n]$ and $\delta[n]$ are NOT sampled versions of the continuous signals $u(t)$ and $\delta(t)$. $u[n]$ and $\delta[n]$ are entirely different signals.}}
+}
+    
+\end{frame}
+
+\begin{frame}{Discrete-Ramp Functions}
+\Large
+\begin{itemize}
+    \item $r[n] = nu[n]$
+    \item $r[n] = \sum_{k=0}^\infty k \delta[n-k] = \sum_{k=0}^\infty u[n-k]$
+\end{itemize}
+\end{frame}
+
+\begin{frame}{Generic Representation of Discrete-Time Signals}
+    \Large
+
+    $$
+    x[n] = \suminf{k} x[k]\delta[n-k]
+    $$
+\end{frame}
+
+\begin{frame}{Sifting property of the unit-sample signal}
+\begin{itemize}
+    \item 
+    
+    $x[n]\delta[n-n_0] = x[n_0]\delta[n - n_0]$
+    
+    
+    \item $\delta[n-n_0] = \begin{cases}
+        1\quad n = n_0\\
+        0 \quad \textrm{~~otherwise}
+    \end{cases}$
+    \item $x[n] = \cdots + x[-1] \delta[n + 1] + x[0]\delta[n] + x[1]\delta[n-1] + \cdots = \suminf{k} x[k]\delta[n-k]$
+\end{itemize}
+    
+\end{frame}
+
+\begin{frame}[containsverbatim]{Plotting Discrete Function}
+\begin{columns}
+    \column{0.5\linewidth}
+    
+\begin{minted}
+[
+frame=lines,
+framesep=2mm,
+baselinestretch=1.2,
+bgcolor=LightGray,
+fontsize=\tiny
+]
+{matlab}
+f = figure(1);
+f.Position =  [ 286 , 129, 1086 , 833];
+n = -10:10;
+% Define the unit-step function
+u = @(n) (n >= 0);
+% Calculate the discrete function
+a = u(n) - u(n - 5);
+stem(n, a,'Color','red', 'LineWidth', ...
+    2, 'LineStyle','--');
+hold on;
+%x-axis
+line([0 0], [-10, 10], 'Color', ...
+    '#555555',  'LineWidth', 1);
+%y-axis
+line([-10, 10], [0 0], 'Color', ...
+    '#555555',  'LineWidth', 1);
+xlabel('Sample index [n]', 'Interpreter','latex');
+ylabel('a [n]', 'Interpreter','latex');
+title('a[n] = u[n] - u[n - 5]', 'Interpreter','latex');
+\end{minted}
+
+\column{0.5\linewidth}
+Plot $a[n] = u[n] - u[n - 5]$.
+\includegraphics[width=0.85\linewidth, trim={0cm 0.0cm 0cm 0.0cm},clip]{figures/Discrete_Function_Plot.pdf}
+\tiny
+\url{https://github.com/rahulbhadani/CPE381_FA24/blob/master/Code/Discrete_Function_Plot.m}
+\end{columns}
+
+
+    
+\end{frame}
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\section{Discrete-time Systems and Their Properties}
+
+%-----------------------------------------
+
+\begin{frame}{}
+    \begin{center}
+    \Huge \bf \color{DarkBlue}
+    \faObjectUngroup
+    
+    Discrete-time Systems and Their Properties
+\end{center}
+\end{frame}
+
+\begin{frame}{Discrete-time Systems Representation}
+    A discrete-time system is a transformation of a discrete-time input signal $x[n]$ into a discrete-time output signal $y[n]$
+\Large
+    $$
+    y[n] = \Scal\{x[n]\}
+    $$
+\end{frame}
+
+\begin{frame}{Linearity}
+    \begin{itemize}
+        \item \textbf{Scaling:} $\Scal\{ax[n]\} = a\Scal\{x[n]\}$
+        \item \textbf{Additivity:} $\Scal\{x[n] + v[n] \} = \Scal\{x[n]\}+ \Scal\{v[n]\} $
+
+        \item Equivalently, superposition applies:
+
+        $$
+        \Scal\{ax[n] + bv[n] \} = a\Scal\{x[n]\}+ b\Scal\{v[n]\} 
+        $$
+    \end{itemize}
+\end{frame}
+
+\begin{frame}{Time-invariance}
+    \begin{itemize}
+        \item If for an input$ x[n]$ the corresponding output is $y[n] =\Scal\{x[n]\}$, the output corresponding to an advanced or a delayed version of $x[n]$, $x[n \pm M]$, for an integer $M$, is $y[n ± M] = \Scal\{x[n \pm M]\}$, or the same as before but shifted as the input. 
+        \item In other words, the system is not changing with time.
+    \end{itemize}
+\end{frame}
+
+\begin{frame}{Recursive And Non-Recursive Discrete-Time Systems}
+
+\begin{itemize}
+    \item Input: $x[n]$
+    \item Output: $y[n]$
+    \item \textbf{Recursive System (infinite impulse response (IIR) system)}:
+    $$
+    y[n] = -\sum_{k=1}^{N-1}a_k y[n-k] + \sum_{m=0}^{M-1}b_m x[n-m], \quad n\geq 0
+    $$    
+    \item \textbf{Non-Recursive System (Finite impulse response (FIR) system):}
+
+    $$
+    y[n] = \sum_{m=0}^{M-1}b_m x[n-m]
+    $$
+\end{itemize}
+\textit{These two equations shown above are called difference equations.}
+
+\end{frame}
+
+
+\begin{frame}{Autoregressive Discrete System}
+
+    $$
+    y[n] = ay[n-1] + bx[n, \quad n \geq 0
+    $$
+    with initial condition of $y[-1]$ given.
+\end{frame}
+
+\begin{frame}{Example: Autoregressive Moving-Average System}
+    Consider a system represented by the difference-equation:
+
+    $$
+    y[n] = 0.5y[n - 1] + x[n] + x[n - 1] n \geq 0, y[-1] 
+    $$
+
+    Consider two cases:
+    \begin{itemize}
+        \item Let the initial condition be $y[-1]=-2$, and the input $x[n] = u[n]$ first and then $x[n] = 2u[n]$. Find the corresponding outputs.
+        \item Let the initial condition be $y[-1] = 0$, and the input $x[n] = u[n]$ first and then $x[n] = 2u[n]$. Find the corresponding outputs.
+    \end{itemize}
+
+Use the above results to determine in each case if the system is linear. Find the steady-state response,
+i.e., $\lim_{n\to \infty} y[n]$.
+
+\end{frame}
+
+\begin{frame}{}
+\vspace*{-9\baselineskip}
+    \color{LightGray}{Blank space for calculation}
+\end{frame}
+\begin{frame}{}
+\vspace*{-9\baselineskip}
+    \color{LightGray}{Blank space for calculation}
+\end{frame}
+\begin{frame}{}
+\vspace*{-9\baselineskip}
+    \color{LightGray}{Blank space for calculation}
+\end{frame}
+
+\begin{frame}{}
+\vspace*{-9\baselineskip}
+    \color{LightGray}{Blank space for calculation}
+\end{frame}
+\begin{frame}{}
+\vspace*{-9\baselineskip}
+    \color{LightGray}{Blank space for calculation}
+\end{frame}
+\begin{frame}{}
+\vspace*{-9\baselineskip}
+    \color{LightGray}{Blank space for calculation}
+\end{frame}
+
+\begin{frame}{Dynamic Discrete-Time Systems Represented By Difference Equations}
+    A recursive discrete-time system is represented by a difference equation
+
+$$
+y[n] = -\sum_{k=1}^{N-1}a_k y[n-k] + \sum_{m=0}^{M-1}b_m x[n-m], \quad n\geq 0
+$$
+with the initial condition given as $y[-k]$ for $k = 1, \cdots,  N - 1$.
+
+
+\Large
+
+\textbf{This difference equation could be the approximation of an ordinary differential equation representing a continuous-time system being processed discretely.}
+\end{frame}
+
+\begin{frame}{Zero-input and Zero-state Responses}
+    Just as in the continuous-time case, the system being represented by the difference equation is not LTI unless the initial conditions are zero and the input is causal.
+
+\vspace{15pt}
+
+\begin{columns}
+    \column{0.5\linewidth}
+    The complete response of a system represented by the difference equation can be shown to be composed of zero-input and zero-state responses,
+  $$
+  y[n]= y_{zi}[n] + y_{zs}[n]
+  $$  
+  \column{0.5\linewidth}
+  The component $y_{zi}[n]$ is the response when the input $x[n]$ is set to zero, thus it is completely due to the initial conditions. 
+
+The response $y_{zs}[n]$ is due to the input only, as we set the initial conditions to zero.
+\end{columns}
+\end{frame}
+
+\begin{frame}{Convolution Sum}
+    
+    \begin{itemize}
+        \item     Remember the generic representation of the signal: $x[n] = \suminf{k}x[k]\delta[n-k]$
+        \item The Convolution Sum gives the output of the LTI system: $y[n] = \suminf{k} x[k]h[n-k] = \suminf{m} x[n-m]h[m]$
+    \end{itemize}
+\end{frame}
+
+\begin{frame}{Example}
+    % Example 9.23
+    Consider an autoregressive system represented by a first-order difference equation
+    
+    $y[n] = 0.5y[n - 1] + x[n], \quad n \geq 0 $.
+
+    Find the impulse response $h[n]$ of the system and then compute the response of the system to $x[n] = u[n] - u[n - 3]$ using the convolution sum.
+
+    
+\end{frame}
+
+\begin{frame}{}
+\vspace*{-9\baselineskip}
+    \color{LightGray}{Blank space for calculation}
+\end{frame}
+\begin{frame}{}
+\vspace*{-9\baselineskip}
+    \color{LightGray}{Blank space for calculation}
+\end{frame}
+\begin{frame}{}
+\vspace*{-9\baselineskip}
+    \color{LightGray}{Blank space for calculation}
+\end{frame}
+
+\begin{frame}{}
+\vspace*{-9\baselineskip}
+    \color{LightGray}{Blank space for calculation}
+\end{frame}
+
+\section{Linear And Non-Linear Filtering of Discrete Signals}
+%-----------------------------------------
+
+\begin{frame}{}
+    \begin{center}
+    \Huge \bf \color{DarkBlue}
+    
+    \faFileAudioO
+    
+    Linear And Non-Linear Filtering of Discrete Signals
+\end{center}
+\end{frame}
+
+\begin{frame}{Linear Filtering}
+
+\large 
+    In general, the filters under consideration are linear and shift-invariant. Thus, the output such as signals or images are characterized by the convolution sum between the input signal and the filter impulse response.
+\end{frame}
+
+\begin{frame}{Example: Averaging Filter}
+
+    Let $y[n] = x[n] + \eta[n]$
+
+
+\begin{itemize}
+    \item $x[n]$: The averaging filter.
+    \item $\eta[n]$: Gaussian noise.
+\end{itemize}
+
+
+Averaging filter of $M$-th order:
+
+\Large
+$$
+z[n] = \cfrac{1}{M}\sum_{k=0}^{M-1} y[n-k]
+$$
+
+Note that higher-order filters will have a larger delay.
+
+\end{frame}
+
+\begin{frame}[containsverbatim]{Averaging Filter in MATLAB}
+
+\begin{columns}
+    \column{0.5\linewidth}
+
+    \begin{minted}
+[
+frame=lines,
+framesep=2mm,
+baselinestretch=1.2,
+bgcolor=LightGray,
+fontsize=\footnotesize
+]
+{matlab}
+N=200;n=0:N-1;
+x=cos(pi*n/16); % input signal
+noise=0.2*randn(1,N); % noise
+y=x+noise; % noisy signal
+% averaging linear filter with M=3
+z=averager(3,y);
+% averaging linear filter with M=15
+z1=averager(15,y);
+\end{minted}
+
+\column{0.5\linewidth}
+    \begin{minted}
+[
+frame=lines,
+framesep=2mm,
+baselinestretch=1.2,
+bgcolor=LightGray,
+fontsize=\footnotesize
+]
+{matlab}
+function y=averager(M,x)
+% Moving average of signal x
+% M: order of averager
+% x: input signal
+%
+b=(1/M)*ones(1,M);
+y=filter(b,1,x);
+\end{minted}
+\end{columns}
+
+
+    
+\end{frame}
+
+\begin{frame}{Averaging Filter in MATLAB}
+     \begin{center}
+             \includegraphics[width=0.6\linewidth, trim={0cm 0.0cm 0cm 0.0cm},clip]{figures/averaging_filter.png}
+    \end{center}
+\end{frame}
+
+\begin{frame}{Nonlinear Filtering}
+
+    Not all linear filters are capable of removing noise, such as impulsive noise. In such a case, we can use non-linear filtering methods, such as median filters.
+     \begin{center}
+             \includegraphics[width=0.75\linewidth, trim={0cm 0.0cm 0cm 0.0cm},clip]{figures/nonlinear_noise.png}
+    \end{center}
+
+\end{frame}
+
+\begin{frame}{Median Filtering}
+    A median filter considers a certain number of samples (the example shows a 5th-order median filter), orders them according to their values, and chooses the one in the middle (i.e., the median) as the filter's output. Such a filter is non-linear as it does not satisfy superposition.
+\end{frame}
+
+\begin{frame}[containsverbatim]{Median Filter in MATLAB}
+
+\begin{columns}
+    \column{0.5\linewidth}
+
+    \begin{minted}
+[
+frame=lines,
+framesep=2mm,
+baselinestretch=1.2,
+bgcolor=LightGray,
+fontsize=\footnotesize
+]
+{matlab}
+clear all; clf
+N=200;n=0:N-1;
+% impulsive noise
+for m=1:N,
+    d=rand(1,1);
+    if d>=0.95,
+        noise(m)=-1.5;
+    else
+        noise(m)=0 ;
+    end
+end
+\end{minted}
+
+\column{0.5\linewidth}
+    \begin{minted}
+[
+frame=lines,
+framesep=2mm,
+baselinestretch=1.2,
+bgcolor=LightGray,
+fontsize=\tiny
+]
+{matlab}
+x=[2*cos(pi*n(1:100)/256) zeros(1,100)];
+y1=x+noise;
+% linear filtering
+z2=averager(15,y1);
+% non-linear filtering -- median filtering
+z1(1)=median([0 0 y1(1) y1(2) y1(3)]);
+z1(2)=median([0 y1(1) y1(2) y1(3) y1(4)]);
+z1(N-1)=median([y1(N-3) y1(N-2) y1(N-1) y1(N) 0]);
+z1(N)=median([y1(N-2) y1(N-1) y1(N) 0 0]);
+for k=3:N-2,
+    z1(k)=median([y1(k-2) y1(k-1) y1(k) y1(k+1) y1(k+2)]);
+end
+\end{minted}
+\end{columns}    
+\end{frame}
+
+\begin{frame}{Median Filter vs Averaging Filter}
+        \begin{center}
+             \includegraphics[width=0.9\linewidth, trim={0cm 0.0cm 0cm 0.0cm},clip]{figures/median_vs_averaging_filter.png}
+    \end{center}
+\end{frame}
+
+
+
+\begin{frame}{Causality of a Discrete-Time LTI System}
+    A discrete-time system $\Scal$ is causal if:
+    \begin{itemize}
+        \item whenever the input $x[n] = 0$, and there are no initial conditions, the output is $y[n] = 0$,
+        \item the present output $y[n]$ does not depend on future inputs.
+    \end{itemize}
+
+    An LTI system can be noncausal, such is the case of the following LTI
+system that computes the moving average of the input:
+
+$$
+y[n] =\cfrac{1}{3}(x[n + 1] + x[n] + x[n - 1])
+$$
+\end{frame}
+
+
+\begin{frame}{Causality of a Discrete-Time LTI System}
+    \begin{itemize}
+    \item An LTI discrete-time system is causal if the impulse response of the system is such that $h[n] = 0$ for $n < 0$.
+    \item A signal $x[n]$ is said to be causal if $x[n] = 0$ for $n < 0$.
+    \item For a causal LTI discrete-time system with a causal input $x[n]$ its output $y[n]$ is given by 
+    $$ 
+    y[n] = \sum_{k = 0}^n  x[k]h[n-k], \quad n \geq 0
+    $$
+    where the lower limit of the sum depends on the input causality, x$[k] = 0$ for $k < 0$, and the upper limit on the causality
+of the system, $h[n - k] = 0$ for $n - k < 0$ or $k>n$.
+
+\end{itemize}
+
+\end{frame}
+
+\begin{frame}{Bounded Input–Bounded Output (BIBO) Stability}
+    \begin{itemize}
+        \item Stability characterizes useful systems. 
+        \item A stable system provides well-behaved outputs for well-behaved
+inputs. 
+\item  Bounded input–bounded output (BIBO) stability establishes that for a bounded (which is what is meant by `well-behaved') input $x[n]$ the output of a BIBO stable system $y[n]$ is also bounded.
+\item Hence, if there is a finite bound $M < \infty$ such that $|x[n]| < M$ for all $n$ (you can think of it as an envelope $[-M,M]$ inside which the input $x[n]$ is) the output is also bounded, i.e., $|y[n]| < L$ for $L < \infty$ and all $n$.
+    \end{itemize}
+\end{frame}
+
+\begin{frame}{Bounded Input–Bounded Output (BIBO) Stability}
+
+    \begin{itemize}
+        \item An LTI discrete-time system is said to be BIBO stable if its impulse response $h[n]$ is absolutely summable
+$$
+\sum_{k}| h[k]| < \infty 
+$$
+\item Or, 
+\begin{multiequation}
+    |y[n] | \leq \bigg |    \suminf{k} x[n-k]h[k]    \bigg|  \leq | x[n-k]| |h[k]| \leq M \suminf{k} | h[k] | \leq MN < \infty
+\end{multiequation}
+
+provided that $\suminf{k}  |h[k]| <N< \infty$, or that the impulse response be absolutely summable.
+
+Consider $L = MN$.
+        
+    \end{itemize}
+\end{frame}
+
+\begin{frame}{Example}
+% Example 9.25.
+    Consider an autoregressive system
+    $y[n] = 0.5y[n - 1] + x[n]$.
+
+    Determine if the system is BIBO stable
+    
+\end{frame}
+
+\begin{frame}{}
+\vspace*{-9\baselineskip}
+    \color{LightGray}{Blank space for calculation}
+\end{frame}
+\begin{frame}{}
+\vspace*{-9\baselineskip}
+    \color{LightGray}{Blank space for calculation}
+\end{frame}
+\begin{frame}{}
+\vspace*{-9\baselineskip}
+    \color{LightGray}{Blank space for calculation}
+\end{frame}
+
+\begin{frame}{}
+\vspace*{-9\baselineskip}
+    \color{LightGray}{Blank space for calculation}
+\end{frame}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\section{Two-Dimensional Discrete-Time Signals}
+
+%-----------------------------------------
+
+\begin{frame}{}
+    \begin{center}
+    \Huge \bf \color{DarkBlue}
+    \faFileImageO
+    
+   Two-Dimensional Discrete-Time Signals
+
+\end{center}
+\end{frame}
+
+\begin{frame}{Two-dimensional discrete signals}
+
+    \Large
+
+    A discrete two-dimensional signal $x[m, n]$ is a mapping of integers $[m, n]$ into real values that is not defined for non-integer values.
+\end{frame}
+
+\begin{frame}{Two-dimensional Impulse Signal}
+
+\begin{multiequation}
+    \delta[m,n] = \begin{cases}
+        1, \quad [m, n] = [0, 0]\\
+        0, \quad [m, n] \neq [0, 0]
+    \end{cases}
+\end{multiequation}
+
+A signal $x[m, n]$ defined in a support $[M_1, N_1] \times [M_2, N_2]$, $M_1 < M_2$, $N_1 < N_2$ can be written as
+
+\begin{multiequation}
+    x[m, n] = \sum_{k = M_1}^{M_2} \sum_{\ell  = N_1}^{N_2} x[k, \ell]\delta[m-k, n - \ell]
+\end{multiequation}
+    
+\end{frame}
+
+\begin{frame}{Two-dimensional Unit-step Signal}
+    Two-dimensional unit-step signal $u_1[m, n]$, with support in the first quadrant
+
+\begin{multiequation}
+    u_1[m, n] = \begin{cases}
+        1, \quad m \geq 0, n \geq 0, \\
+        0, \quad \textrm{otherwise}
+    \end{cases} = \sum_{k = 0}^\infty \sum_{\ell = 0}^\infty \delta[m - k, n - \ell]
+\end{multiequation}
+    
+\end{frame}
+
+\begin{frame}{Two-dimensional Unit-ramp Signal}
+    A two-dimensional unit-ramp signal $r_1[m, n]$, with support in the first quadrant
+
+\begin{multiequation}
+    r_1[m, n] = \begin{cases}
+        mn, \quad m \geq 0, n \geq 0, \\
+        0, \quad \textrm{otherwise}
+    \end{cases} = \sum_{k = 0}^\infty \sum_{\ell = 0}^\infty k\ell \delta[m - k, n - \ell]
+\end{multiequation}
+
+    
+\end{frame}
+
+
+\begin{frame}{Separable Signals}
+    A class of two-dimensional signals of interest are separable signals $y[m, n]$ that are the product of two one-dimensional signals, one being a function of $m$ and the other of $n$
+
+    \begin{multiequation}
+        y[m, n] = y_1[m]y_2[n]
+    \end{multiequation}
+
+    $\delta[m, n] = \delta[m]\delta[n]$ is separable.
+    
+\end{frame}
+
+
+
+
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\section{Two-Dimensional Discrete-Time Systems}
+
+%-----------------------------------------
+
+\begin{frame}{}
+    \begin{center}
+    \Huge \bf \color{DarkBlue}
+    \faFilesO
+    
+   Two-Dimensional Discrete-Time Systems
+
+\end{center}
+\end{frame}
+
+\begin{frame}{Two-dimensional System}
+    A two-dimensional system is an operator $\Scal$ that maps an input $x[m, n]$ into a unique output $y[m, n] = \Scal(x[m, n])$.
+
+    We only consider the LTI 2-D system:
+
+    \begin{itemize}
+        \item Linearity: $\Scal\bigg( \sum_{i=1}^I a_i x_i [m, n] \bigg) = \sum_{i=1}^I  a_i \Scal( x_i [ m, n]) = \sum_{i=1}^I a_i y_i [m, n]$
+
+        \item Shift-Invariance: $\Scal ( x_i [m -M, n - N] ) = y_i[m - M, n - N]$
+
+        A system satisfying these two conditions is called \textbf{linear shift-invariant} or \textbf{LSI}.
+    \end{itemize}
+    
+\end{frame}
+
+\begin{frame}{Impulse Response in LSI Two-dimensional System}
+
+    Suppose then the input $x[m, n]$ of an LTI system and that the response of the system to $\delta[m, n]$ is $h[m, n]$ or the impulse response of the system. Then, 
+
+    \begin{multiequation}
+        y[m, n] & = \sum_{k}\sum_{\ell} x[k, \ell] \Scal( \delta[m - k, n - \ell])\\
+         & =  \sum_{k}\sum_{\ell} x[k, \ell] h[m - k, n - \ell] = (x * h) [m , n]
+    \end{multiequation}
+    This is also called a 2-d Convolution Sum.
+\end{frame}
+
+\begin{frame}{Separable LSI Systems}
+    An LSI system is \textbf{separable} if its impulse response $h[m, n]$ is a separable sequence, i.e., $h[m, n] = h_1[m]h_2[n]$. Then we can write the convolution sum as
+\begin{multiequation}
+        y[m, n] & = \suminf{k}\suminf{\ell}  x[k, \ell]h_1[m-k]h_2[n-\ell]\\
+        & = \suminf{k} h_1[m-k]\bigg[ \suminf{\ell} x[k, \ell]h_2[n-\ell] \bigg]
+\end{multiequation}
+    Notice that the term in the bracket is the convolution of the sum of $h_2[n]$ and the input for fixed values of $k$.
+    
+\end{frame}
+
+\begin{frame}{Separable LSI Systems}
+    Let 
+
+    $$
+   y_1[k, n] = \suminf{\ell} x[k, \ell]h_2[n-\ell] = \sum_{\ell =0}^\infty x[k, \ell]h_2[n-\ell] 
+    $$
+    then, 
+
+    $$
+    y[m, n] = \suminf{k}  y_1[k, n]  h_1[m-k] = \sum_{k = 0}^\infty y_1[k, n]  h_1[m-k]
+    $$
+
+    which is one-d convolution sum of $h_1[m]$ and $y_1[k, n]$ for fixed values of $n$.
+
+    \noticebox{
+    The final forms above are obtained using that both input and impulse response are supported in the first quadrant.
+    }
+\end{frame}
+
+\begin{frame}{Images as 2-dimensional Discrete Signals}
+    Represented as a matrix of integer values
+        \begin{center}
+             \includegraphics[width=0.75\linewidth, trim={1.0cm 1.0cm 1.0cm 3.0cm},clip]{figures/pixel_values.pdf}
+    \end{center}
+
+\end{frame}
+
+\begin{frame}{Filtering on Images}
+    Form a new image whose pixels are modified version of original pixel values.
+
+\textbf{\color{red}{Goals of filtering:}}
+\begin{itemize}
+    \item Extract useful information from the images
+    \begin{itemize}
+        \item Features (edges, corners, blobs…)
+    \end{itemize}
+    \item Modify or enhance image properties
+    \begin{itemize}
+        \item super‐resolution; in‐painting; de‐noising
+    \end{itemize}
+\end{itemize}
+    
+\end{frame}
+
+\begin{frame}{2D discrete‐space systems (filters)}
+
+\Large
+\begin{center}
+    $f[n, m] \to$ \boxed{System~~~\Scal} $\to g[n, m]$
+
+\vspace{10pt}
+
+$g = \Scal[f], \quad g[n, m] = \Scal \{ f[n, m] \}$
+
+\vspace{10pt}
+
+$f[n, m] \xrightarrow{\Scal} g[n, m]$
+    
+\end{center}
+    
+\end{frame}
+
+\begin{frame}{2D Filter Example}
+\small
+    2D discrete-space moving average over a 3 × 3 window of a neighborhood
+  \begin{multiequation}
+        g[n, m] & = \cfrac{1}{9}\sum_{ k = n-1}^{n+1} \sum_{\ell = m -1}^{m+1} f[k , \ell] = \cfrac{1}{9} \sum_{k= -1}^1 \sum_{\ell = -1}^1 f[n - k, m - \ell]
+    \end{multiequation}
+    
+    \begin{columns}
+        \column{0.65\linewidth}
+ Or, $
+        (f * h) [m, n] = \cfrac{1}{9} \sum_{k,\ell} f[k, \ell]h[m -k, n - \ell]$
+  \begin{center}
+             \includegraphics[width=0.35\linewidth, trim={0cm 0.0cm 0cm 0.0cm},clip]{figures/filter_window.png}
+    \end{center}
+        \column{0.35\linewidth}
+
+       
+
+    \begin{center}
+             \includegraphics[width=0.8\linewidth, trim={0cm 0.0cm 0cm 0.0cm},clip]{figures/twod_filter_operations.png}
+    \end{center}
+    
+    \end{columns}
+\end{frame}
+
+% Txtbook 9.29
+\begin{frame}{Example}
+    Consider a separable impulse response
+
+    \begin{multiequation}
+        h[m, n] & = \begin{cases}
+            1, \quad 0 \leq m \leq 1,  0 \leq n \leq 1\\
+            0, \quad, \textrm{otherwise}
+        \end{cases} \\
+        & = ( u[m] - u[m-2]) (u[n] - u[n - 2]) = h_1[m]h_2[n]
+    \end{multiequation}
+
+    For an input 
+
+     \begin{multiequation}
+        x[m, n] = \begin{cases}
+            1, \quad 0 \leq m \leq 1,  0 \leq n \leq 1\\
+            0, \quad, \textrm{otherwise}
+        \end{cases}
+    \end{multiequation}
+
+find the output of the system $y[m, n]$.
+\end{frame}
+
+\begin{frame}{}
+\vspace*{-9\baselineskip}
+    \color{LightGray}{Blank space for calculation}
+\end{frame}
+\begin{frame}{}
+\vspace*{-9\baselineskip}
+    \color{LightGray}{Blank space for calculation}
+\end{frame}
+\begin{frame}{}
+\vspace*{-9\baselineskip}
+    \color{LightGray}{Blank space for calculation}
+\end{frame}
+
+\begin{frame}{}
+\vspace*{-9\baselineskip}
+    \color{LightGray}{Blank space for calculation}
+\end{frame}
+
+
+
+
+
+\end{document}

@@ -1,0 +1,989 @@
+%----------------------------------------------------------------------------------------
+%	PACKAGES AND THEMES
+%----------------------------------------------------------------------------------------
+\PassOptionsToPackage{table}{xcolor}
+\documentclass[aspectratio=169,xcolor=dvipsnames,svgnames,x11names,fleqn]{beamer}
+% \documentclass[aspectratio=169,xcolor=dvipsnames,fleqn]{beamer}
+
+\usetheme{RedVelvet}
+
+\usefonttheme[onlymath]{serif}
+
+
+
+\usepackage{xspace}
+\usepackage{amsmath}
+\usepackage{amssymb}
+\usepackage{amsfonts}
+\usepackage{color}
+\usepackage{physics}
+% \usepackage{mathbb}
+\usepackage{rahul_math}
+\usepackage{bigints}
+\usepackage{hyperref}
+
+\usepackage{graphicx} % Allows including images
+\usepackage{booktabs} % Allows the use of \toprule, \midrule and \bottomrule in tables
+\usepackage{tikz,pgfplots}
+\usepackage{subfigure}
+\usetikzlibrary{arrows}
+\usepackage{minted}
+\definecolor{LightGray}{gray}{0.9}
+\definecolor{cream}{rgb}{0.92, 0.9, 0.55}
+\definecolor{lightblue}{rgb}{0.68, 0.85, 0.9}
+
+
+\usepackage{xcolor-material}
+\usetikzlibrary{fit}
+\tikzset{%
+apple/.pic={
+  \fill [MaterialBrown] (-1/8,0)  arc (180:120:1 and 3/2) coordinate [pos=3/5] (@)-- ++(1/6,-1/7)  arc (120:180:5/4 and 3/2) -- cycle;
+  \fill [MaterialLightGreen500] (0,-9/10)  .. controls ++(180:1/8) and ++(  0:1/4) .. (-1/3,  -1) .. controls ++(180:1/3) and ++(270:1/2) .. (  -1,   0) .. controls ++( 90:1/3) and ++(180:1/3) .. (-1/2, 3/4) .. controls ++(  0:1/8) and ++(135:1/8) .. (   0, 4/7)
+}
+}
+
+\newcommand{\leftdoublequote}{\textcolor{blue}{\scalebox{3}{``}}}
+
+\newcommand{\rightdoublequote}{\textcolor{blue}{\scalebox{3}{''}}}
+
+
+\usepackage{textcomp}
+\usepackage{fontawesome}
+
+\usepackage{overpic}
+
+%----------------------------------------------------------------------------------------
+%	TITLE PAGE
+%----------------------------------------------------------------------------------------
+
+\usepackage{tikz-qtree,tikz-qtree-compat}
+\usetikzlibrary{calc}
+
+
+\title[CPE 381: Signals and Systems]{CPE 381: Fundamentals of Signals and Systems for Computer Engineers} % The short title appears at the bottom of every slide, the full title is only on the title page
+\subtitle{09 Z Transform}
+
+\author[Rahul Bhadani] {{\Large \textbf{Rahul Bhadani}}}
+
+\institute[UAH] % Your institution as it will appear on the bottom of every slide, maybe shorthand to save space
+{
+    Electrical \& Computer Engineering,  The University of Alabama in Huntsville
+}
+\date
+
+% \titlegraphic{
+%    \includegraphics[width=0.4\linewidth]{figures/UAH_primary.png}
+% }
+
+\begin{document}
+
+%-------------------------------------------------
+\begin{frame}
+\titlepage
+\end{frame}
+
+%-------------------------------------------------
+\begin{frame}{Outline}
+    \tableofcontents
+\end{frame}
+
+
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\section{Motivation}
+
+%-----------------------------------------
+
+\begin{frame}{}
+    \begin{center}
+    \Huge \bf \color{DarkBlue}
+    \faFire
+    
+    Motivation
+\end{center}
+\end{frame}
+
+
+
+
+\begin{frame}{Z-transform and Laplace Transform}
+    The discrete equivalent of Laplace Transform that follows:
+\begin{itemize}
+    \item If the sampled signal is: $x(t) = \sum x(nT_s)\delta(t-nT_s)$
+  
+    its Laplace transform is : $X(s) = \sum_{n} x(nT_s) \Lcal[\delta(t - nT_s)] = \sum_n x(nT_s) = e^{-ns T_s}$
+
+    \item By letting $z = e^{sT_s}$, 
+
+$$
+\Zcal [ x(nT_s)] =\Lcal[x_s(t)]|_{z = e^{sT_s}} = \sum_{n} x(nT_s) z^{-n}
+$$
+
+\textbf{which is called the {\color{red}{Z-transform}} of the sampled signal.}
+
+    
+\end{itemize}
+
+\end{frame}
+
+\begin{frame}{Z-transform in Practice}
+    Although Z-transform seems to be a discrete version of Laplace transform, the practical use doesn’t necessarily bother to find the relationship between Laplace and Z-transform.
+
+\begin{itemize}
+    \item \color{red}Complex Z-plane is a polar form rather than a 2D cartesian plane.
+    \item  \color{DarkGreen} Radius corresponds to the damping factor, and angle corresponds to the discrete frequency $\omega$ in radians.
+    \item Thus, the unit circle in the Z-plane is analogous to the $j\Omega$-axis in the Laplace plane.
+    \item Inside of the unit circle is analogous to the left-hand $s$-plane.  
+
+
+\end{itemize}
+
+\end{frame}
+
+\begin{frame}{}
+     \begin{center}
+             \includegraphics[width=0.8\linewidth, trim={0cm 0.0cm 0cm 0.0cm},clip]{figures/s-plane-z-plane.png}
+    \end{center}
+    See: \url{Source: https://www.youtube.com/watch?v=acQecd6dmxw}
+\end{frame}
+
+\begin{frame}{Relationship between s-plane and z-plane}
+    By letting $z = e^{sT_s}$, 
+
+    \begin{itemize}
+        \item $z = e^{sT_s} = e^{(\sigma + j\Omega)T_s}  = e^{\sigma T_s}e^{j\Omega T_s}$
+        \item $ r =  e^{\sigma T_s}$, $\omega = \Omega T_s$, and hence, $z = re^{j\omega}$.
+    \end{itemize}
+ \begin{center}
+             \includegraphics[width=0.58\linewidth, trim={0cm 0.0cm 0cm 0.0cm},clip]{figures/s_to_z.png}
+    \end{center}
+    
+\end{frame}
+
+
+
+% Example 10.1 from The Textbook
+\begin{frame}{Example}
+    To see the possibility of infinite zeros and poles in the Laplace transform of a sampled signal, consider a pulse $x(t) = u(t) - u(t-T_0)$ sampled with a sampling period $T_s = \cfrac{T_0}{N}$, $N$ being a positive integer.
+\end{frame}
+
+\begin{frame}{}
+\vspace*{-9\baselineskip}
+    \color{LightGray}{Blank space for calculation}
+\end{frame}
+\begin{frame}{}
+\vspace*{-9\baselineskip}
+    \color{LightGray}{Blank space for calculation}
+\end{frame}
+\begin{frame}{}
+\vspace*{-9\baselineskip}
+    \color{LightGray}{Blank space for calculation}
+\end{frame}
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\section{Two sided Z-transform}
+
+%-----------------------------------------
+
+\begin{frame}{}
+    \begin{center}
+    \Huge \bf \color{DarkBlue}
+    \faCaretRight\faCaretLeft
+    
+    Two-sided Z-transform
+\end{center}
+\end{frame}
+
+\begin{frame}{Two sided Z-transform}
+    Given a discrete-time signal $x[n]$, $ -\infty <n< \infty$, its two-sided Z-transform is given by
+
+    $$
+    X(z) = \suminf{n} x[n]z^{-n}
+    $$
+
+    defined in a region of convergence (ROC) on the Z-plane.
+    
+\end{frame}
+
+\begin{frame}{Remark on Z-transform}
+
+    \begin{gradred}
+        The two-sided Z-transform is not useful in solving difference equations with nonzero initial conditions, just as the two-sided Laplace transform was not useful either in solving ordinary differential equations with nonzero initial conditions.
+    \end{gradred}
+
+    Hence, we need to look at one-sided Z-transform.
+
+
+\end{frame}
+
+\begin{frame}{One-sided Z-transform}
+    Defined for causal signals, $x[n] = 0$ for $n < 0$
+
+$$
+X_1(z) = \Zcal ( x[n] u[n] ) = \sum_n^\infty x[n]u[n]z^{-n}
+$$
+
+The ROC for this z-transform is denoted by $\Rcal_1$.
+    
+\end{frame}
+
+
+\begin{frame}{Two-sided Z-transform as One-sided Z-transform}
+    $X(z) = \Zcal( x[n] u[n] ) + \Zcal( x[-n]u[n])|_z - x[0]$.
+
+    The first z-transform has ROC $\Rcal_1$, and the second z-transform has ROC $\Rcal_2$.
+
+Proof: 
+\begin{multiequation}
+    X(z) & = \suminf{n}x[n]z^{-n} = \sum_{n=0}^\infty x[n] u[n] z^{-n} + \sum_{-\infty}^0 x[n] u[-n]z^{-n} - x[0]\\
+    & = \Zcal( x[n] u[n] )  + \sum_{m= 0}^\infty x[-m]u[m]z^m - x[0]\\
+    & = \Zcal( x[n] u[n] ) + \Zcal( x[-n]u[n])|_z - x[0]
+\end{multiequation}
+    
+\end{frame}
+
+\begin{frame}{Region of Convergence for Z-transform}
+    Infinite summation we see in the Z-transform has to converge under some conditions for it to be meaningful. It means
+
+    \begin{multiequation}
+        | X(z)| = \bigg| \sum_n x[n] z^{-n} \bigg| \leq \sum_n | x[n]||r^{-n} e^{j\omega n} | = \sum_n | x[n]| r^{-n} < \infty
+    \end{multiequation}
+
+    We see that for a given discrete signal or sequence, the convergence depends on the value of $r$.
+
+    
+\end{frame}
+
+
+
+\begin{frame}{Poles and Zeros of Z-transform}
+    The poles of a Z-transform $X(z)$ are complex values $\{p_k\}$ such that
+$$
+X(p_k) \to \infty
+$$
+
+The zeros of $X(z)$ are the complex values $\{z_k\}$ that make
+
+$$
+X(z_k) = 0
+$$
+
+\end{frame}
+
+\begin{frame}{Visualization of Z-transform}
+    \begin{columns}
+        \column{0.5\linewidth}
+        The magnitude $|X(z)|$ of the z-transform represents a surface in the z-plane. There are two zeros at $z_1 = 0$, $z_2 = 1$ and two poles at $p_{1,2} = 0.9e^{\pm j\pi/4}.$
+\column{0.5\linewidth}
+ \begin{center}
+             \includegraphics[width=0.78\linewidth, trim={0cm 0.0cm 0cm 0.0cm},clip]{figures/ztransform_viz.png}
+    \end{center}
+    \end{columns}
+\end{frame}
+
+\begin{frame}{Example}
+    Find the poles and zeros of the following Z-transforms
+\begin{itemize}
+    \item (i) $X_1(z) = 1 + 2 z^{-1} + 3 z^{-2} + 4z^{-3}$
+    \item (ii) $X_2(z) = \cfrac{( z^{-1} - 1 )(z^{-1} + 2)^2}{z^{-1}(z^{-2} + \sqrt{2}z^{-1} + 1 )}$
+\end{itemize}
+\end{frame}
+
+\begin{frame}{}
+\vspace*{-9\baselineskip}
+    \color{LightGray}{Blank space for calculation}
+\end{frame}
+\begin{frame}{}
+\vspace*{-9\baselineskip}
+    \color{LightGray}{Blank space for calculation}
+\end{frame}
+\begin{frame}{}
+\vspace*{-9\baselineskip}
+    \color{LightGray}{Blank space for calculation}
+\end{frame}
+
+\begin{frame}{}
+\vspace*{-9\baselineskip}
+    \color{LightGray}{Blank space for calculation}
+\end{frame}
+
+\begin{frame}{ROC of Finite-Support Signals}
+    The region of convergence (ROC) of the Z-transform of a signal $x[n]$ of a finite support $[N_0, N_1]$, where $-\infty < N_0 \leq n \leq N_1 < \infty$,
+
+$$
+X(z) = \sum_{n = N_0}^{N_1}x[n] z^{-n}
+$$
+
+is the whole Z-plane, excluding the origin $z=0$, and/or $z = \pm \infty$, depending on $N_0$ and $N_1$.
+
+\end{frame}
+
+\begin{frame}{Example}
+    Find the Z-transform of a discrete-time pulse $x[n] = u[n] - u[n - 10]$. Determine the region of convergence of $X(z)$.
+
+\end{frame}
+
+\begin{frame}{}
+\vspace*{-9\baselineskip}
+    \color{LightGray}{Blank space for calculation}
+\end{frame}
+\begin{frame}{}
+\vspace*{-9\baselineskip}
+    \color{LightGray}{Blank space for calculation}
+\end{frame}
+\begin{frame}{}
+\vspace*{-9\baselineskip}
+    \color{LightGray}{Blank space for calculation}
+\end{frame}
+
+\begin{frame}{ROC of Infinite-Support Signals}
+    Signals of infinite support are either causal, anticausal or a combination of these-noncausal. For the Z-transform of a causal signal $x_c[n]$, i.e., $x_c[n] = 0, n < 0$.
+
+$$
+X_c(z) = \sum_{n= 0}^\infty x_c[n]z^{-n} = \sum_{n= 0}^\infty x_c[n] r^{-n}e^{-jn \omega}
+$$
+to converge we need to determine appropriate values of $r$, the damping factor, as the frequency $\omega$ has no effect on the convergence.
+
+    
+\end{frame}
+
+\begin{frame}{ROC of Infinite-Support Signals for a Causal Signal}
+    If R1 is the radius of the farthest out pole of $X_c(z)$, then there is an exponential $R^n_1 u[n]$ such that $|x_c[n]| < M R_1^n$ for $n\geq 0$. Then, for$ X(z)$ to converge we need that
+
+    $$
+    |X_c(z) | \leq \sum_{n=0}^\infty |x_c[n] | r^{-n} < M \sum_{n=0}^\infty \bigg(\cfrac{R_1}{n} \bigg)^n < \infty
+    $$
+    or that $\cfrac{R_1}{r}< 1$, which is equivalent to $|z| = r | R_1$.  ROC is thus the outside of a circle containing all the poles of $X_c(z)$, i.e., it does not include any poles of $X_c(z)$.
+\end{frame}
+
+\begin{frame}{ROC of Infinite-Support Signals for an Anti-causal Signal}
+    \Large
+    
+    Likewise, for an anti-causal signal $x_a[n]$ (i.e., $x_a[n] = 0$, for $n > 0$) if we choose a radius $R_2$ which is smaller than the radius of all the poles of $X_a(z)$, the region of convergence is $|z| = r<R_2$. This ROC is the inside of a circle that does not include any poles of $X_a(z)$.
+\end{frame}
+
+\begin{frame}{ROC of Infinite-Support Signals for a Non-causal (Two-sided) Signal}
+If the signal$ x[n]$ is noncausal, it can be expressed as
+
+$$
+x[n] = x_c[n] + x_a[n]
+$$
+
+$x_c[n]$ is causal whereas $x_a[n]$ is anti-causal.
+
+The corresponding ROC of $X(z)$ would be $0 < R_1 < |z| < R_2 < \infty$.
+
+    
+\end{frame}
+
+\begin{frame}{ROC Visually}
+         \begin{center}
+             \includegraphics[width=0.58\linewidth, trim={0cm 0.0cm 0cm 0.0cm},clip]{figures/ROC_visually.png}
+    \end{center}
+    
+\end{frame}
+
+% Schaum Page 166, Example 4.1
+\begin{frame}{Example 1: ROC}
+
+Consider the sequence $x[n] = a^n u[n]$, $a$ is real, find the z-transform and sketch its ROC.
+    
+\end{frame}
+
+\begin{frame}{}
+\vspace*{-9\baselineskip}
+    \color{LightGray}{Blank space for calculation}
+\end{frame}
+\begin{frame}{}
+\vspace*{-9\baselineskip}
+    \color{LightGray}{Blank space for calculation}
+\end{frame}
+\begin{frame}{}
+\vspace*{-9\baselineskip}
+    \color{LightGray}{Blank space for calculation}
+\end{frame}
+
+\begin{frame}{}
+\vspace*{-9\baselineskip}
+    \color{LightGray}{Blank space for calculation}
+\end{frame}
+
+
+% Schaum Page 167, Example 4.2
+\begin{frame}{Example 2: ROC}
+
+Consider the sequence $x[n] = -a^n u[-n-1]$, $a$ is real, find the z-transform, and sketch its ROC.
+    
+\end{frame}
+
+
+\begin{frame}{}
+\vspace*{-9\baselineskip}
+    \color{LightGray}{Blank space for calculation}
+\end{frame}
+\begin{frame}{}
+\vspace*{-9\baselineskip}
+    \color{LightGray}{Blank space for calculation}
+\end{frame}
+\begin{frame}{}
+\vspace*{-9\baselineskip}
+    \color{LightGray}{Blank space for calculation}
+\end{frame}
+
+\begin{frame}{}
+\vspace*{-9\baselineskip}
+    \color{LightGray}{Blank space for calculation}
+\end{frame}
+
+\begin{frame}{Properties of ROC}
+
+    \begin{itemize}
+        \item The ROC does not contain any poles. 
+        \item If $x[n]$ is a finite sequence (that is, $x[n] = 0$ except in a finite interval $N_1 \leq n \leq N_2$, 
+where $N_1$, and $N_2$, are finite) and $X(z)$ converges for some value of $z$, then the ROC is the entire z-plane except possibly $z = 0$ or $z = \infty$. 
+\item If $x[n]$ is a right-sided sequence (that is, $x[n] = 0$ for $n < N_1 < \infty$) and $X(z)$ converges for some value of $z$, then the ROC is of the form 
+
+$$
+|z| > r_{max}\quad \textrm{~~or~~} \infty > |z| > r_{max}
+$$
+where $r_{max}$ equals the largest magnitude of any of the poles of $X(z)$. Thus, the ROC is the exterior of the circle $|z| = r_{max}$, in the z-plane with the possible exception of $z = \infty$.
+    \end{itemize}
+\end{frame}
+
+\begin{frame}{Properties of ROC}
+    \begin{itemize}
+        \item If $x[n]$ is a left-sided sequence (that is, $x[n] = 0$ for $n > N_2 > -\infty$) and $X(z)$ converges for some value of $z$, then the ROC is of the form 
+
+$$
+|z| < r_{min}\quad \textrm{~~or~~} 0 < |z| < r_{min}
+$$
+where $r_{min}$ equals the smallest magnitude of any of the poles of $X(z)$. Thus, the ROC is the interior of the circle $|z| = r_{min}$, in the z-plane with the possible exception of $z = 0$.
+
+\item If $x[n]$ is a two-sided sequence (that is, $x[n]$ is an infinite-duration sequence that is neither right-sided nor left-sided) and $X(z)$ converges for some value of $z$, then the ROC is of the form 
+$$
+r_1 < |z| < r_2
+$$
+where $r_1$ and $r_2$ are the magnitudes of the two poles of$ X(z)$. Thus, the ROC is an annular ring in the z-plane between the circles $|z| = r_1$ and $|z|= r_2$ not containing any poles.
+    \end{itemize}
+\end{frame}
+
+\begin{frame}{Example}
+    The poles of $X(z)$ are $z = 0.5$ and $z = 2$; find all the possible signals that can be associated with $X(z)$ according to different regions of convergence.
+    
+\end{frame}
+
+\begin{frame}{}
+\vspace*{-9\baselineskip}
+    \color{LightGray}{Blank space for calculation}
+\end{frame}
+\begin{frame}{}
+\vspace*{-9\baselineskip}
+    \color{LightGray}{Blank space for calculation}
+\end{frame}
+\begin{frame}{}
+\vspace*{-9\baselineskip}
+    \color{LightGray}{Blank space for calculation}
+\end{frame}
+
+\begin{frame}{Example}
+    Find the regions of convergence of the Z-transforms of the following signals
+    $$
+    x_1[n] = \bigg(\cfrac{1}{2}\bigg)^n u[n]
+    $$
+
+    and
+
+    $$
+    x_2[n] = -\bigg(\cfrac{1}{2}\bigg)^n u[-n-1]
+    $$
+
+    Find then the Z-transform of $x_1[n] + x_2[n]$.
+\end{frame}
+
+\begin{frame}{}
+\vspace*{-9\baselineskip}
+    \color{LightGray}{Blank space for calculation}
+\end{frame}
+\begin{frame}{}
+\vspace*{-9\baselineskip}
+    \color{LightGray}{Blank space for calculation}
+\end{frame}
+\begin{frame}{}
+\vspace*{-9\baselineskip}
+    \color{LightGray}{Blank space for calculation}
+\end{frame}
+\begin{frame}{}
+\vspace*{-9\baselineskip}
+    \color{LightGray}{Blank space for calculation}
+\end{frame}
+\begin{frame}{}
+\vspace*{-9\baselineskip}
+    \color{LightGray}{Blank space for calculation}
+\end{frame}
+
+
+\begin{frame}{Derivative Property}
+
+
+    If $X(z) = \sum_{n=0}^\infty x[n]z^{-n}$
+
+    its derivative with respective to z is 
+
+    $$
+\cfrac{dX(z)}{dz} = \sum_n^\infty x[n] \cfrac{dz^{-n}}{dz} = -z^{-1} \sum_n^\infty n x[n]z^{-n}
+$$
+
+or
+
+$$
+nx[n]u[n] \longleftrightarrow  -z\cfrac{dX(z)}{dz} 
+$$
+\end{frame}
+
+
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\section{Discrete Transfer Function}
+
+%-----------------------------------------
+
+\begin{frame}{}
+    \begin{center}
+    \Huge \bf \color{DarkBlue}
+    \faBuilding
+    
+   Discrete Transfer Function
+\end{center}
+\end{frame}
+
+\begin{frame}{Transfer Function in Z-domain}
+    The output $y[n]$ of a causal LTI system is calculated using the convolution sum
+    $$
+    y[n] = [x*h][n] = \sum_{k = 0}^n x[k]h[n-k] =  \sum_{k = 0}^n h[k]x[n-k]
+    $$
+    where $x[n]$ is a causal input and $h[n]$ is the impulse response of the system.  Z-transform of the $y[n]$ is the product
+    $$
+    Y(z) = \Zcal\{ [x*h][n] \} = \Zcal\{ x[n] \} \Zcal\{ h[n] \} = X(z) H(z)
+    $$
+
+    and thus the transfer function of a discrete system is defined as
+
+    \begin{gradgreen}
+        $H(z) = \cfrac{Y(z)}{X(z)}$
+    \end{gradgreen}
+    
+\end{frame}
+
+\begin{frame}{Convolution Sum}
+
+Fun video: \url{https://www.youtube.com/watch?v=KuXjwB4LzSA}
+    
+\begin{custombox}{What is convolution sum?}{cashyellow}{cashblue}
+    The convolution sum property can be seen as a way to obtain the coefficients of the product of two polynomials. s. Whenever we multiply two polynomials $X_1(z)$ and $X_2(z)$, of finite or infinite order, the
+coefficients of the resulting polynomial can be obtained using the convolution sum.
+\end{custombox}
+\end{frame}
+
+
+% Example 10.8
+\begin{frame}{Example}
+    Consider computing the output of an FIR filter
+
+    $$
+    y[n] = \cfrac{1}{2} ( x[n] + x[n-1] + x[n-2])
+     $$
+
+     for an input $x[n] = u[n] - u[n - 4]$ using the convolution sum, analytically and graphically, and the Z-transform.
+\end{frame}
+
+\begin{frame}{}
+\vspace*{-9\baselineskip}
+    \color{LightGray}{Blank space for calculation}
+\end{frame}
+\begin{frame}{}
+\vspace*{-9\baselineskip}
+    \color{LightGray}{Blank space for calculation}
+\end{frame}
+\begin{frame}{}
+\vspace*{-9\baselineskip}
+    \color{LightGray}{Blank space for calculation}
+\end{frame}
+\begin{frame}{}
+\vspace*{-9\baselineskip}
+    \color{LightGray}{Blank space for calculation}
+\end{frame}
+
+
+\begin{frame}{Time-shift Property}
+\Large
+
+If
+
+$$
+x[n] \Leftrightarrow X(z)
+$$
+then
+$$
+x[n-N] \Leftrightarrow z^{-N}X(z)  + x[-1] z^{-N+1}
+$$
+For a causal system $x[-1] = 0$, then
+
+$$
+x[n-N] \Leftrightarrow z^{-N}X(z)
+$$
+
+\end{frame}
+
+
+% Example 10.11
+\begin{frame}{Example}
+    Consider a discrete-time IIR system represented by the difference equation
+
+    $$
+    y[n] = 0.5y[n - 1] + x[n]
+    $$
+
+    with $ x [n] $ as input and $ y [n] $ as output. Determine the system's transfer function and, from it, find the impulse and unit-step responses. Determine under what conditions the system is BIBO stable. If stable, determine the system's transient and steady-state responses.
+
+\end{frame}
+
+
+\begin{frame}{}
+\vspace*{-9\baselineskip}
+    \color{LightGray}{Blank space for calculation}
+\end{frame}
+\begin{frame}{}
+\vspace*{-9\baselineskip}
+    \color{LightGray}{Blank space for calculation}
+\end{frame}
+\begin{frame}{}
+\vspace*{-9\baselineskip}
+    \color{LightGray}{Blank space for calculation}
+\end{frame}
+\begin{frame}{}
+\vspace*{-9\baselineskip}
+    \color{LightGray}{Blank space for calculation}
+\end{frame}
+
+
+\begin{frame}{Interconnection of Discrete Systems}
+
+    Connections of LTI systems: (A) cascade, (B) parallel, and (C) negative feedback.
+   \begin{center}
+             \includegraphics[width=0.8\linewidth, trim={0cm 0.0cm 0cm 0.0cm},clip]{figures/interconnected_discrete_systems.png}
+    \end{center}
+    
+\end{frame}
+
+\begin{frame}{Initial Value and Final Value Theorem for Z-transform}
+    If $X(z)$ is the Z-transform of a causal signal $x[n]$ with an initial value $x[0]$ and a final value $lim_{n \to \infty} x[n]$ are obtained
+from $X(z)$ according to
+
+\begin{itemize}
+    \item Initial value: $x[0]: \lim_{z\to\infty} X(z)$
+    \item Final value: $lim_{n \to \infty} x[n] = \lim_{z\to 1} (z-1)X(z)$
+\end{itemize}
+\end{frame}
+
+\begin{frame}{Example}
+
+\begin{columns}
+    \column{0.4\linewidth}
+       \begin{center}
+             \includegraphics[width=1.0\linewidth, trim={0cm 0.0cm 0cm 0.0cm},clip]{figures/negative_feedback_system.png}
+
+    \end{center}
+   
+   \column{0.6\linewidth}
+   
+   \small
+    Consider a negative feedback connection of a plant given in the figure
+   with a transfer function
+
+    $$
+    G(z) = \cfrac{1}{1 - 0.5z^{-1}}
+    $$
+
+    and a constant feedback gain of $K$.
+
+    If the reference signal is a unit-step, $x[n] = u[n]$,
+determine the behavior of the error signal $e[n]$. What is the effect of the feedback, from the error point of view, on an unstable plant $G(z) = \tfrac{1}{1-z^{-1}}$
+
+ 
+\end{columns}
+
+
+\end{frame}
+
+\begin{frame}{}
+\vspace*{-9\baselineskip}
+    \color{LightGray}{Blank space for calculation}
+\end{frame}
+\begin{frame}{}
+\vspace*{-9\baselineskip}
+    \color{LightGray}{Blank space for calculation}
+\end{frame}
+\begin{frame}{}
+\vspace*{-9\baselineskip}
+    \color{LightGray}{Blank space for calculation}
+\end{frame}
+\begin{frame}{}
+\vspace*{-9\baselineskip}
+    \color{LightGray}{Blank space for calculation}
+\end{frame}
+
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\section{One-Sided Z-transform Inverse}
+
+%-----------------------------------------
+
+\begin{frame}{}
+    \begin{center}
+    \Huge \bf \color{DarkBlue}
+    \faFire
+    
+    One-Sided Z-transform Inverse
+\end{center}
+\end{frame}
+
+\begin{frame}{Long Division Method}
+
+When a rational function $X(z) = B(z)/A(z)$, having as ROC the outside of a circle of radius R (i.e., $x[n]$ is causal), is
+expressed as
+
+$$
+X(z) = x[0] + x[1]z^{-1} + x[2]^{-2} + \cdots
+$$
+
+by dividing $B(z)$ by $A(z)$, then the inverse is the sequence $\{ \cdots 0, 0, x[0], x[1], x[2], \cdots\}$ or
+
+$$
+x[n] = x[0]\delta[n] + x[1]\delta[n-1] + x[2]\delta[n-2] + \cdots 
+$$
+
+
+\end{frame}
+
+
+% Example 10.14
+\begin{frame}{Example}
+    Find the inverse Z-transform of
+
+    $$
+X(z) = \cfrac{1}{1 + 2z^{-2}}, \quad |z|  > \sqrt{2}
+$$
+\end{frame}
+
+\begin{frame}{}
+\vspace*{-9\baselineskip}
+    \color{LightGray}{Blank space for calculation}
+\end{frame}
+\begin{frame}{}
+\vspace*{-9\baselineskip}
+    \color{LightGray}{Blank space for calculation}
+\end{frame}
+\begin{frame}{}
+\vspace*{-9\baselineskip}
+    \color{LightGray}{Blank space for calculation}
+\end{frame}
+\begin{frame}{}
+\vspace*{-9\baselineskip}
+    \color{LightGray}{Blank space for calculation}
+\end{frame}
+
+% Example 10.15
+\begin{frame}{Partial Fraction Method with Example}
+    Consider the non-proper rational function
+    $$
+    X(z) = \cfrac{2 + z^{-2}}{1 + 2z^{-1} + z^{-2}}
+    $$
+
+(numerator and denominator of the same degree in powers of $z^{-1}$). 
+
+Determine how to obtain an $X(z)$ expansion containing a proper rational term to find $x[n]$.
+
+
+\end{frame}
+
+\begin{frame}{}
+\vspace*{-9\baselineskip}
+    \color{LightGray}{Blank space for calculation}
+\end{frame}
+\begin{frame}{}
+\vspace*{-9\baselineskip}
+    \color{LightGray}{Blank space for calculation}
+\end{frame}
+\begin{frame}{}
+\vspace*{-9\baselineskip}
+    \color{LightGray}{Blank space for calculation}
+\end{frame}
+\begin{frame}{}
+\vspace*{-9\baselineskip}
+    \color{LightGray}{Blank space for calculation}
+\end{frame}
+
+\begin{frame}{Example}
+    % Example 10.16
+Find the inverse Z-transform of
+
+$$
+X(z) = \cfrac{1 + z^{-1}}{(1 + 0.5z^{-1})(1-0.5z^{-1}) } = \cfrac{z(z+1)}{(z + 0.5)(z-0.5)}, \quad |z|  > 0.5
+$$
+
+by using the negative and the positive powers of z representations.
+
+\end{frame}
+
+\begin{frame}{}
+\vspace*{-9\baselineskip}
+    \color{LightGray}{Blank space for calculation}
+\end{frame}
+\begin{frame}{}
+\vspace*{-9\baselineskip}
+    \color{LightGray}{Blank space for calculation}
+\end{frame}
+\begin{frame}{}
+\vspace*{-9\baselineskip}
+    \color{LightGray}{Blank space for calculation}
+\end{frame}
+\begin{frame}{}
+\vspace*{-9\baselineskip}
+    \color{LightGray}{Blank space for calculation}
+\end{frame}
+
+
+\begin{frame}{One-Sided Z-transforms Pair Table}
+           \begin{center}
+             \includegraphics[width=0.45\linewidth, trim={0cm 0.0cm 0cm 0.0cm},clip]{figures/onesided_ztrans.png}
+
+    \end{center}
+
+\end{frame}
+
+\begin{frame}{Basic Properties of One-sided Z-transform}
+           \begin{center}
+             \includegraphics[width=0.45\linewidth, trim={0cm 0.0cm 0cm 0.0cm},clip]{figures/propertis_ztrans.png}
+
+    \end{center}
+
+\end{frame}
+
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\section{Solution of Difference Equations}
+
+%-----------------------------------------
+
+\begin{frame}{}
+    \begin{center}
+    \Huge \bf \color{DarkBlue}
+    \faFire
+    
+    Solution of Difference Equations
+    
+\end{center}
+\end{frame}
+
+% Example 10.20
+\begin{frame}{Example}
+
+The following first-order difference equation represents a discrete IIR system
+
+    $$
+    y[n] = ay[n-1] + x[n], \quad n\geq 0
+    $$
+
+    where $x[n]$ is the system's input and $y[n]$ its output. Discuss how to solve it using recursive methods and the Z-transform. Obtain a general form for the complete solution $y[n]$ in terms of the impulse response $h[n]$ of the system.
+
+\end{frame}
+
+
+\begin{frame}{}
+\vspace*{-9\baselineskip}
+    \color{LightGray}{Blank space for calculation}
+\end{frame}
+\begin{frame}{}
+\vspace*{-9\baselineskip}
+    \color{LightGray}{Blank space for calculation}
+\end{frame}
+\begin{frame}{}
+\vspace*{-9\baselineskip}
+    \color{LightGray}{Blank space for calculation}
+\end{frame}
+\begin{frame}{}
+\vspace*{-9\baselineskip}
+    \color{LightGray}{Blank space for calculation}
+\end{frame}
+
+% Example 10.22. 
+\begin{frame}{Example}
+    Solve the difference equation
+
+    $$
+    y[n] = y[n - 1] - 0.25y[n - 2] + x[n], \quad n  \geq 0
+    $$
+    with zero initial conditions and $x[n] = u[n]$.
+    
+\end{frame}
+
+\begin{frame}{}
+\vspace*{-9\baselineskip}
+    \color{LightGray}{Blank space for calculation}
+\end{frame}
+\begin{frame}{}
+\vspace*{-9\baselineskip}
+    \color{LightGray}{Blank space for calculation}
+\end{frame}
+\begin{frame}{}
+\vspace*{-9\baselineskip}
+    \color{LightGray}{Blank space for calculation}
+\end{frame}
+\begin{frame}{}
+\vspace*{-9\baselineskip}
+    \color{LightGray}{Blank space for calculation}
+\end{frame}
+
+
+\begin{frame}{Approximate Solution of Ordinary Differential Equations}
+    The solution of ordinary differential equations requires converting them into difference equations,
+which can then be solved in closed form by means of the Z-transform.
+\end{frame}
+
+
+%Example 10.24
+\begin{frame}{Example}
+    Consider an RLC circuit represented by the second-order ordinary differential equation
+
+    $$
+    \cfrac{d^2 v_c (t)}{dt^2} + \cfrac{dv_c(t)}{dt} + v_c(t) = v_s(t)
+    $$
+    where the voltage across the capacitor $v_c(t)$ is the output and the source $v_s(t) = u(t)$ is the input. Let the initial conditions be zero. Approximate the derivatives by their definition, find and solve the resulting difference equation.
+
+\end{frame}
+
+\begin{frame}{}
+\vspace*{-9\baselineskip}
+    \color{LightGray}{Blank space for calculation}
+\end{frame}
+\begin{frame}{}
+\vspace*{-9\baselineskip}
+    \color{LightGray}{Blank space for calculation}
+\end{frame}
+\begin{frame}{}
+\vspace*{-9\baselineskip}
+    \color{LightGray}{Blank space for calculation}
+\end{frame}
+\begin{frame}{}
+\vspace*{-9\baselineskip}
+    \color{LightGray}{Blank space for calculation}
+\end{frame}
+\begin{frame}{}
+\vspace*{-9\baselineskip}
+    \color{LightGray}{Blank space for calculation}
+\end{frame}
+\begin{frame}{}
+\vspace*{-9\baselineskip}
+    \color{LightGray}{Blank space for calculation}
+\end{frame}
+
+\end{document}
